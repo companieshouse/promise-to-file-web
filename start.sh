@@ -10,7 +10,7 @@ if [[ -z "${MESOS_SLAVE_PID}" ]]; then
     source ~/.chs_env/global_env
     source ~/.chs_env/promise-to-file-web/env
 
-    PORT="${EXTENSIONS_WEB_PORT}"
+    PORT="${PROMISE_TO_FILE_WEB_PORT}"
 
     exec npm run devstart -- --PORT=$PORT
 else
