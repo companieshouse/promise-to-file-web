@@ -14,4 +14,4 @@ exec < /dev/tty
             * ) echo "Please answer y (yes) or n (no):" && continue;
         esac
     done
-exec
+exec <&-
