@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node dist/bin/www",
+    "build": "cp -r bin dist/ && cp -r views dist/",
+    "devstart": "nodemon"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -13,6 +15,10 @@
     "jade": "~1.11.0",
     "morgan": "~1.9.1",
     "nunjucks": "^3.1.7",
-    "govuk-frontend": "^3.2.0"
+    "govuk-frontend": "^3.2.0",
+    "yargs": "^12.0.5"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9"
   }
 }
