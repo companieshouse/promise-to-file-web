@@ -4,7 +4,9 @@
  * Module dependencies.
  */
 
-var app = require('../app');
+var yargs  = require("yargs");
+
+var app = require('../../app');
 var debug = require('debug')('promise-to-file-web:server');
 var http = require('http');
 
@@ -12,7 +14,7 @@ var http = require('http');
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(yargs.argv.PORT  || yargs.argv._[0]);
 app.set('port', port);
 
 /**
