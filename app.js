@@ -22,6 +22,8 @@ var env = nunjucks.configure([
 
 // TODO Configure the view engine for CHS
 
+env.addGlobal("CDN_URL", process.env.CDN_HOST);
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'html');
