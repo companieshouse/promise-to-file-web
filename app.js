@@ -22,6 +22,8 @@ var env = nunjucks.configure([
 
 // TODO Configure the view engine for CHS
 
+env.addGlobal("CDN_URL", process.env.CDN_HOST);
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'html');
@@ -32,7 +34,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
+app.use('/promise-to-file', indexRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
