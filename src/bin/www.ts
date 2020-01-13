@@ -6,12 +6,13 @@
 
 import app from "../app";
 import * as http from "http";
+import * as yargs from "yargs";
 
 /**
  * Get port from environment and store in Express.
  */
 
-const port = normalizePort(process.env.PORT || '3000');
+const port = normalizePort(yargs.argv.PORT  || yargs.argv._[0]);
 app.set('port', port);
 
 /**

@@ -21,7 +21,8 @@ const env = nunjucks.configure([
 
 // TODO Configure the view engine for CHS - uncomment the following lines and change as appropriate
 
-// env.addGlobal("CDN_URL", process.env.CDN_HOST);
+env.addGlobal("CDN_URL", process.env.CDN_HOST);
+
 // env.addGlobal("ERROR_SUMMARY_TITLE", ERROR_SUMMARY_TITLE);
 // env.addGlobal("PIWIK_URL", PIWIK_URL);
 // env.addGlobal("PIWIK_SITE_ID", PIWIK_SITE_ID);
@@ -43,7 +44,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
+app.use('/promise-to-file', indexRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
