@@ -1,17 +1,16 @@
-var createError = require('http-errors');
-var express = require('express');
-var nunjucks = require('nunjucks');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+import * as cookieParser from "cookie-parser";
+import * as express from "express";
+import * as nunjucks from "nunjucks";
+import * as path from "path";
+import * as createError from "http-errors";
+import * as logger from "morgan";
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+import {indexRouter} from "./routes/index";
 
-var app = express();
+const app = express();
 
 // view engine setup
-var env = nunjucks.configure([
+const env = nunjucks.configure([
     "views",
     "node_modules/govuk-frontend/",
     "node_modules/govuk-frontend/components/",
@@ -20,7 +19,19 @@ var env = nunjucks.configure([
     express: app,
 });
 
-// TODO Configure the view engine for CHS
+// TODO Configure the view engine for CHS - uncomment the following lines and change as appropriate
+
+// env.addGlobal("CDN_URL", process.env.CDN_HOST);
+// env.addGlobal("ERROR_SUMMARY_TITLE", ERROR_SUMMARY_TITLE);
+// env.addGlobal("PIWIK_URL", PIWIK_URL);
+// env.addGlobal("PIWIK_SITE_ID", PIWIK_SITE_ID);
+
+// app.enable("trust proxy");
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: false }));
+// app.use(cookieParser());
+// app.use(sessionMiddleware);
+// app.use(`${pageURLs.EXTENSIONS}/*`, authenticate);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -33,7 +44,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -51,4 +61,4 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+export default app;
