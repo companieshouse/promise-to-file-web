@@ -1,0 +1,91 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  {% if errorList.length > 0 %}
+    Error:
+  {% endif %}
+  Tell us your details
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+    tag: {
+      text: "alpha"
+    },
+    html: 'This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.'
+  }) }}
+  {{ govukBackLink({
+    text: "Back",
+    href: "sign-in"
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% if referenceErr or companyErr %}
+        {{ govukErrorSummary({
+      titleText: "We couldn't find your reference details",
+      errorList: errorList,
+      text: companyErr.text,
+      text: referenceErr.text
+    }) }}
+      {% endif %}
+
+      {% set companyDetailsHTML %}
+      <p>
+        Use the
+        <a href="https://beta.companieshouse.gov.uk/" target="_blank">Companies House service</a>
+        to find it.
+      </p>
+      {% endset -%}
+
+      <h1 class="govuk-heading-xl">
+        What is the company number?
+      </h1>
+
+      <form method="post" action="">
+        {% if companyErr.flag %}
+          {{ govukInput({
+                label: {
+                  text: "Company number"
+                },
+                hint: {
+                  text: "This is the 8 character reference issued by Companies House when the company was set up."
+                },
+                errorMessage: {
+                  text: companyErr.text
+                },
+                classes: "govuk-input--company-number",
+                id: "company-number",
+                name: "companyNumber",
+                value: companyNumber
+              }) }}
+        {% else %}
+          {{ govukInput({
+                label: {
+                  text: "Company number"
+                },
+                hint: {
+                  text: "This is the 8 character reference issued by Companies House when the company was set up."
+                },
+                classes: "govuk-input--company-number",
+                id: "company-number",
+                name: "companyNumber",
+                value: companyNumber
+              }) }}
+        {% endif %}
+        {{ govukDetails({
+                summaryText: "Help with company number",
+                html: "<p>Use the <a target='blank' href='https://beta.companieshouse.gov.uk/'>Companies House service</a> to find it.</p>"
+            }) }}
+
+        {{ govukButton({
+              text: "Continue"
+            }) }}
+      </form>
+    </div>
+  </div>
+
+{% endblock %}
