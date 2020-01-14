@@ -2,4 +2,6 @@ dist/
 node_modules/
 *.zip
 .idea/
+.settings/
+.vscode/
 .DS_Store
