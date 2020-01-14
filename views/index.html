@@ -1,26 +1,82 @@
 {% extends "layout.html" %}
 
 {% block pageTitle %}
-Promise to File - GOV.UK
+  Tell us a company is still required
 {% endblock %}
 
+{% block header %}
+  <!-- Blank header with no service name for the start page -->
+  {{ govukHeader() }}
+{% endblock %}
 
-{% block backLink %}
-{{ govukBackLink({
-text: "Back",
-href: "/promise-to-file/back-link",
-attributes: {
-"data-event-id": "back-button"
-}
-}) }}
+{% block beforeContent %}
+  <div class="govuk-breadcrumbs">
+    <ol class="govuk-breadcrumbs__list">
+      <li class="govuk-breadcrumbs__list-item">
+        <a class="govuk-breadcrumbs__link" href="https://www.gov.uk/">Home</a>
+      </li>
+      <li class="govuk-breadcrumbs__list-item">
+        <a class="govuk-breadcrumbs__link" href="https://www.gov.uk/browse/business">Business and self-employed</a>
+      </li>
+      <li class="govuk-breadcrumbs__list-item">
+        <a class="govuk-breadcrumbs__link" href="https://www.gov.uk/browse/business/limited-company">Running a limited company</a>
+      </li>
+    </ol>
+  </div>
 {% endblock %}
 
 {% block content %}
-<div class="govuk-grid-row">
+  <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-xl">
-            Hello World and welcome to Promise To File!
-        </h1>
+
+      <h1 class="govuk-heading-xl">
+        Tell us if a company is still required
+      </h1>
+      <p class="govuk-body-l">Use this service to stop us from removing a company with overdue filings from the register.</p>
+      <p>It takes about 5 minutes to complete this service.</p>
+      <a href="/promise-to-file/company-number" role="button" class="govuk-button govuk-button--start govuk-!-margin-top-2 govuk-!-margin-bottom-8">Start now</a>
+
+      <h2 class="govuk-heading-m">Before you start</h2>
+      <p>
+        You should
+        <a href="https://www.gov.uk/government/publications/life-of-a-company-annual-requirements/life-of-a-company-part-1-accounts#penalties-for-failing-to-file-accounts" target="_blank">read the guidance on late filing penalties</a>.
+      </p>
+      <p>You'll need:
+        <ul class="govuk-list govuk-list--bullet">
+          <li>an email address</li>
+          <li>the company number</li>
+          <li>the reference shown on your overdue filing letter</li>
+        </ul>
+      </div>
+
+      <div class="govuk-grid-column-one-third">
+
+        <aside class="app-related-items" role="complementary">
+          <h2 class="govuk-heading-m" id="subsection-title">
+            Subsection
+          </h2>
+          <nav role="navigation" aria-labelledby="subsection-title">
+            <ul class="govuk-list govuk-body-s">
+              <li>
+                <a href="https://www.gov.uk/file-an-annual-return-with-companies-house">
+                  File your confirmation statement (annual return) with Companies House
+                </a>
+              </li>
+              <li>
+                <a href="https://www.gov.uk/running-a-limited-company">
+                  Running a limited company
+                </a>
+              </li>
+              <li>
+                <a href="https://www.gov.uk/browse/business/limited-company" class="govuk-!-w-bold">
+                  More
+                  <span class="visuallyhidden">Running a limited company</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </aside>
+
+      </div>
     </div>
-</div>
-{% endblock %}
+  {% endblock %}
