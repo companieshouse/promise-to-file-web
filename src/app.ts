@@ -5,7 +5,8 @@ import * as path from "path";
 import * as createError from "http-errors";
 import * as logger from "morgan";
 
-import {indexRouter} from "./routes/index";
+import {appRouter} from "./routes/routes";
+import * as pageURLs from "./model/page.urls";
 
 const app = express();
 
@@ -44,7 +45,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/promise-to-file", indexRouter);
+app.use(pageURLs.PROMISE_TO_FILE, appRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
