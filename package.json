@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node dist/bin/www.js",
     "build": "tsc && cp -r views dist/",
-    "devstart": "nodemon"
+    "devstart": "nodemon",
+    "lint": "tslint -p ."
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -25,6 +26,7 @@
     "ts-node": "^8.0.2",
     "typescript": "^3.3.1",
     "node-mocks-http": "^1.7.6",
+    "tslint": "^5.13.0",
     "nodemon": "^1.18.9"
   }
 }
