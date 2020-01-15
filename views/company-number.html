@@ -7,13 +7,7 @@
   Tell us your details
 {% endblock %}
 
-{% block beforeContent %}
-  {{ govukPhaseBanner({
-    tag: {
-      text: "alpha"
-    },
-    html: 'This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.'
-  }) }}
+{% block backLink %}
   {{ govukBackLink({
     text: "Back",
     href: "sign-in"
