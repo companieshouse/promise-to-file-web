@@ -6,8 +6,7 @@
     "start": "node dist/bin/www.js",
     "build": "tsc && cp -r views dist/",
     "devstart": "nodemon",
-    "test": "npm run unit",
-    "unit": "jest -c src/test/jest.config.unit.js --forceExit",
+    "test": "jest --forceExit",
     "lint": "tslint -p ."
   },
   "dependencies": {

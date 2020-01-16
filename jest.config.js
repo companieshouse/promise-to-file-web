@@ -4,16 +4,19 @@ module.exports = {
   ],
   testPathIgnorePatterns: [
     "/node_modules/",
-    "/dist/"
+    "/dist/",
+  ],
+  collectCoverageFrom: [
+    "./src/**/*.ts"
   ],
   preset: "ts-jest",
   testEnvironment: "node",
   verbose: true,
-  testMatch: ["**/test/**/*.spec.unit.[jt]s", "**/test/**/*.spec.integration.[jt]s"],
+  testMatch: ["**/test/**/*.spec.unit.[jt]s"],
   globals: {
     "ts-jest": {
       diagnostics: false,
     }
   },
-  globalSetup: "./src/test/global.setup.ts",
+  globalSetup: "./test/global.setup.ts"
 };
