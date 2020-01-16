@@ -1,5 +1,5 @@
-import app from '../../app';
-import * as request from 'supertest';
+import app from "../../src/app";
+import * as request from "supertest";
 
 describe("Basic URL Tests", () => {
 
