@@ -19,7 +19,7 @@ describe("Basic URL Tests", () => {
     expect(response.text).toMatch(/What is the company number/);
   });
 
-  it("should return 404 if page doesn't exist", async() => {
+  it("should return error code and page if requested page doesn't exist", async() => {
     const response = await request(app)
       .get("/gibberish");
 
