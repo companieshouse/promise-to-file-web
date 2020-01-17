@@ -26,35 +26,35 @@ update()
 run()
 {
 	if [ "$1" = "dev" ]; then
-				 environments=()
-			     index=0
-			     while read line
-			     do
-			        environments[$index]=$line
-			        index=$((index+1))
-			     done < dev	
-			     update environments
-			elif [ "$1" = "live" ]; then
-				 environments=(environments)
-			     index=0
-				 while read line
-			     do
-			        environments[ $index ] = $line
-			        index=$((index+1))
-			     done < /live
-			     update environments
-			elif [ "$1" = "all" ]; then
-				 environments=(environments)
-			     index=0
-				 while read line
-			     do
-			         environments[ $index ] = $line
-			         index=$((index+1))
-			     done < /all
-			     update environments
-			else
-				echo "No updates made - single parameter dev|live|all required"
-			fi
+		 environments=()
+	     index=0
+	     while read line
+	     do
+	        environments[$index]=$line
+	        index=$((index+1))
+	     done < dev	
+	     update environments
+	elif [ "$1" = "live" ]; then
+		 environments=(environments)
+	     index=0
+		 while read line
+	     do
+	        environments[ $index ] = $line
+	        index=$((index+1))
+	     done < /live
+	     update environments
+	elif [ "$1" = "all" ]; then
+		 environments=(environments)
+	     index=0
+		 while read line
+	     do
+	         environments[ $index ] = $line
+	         index=$((index+1))
+	     done < /all
+	     update environments
+	else
+		echo "No updates made - single parameter dev|live|all required"
+	fi
 
 }
 
