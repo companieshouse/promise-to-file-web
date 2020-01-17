@@ -7,7 +7,9 @@
     "build": "tsc && cp -r views dist/",
     "devstart": "nodemon",
     "test": "jest --forceExit",
-    "lint": "tslint -p ."
+    "lint": "tslint -p .",
+    "sonarqube": "npm run coverage && sonar-scanner",
+    "coverage": "jest --forceExit --coverage"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -34,6 +36,7 @@
     "tslint": "^5.13.0",
     "nodemon": "^1.18.9",
     "jest": "^24.1.0",
-    "supertest": "^3.4.2"
+    "supertest": "^3.4.2",
+    "sonarqube-scanner": "^2.4.0"
   }
 }
