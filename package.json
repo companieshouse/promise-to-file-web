@@ -8,8 +8,8 @@
     "devstart": "nodemon",
     "test": "jest --forceExit",
     "lint": "tslint -p .",
-    "sonarqube": "npm run coverage-jest && sonar-scanner",
-    "coverage-jest": "jest -c --forceExit --coverage"
+    "sonarqube": "npm run coverage && sonar-scanner",
+    "coverage": "jest --forceExit --coverage"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
