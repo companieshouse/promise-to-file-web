@@ -21,7 +21,9 @@
     "nunjucks": "^3.1.7",
     "govuk-frontend": "^3.2.0",
     "yargs": "^12.0.5",
-    "log4js": "^4.0.2"
+    "log4js": "^4.0.2",
+    "msgpack5": "^4.2.1",
+    "redis": "^2.8.0"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.1",
@@ -37,6 +39,7 @@
     "nodemon": "^1.18.9",
     "jest": "^24.1.0",
     "supertest": "^3.4.2",
-    "sonarqube-scanner": "^2.4.0"
+    "sonarqube-scanner": "^2.4.0",
+    "mockserver": "^3.0.0"
   }
 }

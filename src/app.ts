@@ -7,17 +7,18 @@ import * as logger from "morgan";
 
 import {appRouter} from "./routes/routes";
 import * as pageURLs from "./model/page.urls";
+import sessionMiddleware from "./session/middleware";
 
 const app = express();
 
 // view engine setup
 const env = nunjucks.configure([
-    "views",
-    "node_modules/govuk-frontend/",
-    "node_modules/govuk-frontend/components/",
-  ], {
-    autoescape: true,
-    express: app,
+  "views",
+  "node_modules/govuk-frontend/",
+  "node_modules/govuk-frontend/components/",
+], {
+  autoescape: true,
+  express: app,
 });
 
 // TODO Configure the view engine for CHS - uncomment the following lines and change as appropriate
@@ -41,8 +42,9 @@ app.set("view engine", "html");
 
 app.use(logger("dev"));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
+app.use(sessionMiddleware);
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(pageURLs.PROMISE_TO_FILE, appRouter);
