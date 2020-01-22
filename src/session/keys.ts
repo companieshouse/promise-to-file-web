@@ -1,3 +1,5 @@
+// Constants for the keys in a user session
+
 export const SIGN_IN_INFO: string = "signin_info";
 export const SIGNED_IN: string = "signed_in";
 export const ACCESS_TOKEN: string = "access_token";

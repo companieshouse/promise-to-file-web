@@ -1,5 +1,6 @@
 import * as keys from "../keys";
 import {IAccessToken, IMap, ISignInInfo, IUserProfile} from "../types";
+import {INTEGER_PARSE_BASE} from "../../properties";
 
 /**
  * Generate sign in info from data map.
@@ -46,7 +47,7 @@ export const unmarshalAccessToken = (data: IMap<any>): IAccessToken | undefined 
   }
 
   return {
-    expiresIn: parseInt(accessTokenData[keys.EXPIRES_IN], 10),
+    expiresIn: parseInt(accessTokenData[keys.EXPIRES_IN], INTEGER_PARSE_BASE),
     refreshToken: accessTokenData[keys.REFRESH_TOKEN],
     token: data[keys.ACCESS_TOKEN][keys.ACCESS_TOKEN],
     tokenType: accessTokenData[keys.TOKEN_TYPE],

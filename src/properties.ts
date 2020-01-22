@@ -1,5 +1,5 @@
 /**
- * Get's an environment variable. If the env var is not set and a default value is not
+ * Gets an environment variable. If the env var is not set and a default value is not
  * provided, then it is assumed it is a mandatory requirement and an error will be
  * thrown.
  */
@@ -21,3 +21,7 @@ export const CACHE_SERVER = getEnvironmentValue("CACHE_SERVER");
 export const COOKIE_NAME = getEnvironmentValue("COOKIE_NAME");
 
 export const DEFAULT_SESSION_EXPIRATION = getEnvironmentValue("DEFAULT_SESSION_EXPIRATION");
+
+export const INTEGER_PARSE_BASE = 10;
+
+export const SESSION_CREATE = "true";

@@ -2,10 +2,9 @@ import * as msgpack from "msgpack5";
 import * as redis from "redis";
 import {promisify} from "util";
 import logger from "../../logger";
-import * as errorMessages from "../../model/error.messages";
-import { CACHE_SERVER } from "../config";
+import { CACHE_SERVER } from "../../properties";
 import {IMap} from "../types";
-import IStore from "./store"
+import IStore from "./store";
 import Session from "../session";
 
 export interface IRedisStoreOptions {
@@ -13,6 +12,7 @@ export interface IRedisStoreOptions {
 }
 
 const REDIS_URL_PREFIX: string = "redis://";
+const REDIS_PROBLEM: string = "There is a problem with redis: ";
 
 export class RedisStore implements IStore {
 
@@ -22,7 +22,7 @@ export class RedisStore implements IStore {
         this.client = redis.createClient({url: REDIS_URL_PREFIX + config.url});
 
         this.client.on("error", (error) => {
-            logger.error(errorMessages.REDIS_PROBLEM, error);
+            logger.error(REDIS_PROBLEM, error);
         });
     }
 

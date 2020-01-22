@@ -1,6 +1,6 @@
 import {IMap} from "./types";
 import * as crypto from "crypto";
-import {COOKIE_SECRET, DEFAULT_SESSION_EXPIRATION} from "./config";
+import {COOKIE_SECRET, DEFAULT_SESSION_EXPIRATION, INTEGER_PARSE_BASE} from "../properties";
 import * as keys from "./keys";
 
 export default class Session {
@@ -23,9 +23,10 @@ export default class Session {
     public static newInstance(): Session {
         const session = new Session();
         const now = Math.floor((new Date()).getTime() / 1000);
+
         session.data = {
             [keys.ID]: session.sessionKey(),
-            [keys.EXPIRES]: now + parseInt(DEFAULT_SESSION_EXPIRATION, 10),
+            [keys.EXPIRES]: now + parseInt(DEFAULT_SESSION_EXPIRATION, INTEGER_PARSE_BASE),
             [keys.LAST_ACCESS]: now,
         };
         return session;
@@ -64,6 +65,7 @@ export default class Session {
     }
 
     public sessionKey(): string {
+        // First 28 represent the key the rest is the password
         return this._cookieId.substr(0, 28);
     }
 

@@ -6,7 +6,7 @@ import redisStore from "../session/store/redis.store";
  * @param chSession
  */
 const saveSession = async (chSession: Session): Promise<void> => {
-await redisStore.save(chSession);
+    await redisStore.save(chSession);
 };
 
 /**
@@ -14,9 +14,9 @@ await redisStore.save(chSession);
  * @param cookieId
  */
 const loadSession = async (cookieId: string): Promise<Session> => {
-const session: Session = Session.newWithCookieId(cookieId);
-session.data = await redisStore.getData(session.sessionKey());
-return session;
+    const session: Session = Session.newWithCookieId(cookieId);
+    session.data = await redisStore.getData(session.sessionKey());
+    return session;
 };
 
 export {saveSession, loadSession};
