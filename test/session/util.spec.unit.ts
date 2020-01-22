@@ -1,5 +1,5 @@
-import { unmarshalSignInInfo, unmarshalAccessToken, unmarshalUserProfile } from "../../src/session/store/util";
-import { IAccessToken, IUserProfile, ISignInInfo, IMap } from "../../src/session/types";
+import {unmarshalAccessToken, unmarshalSignInInfo, unmarshalUserProfile} from "../../src/session/store/util";
+import {IAccessToken, IMap, ISignInInfo, IUserProfile} from "../../src/session/types";
 
 const DUMMY_TOKEN = {
   access_token: "token",
@@ -61,8 +61,7 @@ describe("Session util tests", () => {
 
     it("should not have permissions if no permission in session data", () => {
       const unmarshalledProfile = unmarshalUserProfile({
-        user_profile: {
-        }
+        user_profile: {}
       }) || {} as IUserProfile;
       expect(unmarshalledProfile).not.toBeUndefined();
       expect(unmarshalledProfile.permissions).toEqual({});
@@ -75,7 +74,7 @@ describe("Session util tests", () => {
       expect(unmarshalSignInInfo(<unknown>null as IMap<any>)).toBeNull();
       expect(unmarshalSignInInfo({})).toBeNull();
     });
-    
+
     it("should return a ISigninInfo object if correct data in session", () => {
       const unmarshalledSigninInfo = unmarshalSignInInfo({
         signin_info: {
