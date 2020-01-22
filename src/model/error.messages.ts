@@ -1,0 +1,1 @@
+export const REDIS_PROBLEM: string = "There is a problem with redis: ";

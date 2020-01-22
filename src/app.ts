@@ -7,6 +7,7 @@ import * as logger from "morgan";
 
 import {appRouter} from "./routes/routes";
 import * as pageURLs from "./model/page.urls";
+import sessionMiddleware from "./session/middleware";
 
 const app = express();
 
@@ -43,6 +44,7 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(sessionMiddleware);
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(pageURLs.PROMISE_TO_FILE, appRouter);
