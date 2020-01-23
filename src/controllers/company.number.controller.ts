@@ -5,8 +5,6 @@ import {createGovUkErrorData, GovUkErrorData} from "../model/govuk.error.data";
 import * as templatePaths from "../model/template.paths";
 import {ValidationError} from "../model/validation.error";
 
-
-
 // validator middleware
 const preValidators = [
   check("companyNumber").blacklist(" ").escape().not().isEmpty().withMessage(errorMessages.NO_COMPANY_NUMBER_SUPPLIED),
@@ -54,19 +52,6 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
       templateName: templatePaths.COMPANY_NUMBER,
     });
   }
-};
-
-const buildError = (res: Response, errorMessage: string): void => {
-  const companyNumberErrorData: GovUkErrorData = createGovUkErrorData(
-    errorMessage,
-    "#company-number",
-    true,
-    "");
-  return res.render(templatePaths.COMPANY_NUMBER, {
-    companyNumberErr: companyNumberErrorData,
-    errorList: [companyNumberErrorData],
-    templateName: templatePaths.COMPANY_NUMBER,
-  });
 };
 
 export default [...preValidators, padCompanyNumber, ...postValidators, route];
