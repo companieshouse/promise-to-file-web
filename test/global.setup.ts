@@ -6,5 +6,7 @@ export default async () => {
   process.env.COOKIE_NAME = "cookie_name";
   process.env.COOKIE_DOMAIN = "cookie_domain";
   process.env.COOKIE_SECURE_ONLY = "cookie_secure";
+  process.env.PIWIK_URL = "test";
+  process.env.PIWIK_SITE_ID = "test";
   process.env.SESSION_CREATE = "off";
 };
