@@ -65,17 +65,26 @@
                   text: "This is the 8 character reference issued by Companies House when the company was set up."
                 },
                 classes: "govuk-input--company-number",
+                attributes: {
+                  "data-event-id": "company-number-input"
+                },
                 id: "company-number",
                 name: "companyNumber",
                 value: companyNumber
               }) }}
         {% endif %}
         {{ govukDetails({
+                attributes: {
+                  "data-event-id": "help-with-company-number"
+                },
                 summaryText: "Help with company number",
                 html: "<p>Use the <a target='blank' href='https://beta.companieshouse.gov.uk/'>Companies House service</a> to find it.</p>"
             }) }}
 
         {{ govukButton({
+              attributes: {
+                "data-event-id": "continue-button"
+              },
               text: "Continue"
             }) }}
       </form>
