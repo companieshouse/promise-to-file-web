@@ -14,17 +14,19 @@ const COMPANY_NUMBER_TOO_LONG = "Company number too long";
 
 describe("company number validation tests", () => {
 
-    const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
-
-    beforeEach(() => {
-      loadMockSession(mockCacheService);
-      mockCacheService.mockClear();
-      mockCacheService.prototype.constructor.mockImplementationOnce((cookieId) => {
-        const session: Session = Session.newWithCookieId(cookieId);
-        session.data = {};
-        return session;
-      });
-    });
+   // This will be needed when the routes are secured
+   // const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
+   //
+   //
+   //  beforeEach(() => {
+   //    loadMockSession(mockCacheService);
+   //    mockCacheService.mockClear();
+   //    mockCacheService.prototype.constructor.mockImplementationOnce((cookieId) => {
+   //      const session: Session = Session.newWithCookieId(cookieId);
+   //      session.data = {};
+   //      return session;
+   //    });
+   //  });
 
     it("should create an error message when no company number is supplied (empty string)", async() => {
       const response = await request(app)
