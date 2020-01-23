@@ -1,0 +1,144 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+    Confirm the company
+{% endblock %}
+
+{% block beforeContent %}
+    {{ govukPhaseBanner({
+    tag: {
+        text: "alpha"
+    },
+    html: 'This is a new service – your <a class="govuk-link" href="#">feedback</a> will help us to improve it.'
+    }) }}
+    {{ govukBackLink({
+        text: "Back",
+        href: "reference-number"
+    }) }}
+{% endblock %}
+
+{% block content %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-xl">Check company details</h1>
+            <h2 class="govuk-heading-l">{{scenario.company.name}}</h2>
+
+    {% set inactiveHTML %}
+        {% if scenario.company.status === "Inactive" %}
+            <span class="govuk-!-font-weight-bold">Dissolved</span>
+        {% else %}
+            {{scenario.company.status}}
+        {% endif %}
+    {% endset %}
+
+    {% set AAoverdueHTML %}
+        {% if scenario.company.accountsStatus === "overdue" %}
+            {{scenario.company.accountsDue}}
+            <br/>
+            <span class="govuk-!-font-weight-bold">Your accounts are overdue</span>
+        {% elseif scenario.company.accountsDue === "inactive" %}
+            You don’t have to file final accounts with Companies House
+        {% else %}
+            {{scenario.company.accountsDue}}
+        {% endif %}
+    {% endset %}
+
+    {% set CSoverdueHTML %}
+        {% if scenario.company.csStatus === "overdue" %}
+            {{scenario.company.csDue}}
+            <br/>
+            <span class="govuk-!-font-weight-bold">Your confirmation statement is overdue</span>
+        {% elseif scenario.company.csDue === "inactive" %}
+            You don’t have to file final accounts with Companies House
+        {% else %}
+            {{scenario.company.csDue}}
+        {% endif %}
+    {% endset %}
+
+    {% if scenario.company.PTFRequested === "yes" %}
+        {% from "warning-text/macro.njk" import govukWarningText %}
+        {{ govukWarningText({
+        text: "You've already told us you're going to file",
+        iconFallbackText: "Warning"
+        }) }}
+    {% endif %}
+
+    {{ govukTable({
+
+    firstCellIsHeader: true,
+    classes: "align-top",
+    rows: [
+        [
+            {
+                text: "Company number"
+            },
+            {
+            text: scenario.company.number
+            }
+        ],
+        [
+            {
+                text: "Status"
+            },
+            {
+                html: inactiveHTML
+            }
+        ],
+        [
+            {
+                text: "Incorporation date"
+            },
+            {
+                text: scenario.company.incorporationDate
+            }
+        ],
+        [
+            {
+                text: "Company type"
+            },
+            {
+                text: scenario.company.companyType
+            }
+        ],
+        [
+            {
+                text: "Registered office address"
+            },
+            {
+                html: scenario.company.address | nl2br
+            }
+        ],
+        [
+            {
+                text: "Accounts due"
+            },
+            {
+                html: AAoverdueHTML
+            }
+        ],
+        [
+            {
+                text: "Confirmation statement due"
+            },
+            {
+                html: CSoverdueHTML
+            }
+        ]
+        ]
+    }) }}
+
+    {% if scenario.company.PTFRequested !== 'yes' %}
+    {{ govukButton({
+        text: "Continue",
+        href: "continue-trading"
+    }) }}
+
+    {% else %}
+        {{ govukButton({
+            text: "Continue",
+            href: "confirmation"
+        }) }}
+    {% endif %}
+        </div>
+    </div>
+{% endblock %}
