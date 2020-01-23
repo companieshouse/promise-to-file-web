@@ -8,6 +8,7 @@ import * as logger from "morgan";
 import {appRouter} from "./routes/routes";
 import * as pageURLs from "./model/page.urls";
 import sessionMiddleware from "./session/middleware";
+import {PIWIK_SITE_ID, PIWIK_URL} from "./properties";
 
 const app = express();
 
@@ -26,8 +27,8 @@ const env = nunjucks.configure([
 env.addGlobal("CDN_URL", process.env.CDN_HOST);
 
 // env.addGlobal("ERROR_SUMMARY_TITLE", ERROR_SUMMARY_TITLE);
-// env.addGlobal("PIWIK_URL", PIWIK_URL);
-// env.addGlobal("PIWIK_SITE_ID", PIWIK_SITE_ID);
+env.addGlobal("PIWIK_URL", PIWIK_URL);
+env.addGlobal("PIWIK_SITE_ID", PIWIK_SITE_ID);
 
 // app.enable("trust proxy");
 // app.use(express.json());
