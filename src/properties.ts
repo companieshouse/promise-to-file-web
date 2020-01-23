@@ -24,4 +24,8 @@ export const DEFAULT_SESSION_EXPIRATION = getEnvironmentValue("DEFAULT_SESSION_E
 
 export const INTEGER_PARSE_BASE = 10;
 
+export const PIWIK_URL = getEnvironmentValue("PIWIK_URL");
+
+export const PIWIK_SITE_ID = getEnvironmentValue("PIWIK_SITE_ID");
+
 export const SESSION_CREATE = "true";

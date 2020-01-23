@@ -8,6 +8,7 @@ import * as morganLogger from "morgan";
 import {appRouter} from "./routes/routes";
 import * as pageURLs from "./model/page.urls";
 import sessionMiddleware from "./session/middleware";
+import {PIWIK_SITE_ID, PIWIK_URL} from "./properties";
 import authenticate from "./authentication/middleware/index";
 import logger from "./logger";
 
@@ -25,11 +26,9 @@ const env = nunjucks.configure([
 
 env.addGlobal("CDN_URL", process.env.CDN_HOST);
 
-// TODO Configure PIWIK monitoring - uncomment the following lines and change as appropriate
-
 // env.addGlobal("ERROR_SUMMARY_TITLE", ERROR_SUMMARY_TITLE);
-// env.addGlobal("PIWIK_URL", PIWIK_URL);
-// env.addGlobal("PIWIK_SITE_ID", PIWIK_SITE_ID);
+env.addGlobal("PIWIK_URL", PIWIK_URL);
+env.addGlobal("PIWIK_SITE_ID", PIWIK_SITE_ID);
 
 app.enable("trust proxy");
 
