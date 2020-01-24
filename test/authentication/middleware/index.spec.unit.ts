@@ -41,7 +41,6 @@ describe("Authentication middleware", () => {
     expect(response.status).toEqual(302);
   });
 
-
   it("should not redirect to signin if /promise-to-file/* called while signed in", async () => {
     const response = await request(app)
       .get("/promise-to-file/company-number")
@@ -57,8 +56,6 @@ describe("Authentication middleware", () => {
       .expect("Location", "/promise-to-file");
     expect(response.status).toEqual(302);
   });
-
-
 });
 
 const setNotSignedIn = () => {

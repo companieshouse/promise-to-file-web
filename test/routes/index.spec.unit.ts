@@ -9,8 +9,6 @@ jest.mock("../../src/services/redis.service");
 const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
 
 beforeEach(() => {
-  mockCacheService.mockRestore();
-
   loadMockSession(mockCacheService);
 });
 
