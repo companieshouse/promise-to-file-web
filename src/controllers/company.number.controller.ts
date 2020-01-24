@@ -5,7 +5,7 @@ import {createGovUkErrorData, GovUkErrorData} from "../model/govuk.error.data";
 import * as templatePaths from "../model/template.paths";
 import {ValidationError} from "../model/validation.error";
 
-// validator middleware
+// validator middleware that checks for an empty or too long input
 const preValidators = [
   check("companyNumber").blacklist(" ").escape().not().isEmpty().withMessage(errorMessages.NO_COMPANY_NUMBER_SUPPLIED),
   check("companyNumber").blacklist(" ").escape().isLength({max: 8}).withMessage(errorMessages.COMPANY_NUMBER_TOO_LONG),
@@ -26,7 +26,7 @@ const padCompanyNumber = async (req: Request, res: Response, next: NextFunction)
   return next();
 };
 
-// validator middleware
+// validator middleware that checks for invalid characters in the input
 const postValidators = [
   check("companyNumber").blacklist(" ").escape().custom((value: string) => {
     if (!/^([a-zA-Z]{2})?[0-9]{6,8}$/gm.test(value)) {
