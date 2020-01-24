@@ -1,8 +1,8 @@
 import {IMap} from "./types";
 import * as crypto from "crypto";
 import {COOKIE_SECRET, DEFAULT_SESSION_EXPIRATION, INTEGER_PARSE_BASE} from "../properties";
-import { unmarshalSignInInfo } from "./store/util";
 import * as keys from "./keys";
+import { unmarshalSignInInfo } from "./store/util";
 
 export default class Session {
   get cookieId(): string {
@@ -74,6 +74,17 @@ export default class Session {
     const hash = crypto.createHash("sha1");
     const data = hash.update(userAgent + clientIp + COOKIE_SECRET);
     this.data[keys.CLIENT_SIG] = data.digest("hex");
+  }
+
+  public appendData(key: string, value: any): void {
+    this.data[key] = value;
+  }
+
+  public accessToken(): string | undefined {
+    const signInInfo = unmarshalSignInInfo(this._data);
+    if (signInInfo && signInInfo.accessToken && signInInfo.accessToken.token) {
+      return signInInfo.accessToken.token;
+    }
   }
 
   public isSignedIn(): boolean {

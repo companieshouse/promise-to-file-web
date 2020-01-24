@@ -16,6 +16,6 @@ const renderTemplate = (template: string) => (req: Request, res: Response, next:
 
 router.get(pageURLs.ROOT, renderTemplate(templatePaths.INDEX));
 router.get(pageURLs.COMPANY_NUMBER, renderTemplate(templatePaths.COMPANY_NUMBER));
-router.get("/check-company", checkCompanyRoute.route);
+router.get(pageURLs.CHECK_COMPANY, checkCompanyRoute.route);
 
 export const appRouter = router;

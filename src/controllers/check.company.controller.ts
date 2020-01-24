@@ -1,15 +1,34 @@
 import { NextFunction, Request, Response } from "express";
+import logger from "../logger";
+import { ExtensionsCompanyProfile } from "../model/company.profile";
+import { getCompanyProfile } from "../client/apiclient";
+import * as errorMessages from "../model/error.messages";
+import * as templatePaths from "../model/template.paths";
+import * as sessionService from "../services/session.service";
 
 export const route = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 
-    const scenario = { company: { PTFRequested: "Yes", accountsDue: "01 January 2020",
-            accountsStatus: "overdue", address: "25 No Street, Nowhere", companyType: "Private Limited Company",
-            csDue: "02 January 2020", csStatus: "overdue", incorporationDate: "01 January 2000",
-            name: "Test Company LTD", number: "00001111", status: "Active" }};
+    await sessionService.createPromiseToFileSession(req.chSession, "00006400");
+    const companyNumber: string = req.chSession.data.ptf_session.company_in_context;
 
-    return res.render("check-company", {
-        scenario,
-    });
+    if (companyNumber) {
+        try {
+            logger.info(`Company number ${companyNumber} found in session, retrieving company profile`);
+            const token: string = req.chSession.accessToken() as string;
+            const companyinContext: ExtensionsCompanyProfile = await getCompanyProfile(companyNumber, token);
+            logger.info("COMPANY PROFILE " + JSON.stringify(companyinContext));
+
+            return res.render(templatePaths.CHECK_COMPANY,{
+                    company: companyinContext,
+                });
+        } catch (e) {
+            logger.error(`Error retrieving company number ${companyNumber} from redis`, e);
+            return next(e);
+        }
+    } else {
+        logger.info(errorMessages.NO_COMPANY_NUMBER_IN_SESSION);
+        return next(new Error(errorMessages.NO_COMPANY_NUMBER_IN_SESSION));
+    }
 };
 
 export const confirmCompanyStartRequest = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
