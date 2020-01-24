@@ -1,4 +1,4 @@
-export interface ExtensionsCompanyProfile {
+export interface PTFCompanyProfile {
     companyName: string;
     companyNumber: string;
     companyStatus: string;

@@ -5,7 +5,7 @@ import { formatDateForDisplay } from "./date.formatter";
 import { createApiClient } from "ch-sdk-node";
 import Resource from "ch-sdk-node/dist/services/resource";
 import { CompanyProfile } from "ch-sdk-node/dist/services/company-profile";
-import { ExtensionsCompanyProfile } from "../model/company.profile";
+import { PTFCompanyProfile } from "../model/company.profile";
 
 /**
  * Get the company profile from the api. If the company does not exist or there has been an error, an exception
@@ -15,7 +15,7 @@ import { ExtensionsCompanyProfile } from "../model/company.profile";
  * @param token the bearer security token to use to call the api
  */
 
-export const getCompanyProfile = async (companyNumber: string, token: string): Promise<ExtensionsCompanyProfile> => {
+export const getCompanyProfile = async (companyNumber: string, token: string): Promise<PTFCompanyProfile> => {
     logger.debug("Creating CH SDK ApiClient");
     const api = createApiClient(undefined, token, `${API_URL}`);
 
@@ -33,6 +33,7 @@ export const getCompanyProfile = async (companyNumber: string, token: string): P
 
     const companyProfile = sdkResponse.resource as CompanyProfile;
 
+    // TODO: get confirmation statement and ptf data from company profile method of the sdk
     return {
         accountingPeriodEndOn: companyProfile.accounts.nextAccounts.periodEndOn,
         accountingPeriodStartOn: companyProfile.accounts.nextAccounts.periodStartOn,

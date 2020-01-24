@@ -1,21 +1,18 @@
 import { NextFunction, Request, Response } from "express";
 import logger from "../logger";
-import { ExtensionsCompanyProfile } from "../model/company.profile";
+import { PTFCompanyProfile } from "../model/company.profile";
 import { getCompanyProfile } from "../client/apiclient";
 import * as errorMessages from "../model/error.messages";
 import * as templatePaths from "../model/template.paths";
-import * as sessionService from "../services/session.service";
 
 export const route = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 
-    await sessionService.createPromiseToFileSession(req.chSession, "00006400");
     const companyNumber: string = req.chSession.data.ptf_session.company_in_context;
-
     if (companyNumber) {
         try {
             logger.info(`Company number ${companyNumber} found in session, retrieving company profile`);
             const token: string = req.chSession.accessToken() as string;
-            const companyinContext: ExtensionsCompanyProfile = await getCompanyProfile(companyNumber, token);
+            const companyinContext: PTFCompanyProfile = await getCompanyProfile(companyNumber, token);
             logger.info("COMPANY PROFILE " + JSON.stringify(companyinContext));
 
             return res.render(templatePaths.CHECK_COMPANY,{
