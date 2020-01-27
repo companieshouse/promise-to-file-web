@@ -20,4 +20,13 @@ const createPromiseToFileSession = async (
     return ptfSession;
 };
 
-export { createPromiseToFileSession };
+/**
+ * Returns the company in context. That is the most recent company that was
+ * input in the company number screen.
+ * @param chSession
+ */
+const getCompanyInContext = (chSession: Session): string => {
+    return chSession.data.ptf_session.company_in_context;
+};
+
+export { createPromiseToFileSession, getCompanyInContext };

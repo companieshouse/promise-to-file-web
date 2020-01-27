@@ -11,9 +11,9 @@ export interface PTFCompanyProfile {
     accountsDue: string;
     accountingPeriodStartOn: string;
     accountingPeriodEndOn: string;
-    accountsStatus: string;
+    isAccountsOverdue: boolean;
+    isCSOverdue: boolean;
     csDue: string;
-    csStatus: string;
     incorporationDate: string;
     ptfRequested: string;
 }

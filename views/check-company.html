@@ -32,7 +32,7 @@
     {% endset %}
 
     {% set AAoverdueHTML %}
-        {% if company.accountsStatus === "overdue" %}
+        {% if company.isAccountsOverdue or dueDatePassed %}
             {{company.accountsDue}}
             <br/>
             <span class="govuk-!-font-weight-bold">Your accounts are overdue</span>
@@ -44,7 +44,7 @@
     {% endset %}
 
     {% set CSoverdueHTML %}
-        {% if company.csStatus === "overdue" %}
+        {% if company.isCSOverdue %}
             {{company.csDue}}
             <br/>
             <span class="govuk-!-font-weight-bold">Your confirmation statement is overdue</span>

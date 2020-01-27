@@ -38,7 +38,6 @@ export const getCompanyProfile = async (companyNumber: string, token: string): P
         accountingPeriodEndOn: companyProfile.accounts.nextAccounts.periodEndOn,
         accountingPeriodStartOn: companyProfile.accounts.nextAccounts.periodStartOn,
         accountsDue: formatDateForDisplay(companyProfile.accounts.nextDue),
-        accountsStatus: companyProfile.accounts.overdue ? "overdue" : "not overdue",
         address: {
             line_1: companyProfile.registeredOfficeAddress.addressLineOne,
             line_2: companyProfile.registeredOfficeAddress.addressLineTwo,
@@ -49,8 +48,9 @@ export const getCompanyProfile = async (companyNumber: string, token: string): P
         companyStatus: lookupCompanyStatus(companyProfile.companyStatus),
         companyType: lookupCompanyType(companyProfile.type),
         csDue: "",
-        csStatus: "",
         incorporationDate: formatDateForDisplay(companyProfile.dateOfCreation),
+        isAccountsOverdue: companyProfile.accounts.overdue,
+        isCSOverdue: false,
         ptfRequested: "",
     };
 };

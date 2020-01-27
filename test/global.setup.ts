@@ -9,4 +9,5 @@ export default async () => {
   process.env.PIWIK_URL = "piwik_url";
   process.env.PIWIK_SITE_ID = "piwik_site_id";
   process.env.SESSION_CREATE = "off";
+  process.env.API_LOCAL_URL = "http://localhost:9333";
 };
