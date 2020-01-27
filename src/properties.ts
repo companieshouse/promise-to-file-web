@@ -27,3 +27,11 @@ export const INTEGER_PARSE_BASE = 10;
 export const PIWIK_URL = getEnvironmentValue("PIWIK_URL");
 
 export const PIWIK_SITE_ID = getEnvironmentValue("PIWIK_SITE_ID");
+
+// If wishing to override the default log format of 'tiny', available formats are documented
+// here - https://github.com/expressjs/morgan#predefined-formats
+export const HTTP_LOG_FORMAT = getEnvironmentValue("HTTP_LOG_FORMAT", "tiny");
+
+// If wishing to override the default log level of 'info', available levels are documented
+// here - https://stritti.github.io/log4js/docu/users-guide.html#configuration
+export const LOG_LEVEL = getEnvironmentValue("LOG_LEVEL", "info");
