@@ -6,6 +6,7 @@ import * as createError from "http-errors";
 import * as morganLogger from "morgan";
 
 import {appRouter} from "./routes/routes";
+import {ERROR_SUMMARY_TITLE} from "./model/error.messages";
 import * as pageURLs from "./model/page.urls";
 import sessionMiddleware from "./session/middleware";
 import {PIWIK_SITE_ID, PIWIK_URL} from "./properties";
@@ -26,7 +27,7 @@ const env = nunjucks.configure([
 
 env.addGlobal("CDN_URL", process.env.CDN_HOST);
 
-// env.addGlobal("ERROR_SUMMARY_TITLE", ERROR_SUMMARY_TITLE);
+env.addGlobal("ERROR_SUMMARY_TITLE", ERROR_SUMMARY_TITLE);
 env.addGlobal("PIWIK_URL", PIWIK_URL);
 env.addGlobal("PIWIK_SITE_ID", PIWIK_SITE_ID);
 

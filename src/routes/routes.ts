@@ -1,4 +1,5 @@
 import {NextFunction, Request, Response, Router} from "express";
+import companyNumberRoute from "../controllers/company.number.controller";
 import * as checkCompanyRoute from "../controllers/check.company.controller";
 import * as pageURLs from "../model/page.urls";
 import * as templatePaths from "../model/template.paths";
@@ -15,7 +16,10 @@ const renderTemplate = (template: string) => (req: Request, res: Response, next:
 };
 
 router.get(pageURLs.ROOT, renderTemplate(templatePaths.INDEX));
+
 router.get(pageURLs.COMPANY_NUMBER, renderTemplate(templatePaths.COMPANY_NUMBER));
+router.post(pageURLs.COMPANY_NUMBER, ...companyNumberRoute);
+
 router.get("/check-company", checkCompanyRoute.route);
 
 export const appRouter = router;
