@@ -18,7 +18,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
   if (cookieId) {
     logger.info("cookie found, loading session from redis: " + cookieId);
     req.chSession = await redisService.loadSession(cookieId);
-  }else {
+  } else {
     logger.info("No cookie found, using blank session");
     req.chSession = await redisService.loadSession("");
   }

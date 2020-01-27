@@ -8,6 +8,8 @@ export default (req: Request, res: Response, next: NextFunction) => {
 
   if (!req.chSession.isSignedIn()) {
 
+    logger.debug("User not authenticated");
+
     let returnToUrl: string = pageURLs.PROMISE_TO_FILE;
 
     const referringPageURL = req.header("Referer") as string;
