@@ -11,8 +11,14 @@ import * as keys from "../session/keys";
  */
 const createPromiseToFileSession = async (
     chSession: Session, companyNumber: string): Promise<IPromiseToFileSession> => {
+
+    const existing = chSession.data[keys.PTF_SESSION];
+    if (existing) {
+        return existing;
+    }
+
     const ptfSession: IPromiseToFileSession = {
-        company_in_context: companyNumber,
+        company_number_in_context: companyNumber,
         ptf_requests: [],
     };
     chSession.appendData(keys.PTF_SESSION, ptfSession);
@@ -25,8 +31,8 @@ const createPromiseToFileSession = async (
  * input in the company number screen.
  * @param chSession
  */
-const getCompanyInContext = (chSession: Session): string => {
+const getCompanyNumberInContext = (chSession: Session): string => {
     return chSession.data.ptf_session.company_in_context;
 };
 
-export { createPromiseToFileSession, getCompanyInContext };
+export { createPromiseToFileSession, getCompanyNumberInContext };

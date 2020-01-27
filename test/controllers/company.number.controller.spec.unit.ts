@@ -3,7 +3,7 @@ import * as request from "supertest";
 import {loadSession} from "../../src/services/redis.service";
 import {loadMockSession} from "../mock.utils";
 import {COOKIE_NAME} from "../../src/properties";
-import * as pageURLs from "../../src/model/page.urls"
+import * as pageURLs from "../../src/model/page.urls";
 
 jest.mock("../../src/services/redis.service");
 
@@ -21,7 +21,7 @@ describe("company number validation tests", () => {
 
   it("should create an error message when no company number is supplied (empty string)", async() => {
     const response = await request(app)
-      .post(pageURLs.PROMISE_TO_FILE_COMPANY_NUMBER)
+      .post(pageURLs.PTF_COMPANY_NUMBER)
       .set("Accept", "application/json")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({companyNumber: ""});
@@ -35,7 +35,7 @@ describe("company number validation tests", () => {
 
   it("should create an error message when no company number is supplied (spaces)", async() => {
     const response = await request(app)
-      .post(pageURLs.PROMISE_TO_FILE_COMPANY_NUMBER)
+      .post(pageURLs.PTF_COMPANY_NUMBER)
       .set("Accept", "application/json")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({companyNumber: "    "});
@@ -49,7 +49,7 @@ describe("company number validation tests", () => {
 
   it("should create an error message when company number is invalid (characters)", async() => {
     const response = await request(app)
-      .post(pageURLs.PROMISE_TO_FILE_COMPANY_NUMBER)
+      .post(pageURLs.PTF_COMPANY_NUMBER)
       .set("Accept", "application/json")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({companyNumber: "asdfg!!@"});
@@ -63,7 +63,7 @@ describe("company number validation tests", () => {
 
   it("should create an error message when company number is too long", async() => {
     const response = await request(app)
-      .post(pageURLs.PROMISE_TO_FILE_COMPANY_NUMBER)
+      .post(pageURLs.PTF_COMPANY_NUMBER)
       .set("Accept", "application/json")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({companyNumber: "000064000"});

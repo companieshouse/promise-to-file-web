@@ -29,12 +29,12 @@ export interface ISignInInfo {
 }
 
 export interface IPromiseToFileSession {
-  company_in_context: string;
+  company_number_in_context: string;
   ptf_requests: IPromiseToFileRequest[];
 }
 
 export interface IPromiseToFileRequest {
   company_number: string;
-  extension_request_id: string;
+  ptf_request_id: string;
   reason_in_context_string?: string;
 }

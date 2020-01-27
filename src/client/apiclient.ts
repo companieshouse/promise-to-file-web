@@ -1,11 +1,11 @@
 import {lookupCompanyStatus, lookupCompanyType} from "./api.enumerations";
 import logger from "../logger";
-import { API_URL } from "../session/config";
 import { formatDateForDisplay } from "./date.formatter";
 import { createApiClient } from "ch-sdk-node";
 import Resource from "ch-sdk-node/dist/services/resource";
 import { CompanyProfile } from "ch-sdk-node/dist/services/company-profile";
 import { PTFCompanyProfile } from "../model/company.profile";
+import {API_URL} from "../properties";
 
 /**
  * Get the company profile from the api. If the company does not exist or there has been an error, an exception
@@ -47,10 +47,10 @@ export const getCompanyProfile = async (companyNumber: string, token: string): P
         companyNumber: companyProfile.companyNumber,
         companyStatus: lookupCompanyStatus(companyProfile.companyStatus),
         companyType: lookupCompanyType(companyProfile.type),
-        csDue: "",
+        confirmationStatementDue: "",
         incorporationDate: formatDateForDisplay(companyProfile.dateOfCreation),
         isAccountsOverdue: companyProfile.accounts.overdue,
-        isCSOverdue: false,
+        isConfirmationStatementOverdue: false,
         ptfRequested: "",
     };
 };

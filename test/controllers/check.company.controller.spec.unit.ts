@@ -5,7 +5,7 @@ import {COOKIE_NAME} from "../../src/properties";
 import * as pageURLs from "../../src/model/page.urls";
 import {loadSession} from "../../src/services/redis.service";
 import * as mockUtils from "../mock.utils";
-import { getCompanyInContext } from "../../src/services/session.service";
+import { getCompanyNumberInContext } from "../../src/services/session.service";
 
 jest.mock("../../src/client/api.enumerations");
 jest.mock("../../src/client/apiclient");
@@ -17,7 +17,7 @@ const TITLE = "Sorry, there is a problem with the service - GOV.UK";
 
 const mockCompanyProfile: jest.Mock = (<unknown> getCompanyProfile as jest.Mock<typeof getCompanyProfile>);
 const mockCacheService = (<unknown> loadSession as jest.Mock<typeof loadSession>);
-const mockGetCompanyInContext = (<unknown> getCompanyInContext as jest.Mock<typeof getCompanyInContext>);
+const mockGetCompanyInContext = (<unknown> getCompanyNumberInContext as jest.Mock<typeof getCompanyNumberInContext>);
 
 beforeEach(() => {
     mockCompanyProfile.mockRestore();
@@ -51,7 +51,7 @@ describe("check.company.controller tests", () => {
         expect(res.text).toContain(mockUtils.ACCOUNTS_NEXT_DUE_DATE);
 
         // TODO: Test these fields once sdk obtains this data from company profile api.
-        // expect(res.text).toContain(mockUtils.CS_DUE);
+        // expect(res.text).toContain(mockUtils.CONFIRMATION_STATEMENT_DUE);
         // expect(res.text).toContain(mockUtils.PTF_REQUESTED);
     });
 

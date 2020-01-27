@@ -15,8 +15,7 @@ export const LINE_1 = "123";
 export const LINE_2 = "street";
 export const POST_CODE = "CF1 123";
 export const ACCOUNTS_NEXT_DUE_DATE = "2020-01-12";
-export const CS_DUE = "";
-export const CS_STATUS = "";
+export const CONFIRMATION_STATEMENT_DUE = "2020-01-05";
 export const PTF_REQUESTED = "";
 export const EMAIL = "demo@ch.gov.uk";
 
@@ -82,10 +81,10 @@ export const getDummyCompanyProfile = (accountsOverdue: boolean, csOverdue: bool
     companyNumber: COMPANY_NUMBER,
     companyStatus: isActive ? COMPANY_STATUS_ACTIVE : COMPANY_STATUS_LIQUIDATED,
     companyType: COMPANY_TYPE,
-    csDue: CS_DUE,
+    confirmationStatementDue: CONFIRMATION_STATEMENT_DUE,
     incorporationDate: COMPANY_INC_DATE,
     isAccountsOverdue: accountsOverdue,
-    isCSOverdue: csOverdue,
+    isConfirmationStatementOverdue: csOverdue,
     ptfRequested: PTF_REQUESTED,
   }
 };

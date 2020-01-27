@@ -8,20 +8,20 @@ import * as sessionService from "../services/session.service";
 
 export const route = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 
-    const companyNumber: string = sessionService.getCompanyInContext(req.chSession);
+    const companyNumber: string = sessionService.getCompanyNumberInContext(req.chSession);
     if (companyNumber) {
         try {
             logger.info(`Company number ${companyNumber} found in session, retrieving company profile`);
             const token: string = req.chSession.accessToken() as string;
             const companyinContext: PTFCompanyProfile = await getCompanyProfile(companyNumber, token);
-            logger.info("COMPANY PROFILE " + JSON.stringify(companyinContext));
+            logger.debug("COMPANY PROFILE " + JSON.stringify(companyinContext));
             const isDueDatePassed: boolean = checkDueDate(companyinContext);
             return res.render(templatePaths.CHECK_COMPANY, {
                     company: companyinContext,
                     dueDatePassed: isDueDatePassed,
                 });
         } catch (e) {
-            logger.error(`Error retrieving company number ${companyNumber} from redis`, e);
+            logger.error(`Error retrieving company number ${companyNumber}`, e);
             return next(e);
         }
     } else {
