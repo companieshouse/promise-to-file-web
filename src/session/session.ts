@@ -82,4 +82,8 @@ export default class Session {
     const key = Session.generateSessionKey();
     this._cookieId = key + Session.generateSignature(key);
   }
+
+  public getSignedInInfo(): string {
+    return this.data[keys.SIGN_IN_INFO];
+  }
 }
