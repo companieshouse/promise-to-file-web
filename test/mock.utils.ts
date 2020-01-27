@@ -51,9 +51,9 @@ export const fullDummySession = () => {
       },
       [keys.USER_PROFILE]: {
         email: EMAIL,
-      }
+      },
     },
-    [keys.EXTENSION_SESSION]: {
+    [keys.PTF_SESSION]: {
       [keys.COMPANY_IN_CONTEXT]: "00006400",
       [keys.PTF_REQUESTS]: [{
         [keys.COMPANY_NUMBER]: "00006400",

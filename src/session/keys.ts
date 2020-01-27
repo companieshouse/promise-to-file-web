@@ -21,7 +21,6 @@ export const PERMISSIONS: string = "permissions";
 export const SCOPE: string = "scope";
 export const COMPANY_NUMBER: string = "company_number";
 export const PTF_SESSION: string = "ptf_session";
-export const EXTENSION_SESSION: string = "extension_session";
 export const PTF_REQUESTS: string = "ptf_requests";
 export const COMPANY_IN_CONTEXT: string = "company_in_context";
 export const PAGE_HISTORY: string = "page_history";
