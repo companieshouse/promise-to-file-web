@@ -72,67 +72,67 @@
         {{company.address.postCode}}
     {% endset %}
 
-    {{ govukTable({
+    {{ govukSummaryList({
 
     firstCellIsHeader: true,
     classes: "align-top",
     rows: [
-        [
             {
-                text: "Company number"
+                key: {
+                    text: "Company number"
+                },
+                value: {
+                text: company.companyNumber
+                }
             },
             {
-            text: company.companyNumber
-            }
-        ],
-        [
-            {
-                text: "Status"
+                key: {
+                    text: "Status"
+                },
+                value: {
+                    html: inactiveHTML
+                }
             },
             {
-                html: inactiveHTML
-            }
-        ],
-        [
-            {
-                text: "Incorporation date"
+                key: {
+                    text: "Incorporation date"
+                },
+                value: {
+                    text: company.incorporationDate
+                }
             },
             {
-                text: company.incorporationDate
-            }
-        ],
-        [
-            {
-                text: "Company type"
+                key: {
+                    text: "Company type"
+                },
+                value: {
+                    text: company.companyType
+                }
             },
             {
-                text: company.companyType
-            }
-        ],
-        [
-            {
-                text: "Registered office address"
+                key: {
+                    text: "Registered office address"
+                },
+                value: {
+                    html: address
+                }
             },
             {
-                html: address
-            }
-        ],
-        [
-            {
-                text: "Accounts due"
+                key: {
+                    text: "Accounts due"
+                },
+                value: {
+                    html: AAoverdueHTML
+                }
             },
             {
-                html: AAoverdueHTML
+                key: {
+                    text: "Confirmation statement due"
+                },
+                value: {
+                    html: CSoverdueHTML
+                }
             }
-        ],
-        [
-            {
-                text: "Confirmation statement due"
-            },
-            {
-                html: CSoverdueHTML
-            }
-        ]
         ]
     }) }}
 
