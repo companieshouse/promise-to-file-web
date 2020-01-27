@@ -103,7 +103,7 @@ describe("check.company.controller tests", () => {
         expect(res.text).toContain(mockUtils.ACCOUNTS_NEXT_DUE_DATE);
     });
 
-     // TODO test accunts overdue page when this is in place
+     // TODO test accounts overdue page when this is in place
 
     it("should show error screen if company number search throws an error", async () => {
         mockCompanyProfile.mockRejectedValue(new Error());
