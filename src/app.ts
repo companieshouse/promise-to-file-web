@@ -3,14 +3,15 @@ import * as express from "express";
 import * as nunjucks from "nunjucks";
 import * as path from "path";
 import * as createError from "http-errors";
-import * as morganLogger from "morgan";
 
 import {appRouter} from "./routes/routes";
+import {ERROR_SUMMARY_TITLE} from "./model/error.messages";
 import * as pageURLs from "./model/page.urls";
 import sessionMiddleware from "./session/middleware";
 import {PIWIK_SITE_ID, PIWIK_URL} from "./properties";
 import authenticate from "./authentication/middleware/index";
 import logger from "./logger";
+import httpLogger from "./http.logger";
 
 const app = express();
 
@@ -26,7 +27,7 @@ const env = nunjucks.configure([
 
 env.addGlobal("CDN_URL", process.env.CDN_HOST);
 
-// env.addGlobal("ERROR_SUMMARY_TITLE", ERROR_SUMMARY_TITLE);
+env.addGlobal("ERROR_SUMMARY_TITLE", ERROR_SUMMARY_TITLE);
 env.addGlobal("PIWIK_URL", PIWIK_URL);
 env.addGlobal("PIWIK_SITE_ID", PIWIK_SITE_ID);
 
@@ -43,7 +44,7 @@ app.use(`${pageURLs.PROMISE_TO_FILE}/*`, authenticate);
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "html");
 
-app.use(morganLogger("dev"));
+app.use(httpLogger);
 
 app.use(express.static(path.join(__dirname, "public")));
 

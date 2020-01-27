@@ -16,8 +16,10 @@ const renderTemplate = (template: string) => (req: Request, res: Response, next:
 };
 
 router.get(pageURLs.ROOT, renderTemplate(templatePaths.INDEX));
+
 router.get(pageURLs.COMPANY_NUMBER, renderTemplate(templatePaths.COMPANY_NUMBER));
 router.post(pageURLs.COMPANY_NUMBER, ...companyNumberRoute);
-router.get(pageURLs.CHECK_COMPANY, checkCompanyRoute.route);
+
+router.get("/check-company", checkCompanyRoute.route);
 
 export const appRouter = router;
