@@ -16,41 +16,41 @@ import {API_URL} from "../properties";
  */
 
 export const getCompanyProfile = async (companyNumber: string, token: string): Promise<PTFCompanyProfile> => {
-    logger.debug("Creating CH SDK ApiClient");
-    const api = createApiClient(undefined, token, `${API_URL}`);
+  logger.debug("Creating CH SDK ApiClient");
+  const api = createApiClient(undefined, token, `${API_URL}`);
 
-    logger.info(`Looking for company profile with company number ${companyNumber}`);
-    const sdkResponse: Resource<CompanyProfile> =
-        await api.companyProfile.getCompanyProfile(companyNumber.toUpperCase()) as Resource<CompanyProfile>;
+  logger.info(`Looking for company profile with company number ${companyNumber}`);
+  const sdkResponse: Resource<CompanyProfile> =
+    await api.companyProfile.getCompanyProfile(companyNumber.toUpperCase()) as Resource<CompanyProfile>;
 
-    if (sdkResponse.httpStatusCode >= 400) {
-        throw {
-            status: sdkResponse.httpStatusCode,
-        };
-    }
-
-    logger.debug("Data from company profile SDK call " + JSON.stringify(sdkResponse, null, 2));
-
-    const companyProfile = sdkResponse.resource as CompanyProfile;
-
-    // TODO: get confirmation statement and ptf data from company profile method of the sdk
-    return {
-        accountingPeriodEndOn: companyProfile.accounts.nextAccounts.periodEndOn,
-        accountingPeriodStartOn: companyProfile.accounts.nextAccounts.periodStartOn,
-        accountsDue: formatDateForDisplay(companyProfile.accounts.nextDue),
-        address: {
-            line_1: companyProfile.registeredOfficeAddress.addressLineOne,
-            line_2: companyProfile.registeredOfficeAddress.addressLineTwo,
-            postCode: companyProfile.registeredOfficeAddress.postalCode,
-        },
-        companyName: companyProfile.companyName,
-        companyNumber: companyProfile.companyNumber,
-        companyStatus: lookupCompanyStatus(companyProfile.companyStatus),
-        companyType: lookupCompanyType(companyProfile.type),
-        confirmationStatementDue: "",
-        incorporationDate: formatDateForDisplay(companyProfile.dateOfCreation),
-        isAccountsOverdue: companyProfile.accounts.overdue,
-        isConfirmationStatementOverdue: false,
-        ptfRequested: "",
+  if (sdkResponse.httpStatusCode >= 400) {
+    throw {
+        status: sdkResponse.httpStatusCode,
     };
+  }
+
+  logger.debug("Data from company profile SDK call " + JSON.stringify(sdkResponse, null, 2));
+
+  const companyProfile = sdkResponse.resource as CompanyProfile;
+
+  // TODO: get confirmation statement and ptf data from company profile method of the sdk
+  return {
+    accountingPeriodEndOn: companyProfile.accounts.nextAccounts.periodEndOn,
+    accountingPeriodStartOn: companyProfile.accounts.nextAccounts.periodStartOn,
+    accountsDue: formatDateForDisplay(companyProfile.accounts.nextDue),
+    address: {
+        line_1: companyProfile.registeredOfficeAddress.addressLineOne,
+        line_2: companyProfile.registeredOfficeAddress.addressLineTwo,
+        postCode: companyProfile.registeredOfficeAddress.postalCode,
+    },
+    companyName: companyProfile.companyName,
+    companyNumber: companyProfile.companyNumber,
+    companyStatus: lookupCompanyStatus(companyProfile.companyStatus),
+    companyType: lookupCompanyType(companyProfile.type),
+    confirmationStatementDue: "",
+    incorporationDate: formatDateForDisplay(companyProfile.dateOfCreation),
+    isAccountsOverdue: companyProfile.accounts.overdue,
+    isConfirmationStatementOverdue: false,
+    ptfRequested: "",
+  };
 };

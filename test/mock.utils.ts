@@ -54,9 +54,6 @@ export const fullDummySession = () => {
     },
     [keys.PTF_SESSION]: {
       [keys.COMPANY_NUMBER_IN_CONTEXT]: "00006400",
-      [keys.PTF_REQUESTS]: [{
-        [keys.COMPANY_NUMBER]: "00006400",
-      }],
     },
     [keys.PAGE_HISTORY]: {
       page_history: [],
