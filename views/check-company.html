@@ -32,7 +32,7 @@
     {% endset %}
 
     {% set AAoverdueHTML %}
-        {% if company.isAccountsOverdue or dueDatePassed %}
+        {% if company.isAccountsOverdue or accountDueDatePassed %}
             {{company.accountsDue}}
             <br/>
             <span class="govuk-!-font-weight-bold">Your accounts are overdue</span>
@@ -44,14 +44,14 @@
     {% endset %}
 
     {% set CSoverdueHTML %}
-        {% if company.isCSOverdue %}
-            {{company.csDue}}
+        {% if company.isConfirmationStatementOverdue or csDueDatePassed %}
+            {{company.confirmationStatementDue}}
             <br/>
             <span class="govuk-!-font-weight-bold">Your confirmation statement is overdue</span>
-        {% elseif company.csDue === "inactive" %}
+        {% elseif company.companyStatus === "inactive" %}
             You don’t have to file final accounts with Companies House
         {% else %}
-            {{company.csDue}}
+            {{company.confirmationStatementDue}}
         {% endif %}
     {% endset %}
 

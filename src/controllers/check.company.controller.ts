@@ -14,10 +14,12 @@ export const route = async (req: Request, res: Response, next: NextFunction): Pr
       const token: string = req.chSession.accessToken() as string;
       const companyinContext: PTFCompanyProfile = await getCompanyProfile(companyNumber, token);
       logger.debug("COMPANY PROFILE " + JSON.stringify(companyinContext));
-      const isDueDatePassed: boolean = checkDueDate(companyinContext);
+      const isAccountDueDatePassed: boolean = checkDueDate(companyinContext.accountsDue);
+      const isCSDueDatePassed: boolean = checkDueDate(companyinContext.confirmationStatementDue);
       return res.render(templatePaths.CHECK_COMPANY, {
+            accountDueDatePassed: isAccountDueDatePassed,
             company: companyinContext,
-            dueDatePassed: isDueDatePassed,
+            csDueDatePassed: isCSDueDatePassed,
       });
     } catch (e) {
       logger.error(`Error retrieving company with number ${companyNumber}`, e);
@@ -29,10 +31,10 @@ export const route = async (req: Request, res: Response, next: NextFunction): Pr
   }
 };
 
-const checkDueDate = (company: PTFCompanyProfile): boolean => {
+const checkDueDate = (date: string): boolean => {
   const currentDate: Date = new Date(Date.now());
   currentDate.setHours(0, 0, 0);
-  const dueDate: Date = new Date(company.accountsDue);
+  const dueDate: Date = new Date(date);
   dueDate.setHours(23, 59, 59);
   return dueDate < currentDate;
 };
