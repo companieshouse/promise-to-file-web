@@ -13,13 +13,13 @@ const COMPANY_NUMBER_TOO_LONG = "Company number too long";
 
 describe("company number validation tests", () => {
 
-  const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
+  const mockCacheService = (loadSession as unknown as jest.Mock<typeof loadSession>);
 
   beforeEach(() => {
     loadMockSession(mockCacheService);
   });
 
-  it("should create an error message when no company number is supplied (empty string)", async() => {
+  it("should create an error message when no company number is supplied (empty string)", async () => {
     const response = await request(app)
       .post(pageURLs.PTF_COMPANY_NUMBER)
       .set("Accept", "application/json")
@@ -33,7 +33,7 @@ describe("company number validation tests", () => {
     expect(response.text).not.toContain(COMPANY_NUMBER_TOO_LONG);
   });
 
-  it("should create an error message when no company number is supplied (spaces)", async() => {
+  it("should create an error message when no company number is supplied (spaces)", async () => {
     const response = await request(app)
       .post(pageURLs.PTF_COMPANY_NUMBER)
       .set("Accept", "application/json")
@@ -47,7 +47,7 @@ describe("company number validation tests", () => {
     expect(response.text).not.toContain(COMPANY_NUMBER_TOO_LONG);
   });
 
-  it("should create an error message when company number is invalid (characters)", async() => {
+  it("should create an error message when company number is invalid (characters)", async () => {
     const response = await request(app)
       .post(pageURLs.PTF_COMPANY_NUMBER)
       .set("Accept", "application/json")
@@ -61,7 +61,7 @@ describe("company number validation tests", () => {
     expect(response.text).not.toContain(COMPANY_NUMBER_TOO_LONG);
   });
 
-  it("should create an error message when company number is too long", async() => {
+  it("should create an error message when company number is too long", async () => {
     const response = await request(app)
       .post(pageURLs.PTF_COMPANY_NUMBER)
       .set("Accept", "application/json")

@@ -37,6 +37,7 @@ export const loadMockSession = (mockLoadSessionFunction: jest.Mock<typeof loadSe
   });
 };
 
+
 export const fullDummySession = () => {
   const session = Session.newWithCookieId("cookie");
   session.data = {
