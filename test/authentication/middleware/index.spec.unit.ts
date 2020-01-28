@@ -23,6 +23,12 @@ describe("Authentication middleware", () => {
     expect(response.status).toEqual(200);
   });
 
+  it("should redirect to start page if loading start page with trailing slash", async () => {
+    const response = await request(app)
+      .get("/promise-to-file/");
+    expect(response.status).toEqual(200);
+  });
+
   it("should redirect to signin if /promise-to-file/* called and not signed in", async () => {
     setNotSignedIn();
     const response = await request(app)
