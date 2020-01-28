@@ -9,6 +9,7 @@ import * as sessionService from "../services/session.service";
 import * as pageURLs from "../model/page.urls";
 import { PTFCompanyProfile } from "../model/company.profile";
 import { getCompanyProfile } from "../client/apiclient";
+import * as keys from "../session/keys";
 
 // validator middleware that checks for an empty or too long input
 const preValidators = [
@@ -66,7 +67,13 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
     // TODO: Place this call somewhere more global so that it not called on check company as well
     const company: PTFCompanyProfile = await getCompanyProfile(companyNumber, token);
 
-    await sessionService.createPromiseToFileSession(req.chSession, company.companyNumber);
+    const existing = req.chSession.data[keys.PTF_SESSION];
+    if (existing) {
+      await sessionService.updatePTFSessionValue(req.chSession,
+          keys.COMPANY_NUMBER_IN_CONTEXT, company.companyNumber);
+    } else  {
+      await sessionService.createPromiseToFileSession(req.chSession, company.companyNumber);
+    }
 
     return res.redirect(pageURLs.PTF_CHECK_COMPANY);
   } catch (e) {

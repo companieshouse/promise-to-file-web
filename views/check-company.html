@@ -73,16 +73,14 @@
     {% endset %}
 
     {{ govukSummaryList({
-
-    firstCellIsHeader: true,
-    classes: "align-top",
-    rows: [
+        classes: 'govuk-!-margin-bottom-9',
+        rows: [
             {
                 key: {
                     text: "Company number"
                 },
                 value: {
-                text: company.companyNumber
+                    text: company.companyNumber
                 }
             },
             {

@@ -11,28 +11,28 @@ import * as keys from "../session/keys";
  */
 const createPromiseToFileSession = async (
     chSession: Session, companyNumber: string): Promise<IPromiseToFileSession> => {
-
-    const existing = chSession.data[keys.PTF_SESSION];
-    if (existing) {
-        return existing;
-    }
-
     const ptfSession: IPromiseToFileSession = {
         company_number_in_context: companyNumber,
-        ptf_requests: [],
     };
     chSession.appendData(keys.PTF_SESSION, ptfSession);
     await saveSession(chSession);
     return ptfSession;
 };
 
+const updatePTFSessionValue = async (chSession: Session, key: string, value: any): Promise<void> => {
+    const ptfSession = await chSession.data.ptf_session;
+    ptfSession[key] = value;
+    chSession.appendData(keys.PTF_SESSION, ptfSession);
+    await saveSession(chSession);
+};
+
 /**
- * Returns the company in context. That is the most recent company that was
- * input in the company number screen.
+ * Returns the company number in context. That is the number of the
+ * most recent company that was input in the company number screen.
  * @param chSession
  */
 const getCompanyNumberInContext = (chSession: Session): string => {
-    return chSession.data.ptf_session.company_in_context;
+    return chSession.data.ptf_session.company_number_in_context;
 };
 
-export { createPromiseToFileSession, getCompanyNumberInContext };
+export { createPromiseToFileSession, getCompanyNumberInContext, updatePTFSessionValue };

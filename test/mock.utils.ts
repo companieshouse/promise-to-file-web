@@ -31,14 +31,14 @@ export const loadMockSession = (mockLoadSessionFunction: jest.Mock<typeof loadSe
         [keys.USER_PROFILE]: {
           [keys.USER_ID]: "123",
         },
-      }
+      },
     };
     return session;
   });
 };
 
 export const fullDummySession = () => {
-  let session = Session.newWithCookieId("cookie");
+  const session = Session.newWithCookieId("cookie");
   session.data = {
     [keys.SIGN_IN_INFO]: {
       [keys.SIGNED_IN]: 1,
@@ -53,11 +53,9 @@ export const fullDummySession = () => {
       },
     },
     [keys.PTF_SESSION]: {
-      [keys.COMPANY_IN_CONTEXT]: "00006400",
+      [keys.COMPANY_NUMBER_IN_CONTEXT]: "00006400",
       [keys.PTF_REQUESTS]: [{
         [keys.COMPANY_NUMBER]: "00006400",
-        "ptf_request_id": "request1",
-        "reason_in_context_string": "reason1",
       }],
     },
     [keys.PAGE_HISTORY]: {
