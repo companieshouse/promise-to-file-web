@@ -10,20 +10,20 @@ import * as keys from "../session/keys";
  * @param companyNumber
  */
 const createPromiseToFileSession = async (
-    chSession: Session, companyNumber: string): Promise<IPromiseToFileSession> => {
-    const ptfSession: IPromiseToFileSession = {
-        company_number_in_context: companyNumber,
-    };
-    chSession.appendData(keys.PTF_SESSION, ptfSession);
-    await saveSession(chSession);
-    return ptfSession;
+  chSession: Session, companyNumber: string): Promise<IPromiseToFileSession> => {
+  const ptfSession: IPromiseToFileSession = {
+    company_number_in_context: companyNumber,
+  };
+  chSession.appendData(keys.PTF_SESSION, ptfSession);
+  await saveSession(chSession);
+  return ptfSession;
 };
 
 const updatePTFSessionValue = async (chSession: Session, key: string, value: any): Promise<void> => {
-    const ptfSession = await chSession.data.ptf_session;
-    ptfSession[key] = value;
-    chSession.appendData(keys.PTF_SESSION, ptfSession);
-    await saveSession(chSession);
+  const ptfSession = await chSession.data.ptf_session;
+  ptfSession[key] = value;
+  chSession.appendData(keys.PTF_SESSION, ptfSession);
+  await saveSession(chSession);
 };
 
 /**
@@ -32,7 +32,7 @@ const updatePTFSessionValue = async (chSession: Session, key: string, value: any
  * @param chSession
  */
 const getCompanyNumberInContext = (chSession: Session): string => {
-    return chSession.data.ptf_session.company_number_in_context;
+  return chSession.data.ptf_session.company_number_in_context;
 };
 
 export { createPromiseToFileSession, getCompanyNumberInContext, updatePTFSessionValue };

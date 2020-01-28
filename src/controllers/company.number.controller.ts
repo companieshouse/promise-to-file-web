@@ -79,7 +79,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   } catch (e) {
     logger.error(`Error fetching company profile for company number ${companyNumber}`, e);
     if (e.status === 404) {
-      buildError(res, errorMessages.COMPANY_NUMBER_NOT_FOUND);
+      buildError(res, errorMessages.COMPANY_NOT_FOUND);
     } else {
       return next(e);
     }
