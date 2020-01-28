@@ -48,7 +48,7 @@ export const getCompanyProfile = async (companyNumber: string, token: string): P
     companyStatus: lookupCompanyStatus(companyProfile.companyStatus),
     companyType: lookupCompanyType(companyProfile.type),
     // TODO replace hardcoded date
-    confirmationStatementDue: formatDateForDisplay("2000-01-01"),
+    confirmationStatementDue: formatDateForDisplay("9999-01-01"),
     incorporationDate: formatDateForDisplay(companyProfile.dateOfCreation),
     isAccountsOverdue: companyProfile.accounts.overdue,
     isConfirmationStatementOverdue: false,

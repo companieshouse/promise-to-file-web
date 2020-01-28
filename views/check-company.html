@@ -134,16 +134,24 @@
         ]
     }) }}
 
-    {% if company.ptfRequested !== 'yes' %}
+    {% if company.ptfRequested !== "yes" %}
     {{ govukButton({
         text: "Continue",
-        href: "continue-trading"
+        href: "continue-trading",
+        attributes: {
+            "data-event-id": "continue-button",
+            id: "submit"
+        }
     }) }}
 
     {% else %}
         {{ govukButton({
             text: "Continue",
-            href: "confirmation"
+            href: "confirmation",
+            attributes: {
+                "data-event-id": "continue-button",
+                id: "submit"
+            }
         }) }}
     {% endif %}
         </div>
