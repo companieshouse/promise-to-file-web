@@ -7,7 +7,7 @@
     "build": "tsc && cp -r views dist/",
     "devstart": "nodemon",
     "test": "jest --forceExit",
-    "lint": "tslint -p .",
+    "lint": "tslint '{src,test}/**/*'",
     "sonarqube": "npm run coverage && sonar-scanner",
     "coverage": "jest --forceExit --coverage"
   },

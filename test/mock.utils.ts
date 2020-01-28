@@ -16,7 +16,7 @@ export const loadMockSession = (mockLoadSessionFunction: jest.Mock<typeof loadSe
         [keys.USER_PROFILE]: {
           [keys.USER_ID]: "123",
         },
-      }
+      },
     };
     return session;
   });

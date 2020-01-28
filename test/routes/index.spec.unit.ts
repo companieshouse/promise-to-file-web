@@ -6,7 +6,7 @@ import {COOKIE_NAME} from "../../src/properties";
 
 jest.mock("../../src/services/redis.service");
 
-const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
+const mockCacheService = (loadSession as unknown as jest.Mock<typeof loadSession>);
 
 beforeEach(() => {
   loadMockSession(mockCacheService);

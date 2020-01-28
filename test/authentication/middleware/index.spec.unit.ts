@@ -1,14 +1,14 @@
 import * as request from "supertest";
 import app from "../../../src/app";
 import {COOKIE_NAME} from "../../../src/properties";
-import * as keys from "../../../src/session/keys"
+import * as keys from "../../../src/session/keys";
 import {loadSession} from "../../../src/services/redis.service";
 import {loadMockSession} from "../../mock.utils";
 import Session from "../../../src/session/session";
 
 jest.mock("../../../src/services/redis.service");
 
-const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
+const mockCacheService = (loadSession as unknown as jest.Mock<typeof loadSession>);
 
 beforeEach(() => {
   mockCacheService.mockRestore();
@@ -55,7 +55,8 @@ describe("Authentication middleware", () => {
     expect(response.status).toEqual(200);
   });
 
-  it("should redirect to start screen if /promise-to-file/* called from outside of the PTF journey and not signed in", async () => {
+  it("should redirect to start screen if /promise-to-file/* called from outside of the PTF journey and not signed in",
+      async () => {
     setNotSignedIn();
     const response = await request(app)
       .get("/promise-to-file/company-number")
@@ -70,8 +71,8 @@ const setNotSignedIn = () => {
     session.data = {
       [keys.COMPANY_NUMBER]: "00006400",
       [keys.SIGN_IN_INFO]: {
-        [keys.SIGNED_IN]: 0
-      }
+        [keys.SIGNED_IN]: 0,
+      },
     };
     return session;
   });
