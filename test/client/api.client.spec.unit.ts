@@ -5,7 +5,6 @@ import Resource from "ch-sdk-node/dist/services/resource";
 import {CompanyProfile} from "ch-sdk-node/dist/services/company-profile";
 import CompanyProfileService from "ch-sdk-node/dist/services/company-profile/service";
 
-
 jest.mock("ch-sdk-node/dist/services/company-profile/service");
 
 describe("apiclient company profile unit tests", () => {
@@ -25,6 +24,15 @@ describe("apiclient company profile unit tests", () => {
         mockGetCompanyProfile.mockResolvedValueOnce(dummySDKResponse);
         const company = await getCompanyProfile("00006400", mockUtils.ACCESS_TOKEN);
         expect(company).toEqual(expectedProfile);
+    });
+
+    it("returns a 400 status code when company is not found", async () => {
+        mockGetCompanyProfile.mockResolvedValueOnce(notFoundSDKResponse);
+        try {
+            await getCompanyProfile("", mockUtils.ACCESS_TOKEN);
+        } catch (e) {
+            expect(e.status).toEqual(400);
+        }
     });
 });
 
@@ -65,6 +73,10 @@ const dummySDKResponse: Resource<CompanyProfile> = {
         sicCodes: ["123"],
         type: "limited",
     },
+};
+
+const notFoundSDKResponse: any = {
+    httpStatusCode: 400,
 };
 
 const expectedProfile: PTFCompanyProfile = {

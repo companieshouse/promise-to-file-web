@@ -5,7 +5,6 @@ import { createApiClient } from "ch-sdk-node";
 import Resource from "ch-sdk-node/dist/services/resource";
 import { CompanyProfile } from "ch-sdk-node/dist/services/company-profile";
 import { PTFCompanyProfile } from "../model/company.profile";
-import {API_URL} from "../properties";
 
 /**
  * Get the company profile from the api. If the company does not exist or there has been an error, an exception
@@ -17,7 +16,7 @@ import {API_URL} from "../properties";
 
 export const getCompanyProfile = async (companyNumber: string, token: string): Promise<PTFCompanyProfile> => {
   logger.debug("Creating CH SDK ApiClient");
-  const api = createApiClient(undefined, token, `${API_URL}`);
+  const api = createApiClient(undefined, token );
 
   logger.info(`Looking for company profile with company number ${companyNumber}`);
   const sdkResponse: Resource<CompanyProfile> =
