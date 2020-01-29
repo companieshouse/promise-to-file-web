@@ -28,6 +28,8 @@ export const PIWIK_URL = getEnvironmentValue("PIWIK_URL");
 
 export const PIWIK_SITE_ID = getEnvironmentValue("PIWIK_SITE_ID");
 
+export const API_URL  = getEnvironmentValue("API_LOCAL_URL");
+
 // If wishing to override the default log format of 'tiny', available formats are documented
 // here - https://github.com/expressjs/morgan#predefined-formats
 export const HTTP_LOG_FORMAT = getEnvironmentValue("HTTP_LOG_FORMAT", "tiny");
