@@ -33,7 +33,7 @@ export const getCompanyProfile = async (companyNumber: string, token: string): P
 
   const companyProfile = sdkResponse.resource as CompanyProfile;
 
-  // TODO: get confirmation statement and ptf data from company profile method of the sdk
+  // TODO: LFA-1323 get confirmation statement and ptf data from company profile method of the sdk
   return {
     accountingPeriodEndOn: companyProfile.accounts.nextAccounts.periodEndOn,
     accountingPeriodStartOn: companyProfile.accounts.nextAccounts.periodStartOn,
@@ -47,7 +47,7 @@ export const getCompanyProfile = async (companyNumber: string, token: string): P
     companyNumber: companyProfile.companyNumber,
     companyStatus: lookupCompanyStatus(companyProfile.companyStatus),
     companyType: lookupCompanyType(companyProfile.type),
-    // TODO replace hardcoded date
+    // TODO LFA-1323 replace hardcoded date
     confirmationStatementDue: formatDateForDisplay("9999-01-01"),
     incorporationDate: formatDateForDisplay(companyProfile.dateOfCreation),
     isAccountsOverdue: companyProfile.accounts.overdue,

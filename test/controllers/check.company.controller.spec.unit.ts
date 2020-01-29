@@ -50,7 +50,7 @@ describe("check.company.controller tests", () => {
     expect(res.text).toContain(mockUtils.POST_CODE);
     expect(res.text).toContain(mockUtils.ACCOUNTS_NEXT_DUE_DATE);
 
-    // TODO: Test these fields once sdk obtains this data from company profile api.
+    // TODO: LFA-1323 Test these fields once sdk obtains this data from company profile api.
     // expect(res.text).toContain(mockUtils.CONFIRMATION_STATEMENT_DUE);
     // expect(res.text).toContain(mockUtils.PTF_REQUESTED);
   });
@@ -103,7 +103,7 @@ describe("check.company.controller tests", () => {
     expect(res.text).toContain(mockUtils.ACCOUNTS_NEXT_DUE_DATE);
   });
 
-   // TODO test accounts overdue page when this is in place
+   // TODO LFA-1178 test accounts overdue page when this is in place
 
   it("should show error screen if company number search throws an error", async () => {
     mockCompanyProfile.mockRejectedValue(new Error());

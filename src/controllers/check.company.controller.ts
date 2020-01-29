@@ -40,6 +40,6 @@ const checkDueDate = (date: string): boolean => {
 };
 
 export const confirmCompanyStartRequest = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  // TODO create overdue page and create ptf request if not overdue
+  // TODO LFA-1178 create overdue page and create ptf request if not overdue
   return next();
 };

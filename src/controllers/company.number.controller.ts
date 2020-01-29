@@ -64,7 +64,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
     logger.info(`Retrieving company profile for company number ${companyNumber}`);
     const token: string = req.chSession.accessToken() as string;
 
-    // TODO: Place this call somewhere more global so that it not called on check company as well
+    // TODO: LFA-TBC Place this call somewhere more global so that it not called on check company as well
     const company: PTFCompanyProfile = await getCompanyProfile(companyNumber, token);
 
     const existing = req.chSession.data[keys.PTF_SESSION];
