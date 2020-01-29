@@ -24,7 +24,7 @@ const padCompanyNumber = async (req: Request, res: Response, next: NextFunction)
     }
   req.body.companyNumber = companyNumber;
   return next();
-};
+};ggg
 
 // validator middleware that checks for invalid characters in the input
 const postValidators = [
