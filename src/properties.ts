@@ -29,3 +29,8 @@ export const PIWIK_URL = getEnvironmentValue("PIWIK_URL");
 export const PIWIK_SITE_ID = getEnvironmentValue("PIWIK_SITE_ID");
 
 export const SESSION_CREATE = "true";
+
+export const OAUTH2_REQUEST_KEY = getEnvironmentValue("OAUTH2_REQUEST_KEY");
+export const OAUTH2_AUTH_URI = getEnvironmentValue("OAUTH2_AUTH_URI");
+export const OAUTH2_CLIENT_ID = getEnvironmentValue("OAUTH2_CLIENT_ID");
+export const OAUTH2_REDIRECT_URI = getEnvironmentValue("OAUTH2_REDIRECT_URI");

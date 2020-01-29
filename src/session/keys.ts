@@ -20,3 +20,4 @@ export const LOCALE: string = "locale";
 export const PERMISSIONS: string = "permissions";
 export const SCOPE: string = "scope";
 export const COMPANY_NUMBER: string = "company_number";
+export const NONCE: string = ".oauth2_nonce";
