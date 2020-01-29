@@ -60,7 +60,7 @@ describe("Authentication middleware", () => {
     setNotSignedIn();
     const response = await request(app)
       .get("/promise-to-file/company-number")
-      .expect("Location", "/promise-to-file");
+      .expect("Location", "/signin?return_to=/promise-to-file");
     expect(response.status).toEqual(302);
   });
 });

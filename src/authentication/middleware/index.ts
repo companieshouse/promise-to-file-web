@@ -16,8 +16,9 @@ export default (req: Request, res: Response, next: NextFunction) => {
 
     // Redirect the user to to the start screen if they weren't already on the PTF journey
     if (referringPageURL === undefined) {
-      logger.debug("User not authenticated and referrer undefined - redirecting to index");
-      return res.redirect(pageURLs.PROMISE_TO_FILE);
+      logger.debug(
+          "User not authenticated and referrer undefined - redirecting to login screen and then back to index");
+      return res.redirect("/signin?return_to=" + pageURLs.PROMISE_TO_FILE);
     }
 
     if (referringPageURL.endsWith(pageURLs.PROMISE_TO_FILE)) {
