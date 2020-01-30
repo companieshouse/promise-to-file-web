@@ -1,8 +1,8 @@
-import Session from "../../session";
+import Session from "../session";
 import {NextFunction, Request, Response} from "express";
-import {COOKIE_NAME} from "../../../properties";
-import * as redisService from "../../../services/redis.service";
-import logger from "../../../logger";
+import {COOKIE_NAME} from "../../properties";
+import * as redisService from "../../services/redis.service";
+import logger from "../../logger";
 
 declare global {
   namespace Express {
@@ -22,6 +22,5 @@ export default async (req: Request, res: Response, next: NextFunction) => {
     logger.info("No cookie found, using blank session");
     req.chSession = await redisService.loadSession("");
   }
-
   next();
 };

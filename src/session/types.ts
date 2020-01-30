@@ -29,5 +29,5 @@ export interface ISignInInfo {
 }
 
 export interface IPromiseToFileSession {
-  company_number: string;
+  company_in_context: string;
 }

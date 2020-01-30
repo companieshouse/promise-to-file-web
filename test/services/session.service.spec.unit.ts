@@ -6,7 +6,7 @@ describe ("cache service tests", () => {
 
   it("should create a new empty promise to file session", async () => {
     const session: Session = Session.newInstance();
-    await sessionService.createPromiseToFileSession(session);
+    await sessionService.createPromiseToFileSession(session, "");
     await sessionService.updatePromiseToFileSessionValue(session, keys.COMPANY_NUMBER, "00006400");
     expect(sessionService.getSessionValue(session, keys.COMPANY_NUMBER)).toEqual("00006400");
   });

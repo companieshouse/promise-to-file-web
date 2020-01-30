@@ -10,9 +10,9 @@ import * as keys from "../session/keys";
  * @param companyNumber
  */
 const createPromiseToFileSession = async (
-  chSession: Session): Promise<IPromiseToFileSession> => {
+  chSession: Session, companyNumber: string): Promise<IPromiseToFileSession> => {
   const ptfSession: IPromiseToFileSession = {
-    company_number: "",
+    company_in_context: companyNumber,
   };
   chSession.appendData(keys.PTF_SESSION, ptfSession);
   await saveSession(chSession);
