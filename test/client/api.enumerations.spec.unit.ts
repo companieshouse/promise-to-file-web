@@ -3,14 +3,14 @@ import {lookupCompanyStatus, lookupCompanyType} from "../../src/client/api.enume
 jest.mock("js-yaml", () => {
   return {
     safeLoad: jest.fn(() => {
-        return {
-            company_status: {
-                receivership: "Receiver Action",
-            },
-            company_summary: {
-                ltd: "Private limited company",
-            },
-        };
+      return {
+        company_status: {
+            receivership: "Receiver Action",
+        },
+        company_summary: {
+            ltd: "Private limited company",
+        },
+      };
     }),
   };
 });
