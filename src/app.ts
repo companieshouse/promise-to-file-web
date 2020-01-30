@@ -8,6 +8,7 @@ import {appRouter} from "./routes/routes";
 import {ERROR_SUMMARY_TITLE} from "./model/error.messages";
 import * as pageURLs from "./model/page.urls";
 import sessionMiddleware from "./session/middleware";
+import cookieMiddleware from "./session/middleware/cookie";
 import {PIWIK_SITE_ID, PIWIK_URL} from "./properties";
 import authenticate from "./authentication/middleware/index";
 import logger from "./logger";
@@ -36,6 +37,7 @@ app.enable("trust proxy");
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(cookieMiddleware);
 app.use(sessionMiddleware);
 
 app.use(`${pageURLs.PROMISE_TO_FILE}/*`, authenticate);
