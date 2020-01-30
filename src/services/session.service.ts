@@ -20,7 +20,7 @@ const createPromiseToFileSession = async (
 };
 
 const updatePromiseToFileSessionValue = async (chSession: Session, key: string, value: any): Promise<void> => {
-  const ptfSession = await chSession[keys.PTF_SESSION];
+  const ptfSession = await chSession.data.ptf_session;
   ptfSession[key] = value;
   chSession.appendData(keys.PTF_SESSION, ptfSession);
   await saveSession(chSession);

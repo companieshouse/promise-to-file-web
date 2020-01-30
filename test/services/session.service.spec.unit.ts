@@ -2,6 +2,8 @@ import Session from "../../src/session/session";
 import * as sessionService from "../../src/services/session.service";
 import * as keys from "../../src/session/keys";
 
+jest.mock("../../src/services/redis.service");
+
 describe ("cache service tests", () => {
 
   it("should create a new empty promise to file session", async () => {
