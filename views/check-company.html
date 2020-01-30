@@ -21,10 +21,10 @@
       <h2 class="govuk-heading-l">{{scenario.company.name}}</h2>
 
       {% set inactiveHTML %}
-        {% if scenario.company.companyStatus === "Inactive" %}
+        {% if scenario.company.status === "Inactive" %}
           <span class="govuk-!-font-weight-bold">Dissolved</span>
         {% else %}
-          {{scenario.company.companyStatus}}
+          {{scenario.company.status}}
         {% endif %}
       {% endset %}
 
@@ -67,7 +67,7 @@
               text: "Company number"
             },
             value: {
-              text: scenario.company.companyNumber
+              text: scenario.company.number
             }
           },
           {
@@ -91,7 +91,7 @@
               text: "Company type"
             },
             value: {
-              text: scenario.company.companyType
+              text: scenario.company.type
             }
           },
           {
