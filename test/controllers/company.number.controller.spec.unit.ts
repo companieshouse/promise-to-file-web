@@ -3,8 +3,7 @@ import * as request from "supertest";
 import {loadSession} from "../../src/services/redis.service";
 import {loadMockSession} from "../mock.utils";
 import {COOKIE_NAME} from "../../src/properties";
-import {PROMISE_TO_FILE} from "../../src/model/page.urls";
-import {COMPANY_NUMBER} from "../../src/model/page.urls";
+import {PROMISE_TO_FILE, COMPANY_NUMBER} from "../../src/model/page.urls";
 
 jest.mock("../../src/services/redis.service");
 
