@@ -8,7 +8,7 @@
     "devstart": "nodemon",
     "test": "jest --forceExit",
     "lint": "tslint '{src,test}/**/*'",
-    "sonarqube": "npm run coverage && sonar-scanner",
+    "sonarqube": "sonar-scanner",
     "coverage": "jest --forceExit --coverage"
   },
   "dependencies": {

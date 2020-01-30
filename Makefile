@@ -24,6 +24,14 @@ build: update_submodules
 lint:
 	npm run lint
 
+.PHONY: sonar
+sonar:
+	npm run sonarqube
+
+.PHONY: test
+test:
+	npm run coverage
+
 .PHONY: test-unit
 test-unit:
 	npm run test
