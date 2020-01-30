@@ -16,7 +16,7 @@ import { PTFCompanyProfile } from "../model/company.profile";
 
 export const getCompanyProfile = async (companyNumber: string, token: string): Promise<PTFCompanyProfile> => {
   logger.debug("Creating CH SDK ApiClient");
-  const api = createApiClient(undefined, token );
+  const api = createApiClient(undefined, token);
 
   logger.info(`Looking for company profile with company number ${companyNumber}`);
   const sdkResponse: Resource<CompanyProfile> =
