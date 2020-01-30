@@ -20,19 +20,19 @@ const createPromiseToFileSession = async (
 };
 
 const updatePromiseToFileSessionValue = async (chSession: Session, key: string, value: any): Promise<void> => {
-  const ptfSession = await chSession.data.ptf_session;
+  const ptfSession = await chSession[keys.PTF_SESSION];
   ptfSession[key] = value;
   chSession.appendData(keys.PTF_SESSION, ptfSession);
   await saveSession(chSession);
 };
 
 /**
- * Returns the company number in context. That is the number of the
- * most recent company that was input in the company number screen.
+ * Returns a field specfified by the key argument.
  * @param chSession
+ * @param key
  */
-const getCompanyNumberInContext = (chSession: Session): string => {
-  return chSession.data.ptf_session.company_number_in_context;
+const getSessionValue = (chSession: Session, key: string): string => {
+  return chSession.data.ptf_session[key];
 };
 
-export { createPromiseToFileSession, getCompanyNumberInContext, updatePromiseToFileSessionValue };
+export { createPromiseToFileSession, getSessionValue, updatePromiseToFileSessionValue };

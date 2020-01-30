@@ -8,6 +8,6 @@ describe ("cache service tests", () => {
     const session: Session = Session.newInstance();
     await sessionService.createPromiseToFileSession(session);
     await sessionService.updatePromiseToFileSessionValue(session, keys.COMPANY_NUMBER, "00006400");
-    expect(session.data.ptf_session.company_number).toEqual("00006400");
+    expect(sessionService.getSessionValue(session, keys.COMPANY_NUMBER)).toEqual("00006400");
   });
 });
