@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+npm run lint
 exec < /dev/tty
     while read -p "Have all the required feature flags been added to these changes? (y/n) " yn; do
         case $yn in
