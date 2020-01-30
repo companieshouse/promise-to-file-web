@@ -3,13 +3,15 @@ import * as request from "supertest";
 import {loadSession} from "../../src/services/redis.service";
 import {loadMockSession} from "../mock.utils";
 import {COOKIE_NAME} from "../../src/properties";
-import * as pageURLs from "../../src/model/page.urls";
+import {PROMISE_TO_FILE} from "../../src/model/page.urls";
+import {COMPANY_NUMBER} from "../../src/model/page.urls";
 
 jest.mock("../../src/services/redis.service");
 
 const NO_COMPANY_NUMBER_SUPPLIED = "No company number supplied";
 const INVALID_COMPANY_NUMBER = "Invalid company number";
 const COMPANY_NUMBER_TOO_LONG = "Company number too long";
+const PROMISE_TO_FILE_COMPANY_NUMBER: string = PROMISE_TO_FILE + COMPANY_NUMBER;
 
 describe("company number validation tests", () => {
 
@@ -21,7 +23,7 @@ describe("company number validation tests", () => {
 
   it("should create an error message when no company number is supplied (empty string)", async () => {
     const response = await request(app)
-      .post(pageURLs.PROMISE_TO_FILE_COMPANY_NUMBER)
+      .post(PROMISE_TO_FILE_COMPANY_NUMBER)
       .set("Accept", "application/json")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({companyNumber: ""});
@@ -35,7 +37,7 @@ describe("company number validation tests", () => {
 
   it("should create an error message when no company number is supplied (spaces)", async () => {
     const response = await request(app)
-      .post(pageURLs.PROMISE_TO_FILE_COMPANY_NUMBER)
+      .post(PROMISE_TO_FILE_COMPANY_NUMBER)
       .set("Accept", "application/json")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({companyNumber: "    "});
@@ -49,7 +51,7 @@ describe("company number validation tests", () => {
 
   it("should create an error message when company number is invalid (characters)", async () => {
     const response = await request(app)
-      .post(pageURLs.PROMISE_TO_FILE_COMPANY_NUMBER)
+      .post(PROMISE_TO_FILE_COMPANY_NUMBER)
       .set("Accept", "application/json")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({companyNumber: "asdfg!!@"});
@@ -63,7 +65,7 @@ describe("company number validation tests", () => {
 
   it("should create an error message when company number is too long", async () => {
     const response = await request(app)
-      .post(pageURLs.PROMISE_TO_FILE_COMPANY_NUMBER)
+      .post(PROMISE_TO_FILE_COMPANY_NUMBER)
       .set("Accept", "application/json")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({companyNumber: "000064000"});

@@ -1,5 +1,10 @@
-export const ROOT: string = "/";
-export const PROMISE_TO_FILE: string = "/promise-to-file";
-export const COMPANY_NUMBER: string = "/company-number";
+import * as TEMPLATE from "./template.paths";
 
-export const PROMISE_TO_FILE_COMPANY_NUMBER: string = PROMISE_TO_FILE + COMPANY_NUMBER;
+/**
+ * Keep template names in template.paths.ts and reference them in here for URLs
+ */
+
+const SEPARATOR: string = "/";
+export const ROOT: string = "/";
+export const PROMISE_TO_FILE: string = SEPARATOR + "promise-to-file";
+export const COMPANY_NUMBER: string = SEPARATOR + TEMPLATE.COMPANY_NUMBER;
