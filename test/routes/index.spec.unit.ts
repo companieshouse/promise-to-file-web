@@ -23,17 +23,6 @@ describe("Basic URL Tests", () => {
     expect(response.text).toMatch(/Use this service to stop us from removing a company/);
   });
 
-  it("should find company number page", async () => {
-
-    const response = await request(app)
-      .get("/promise-to-file/company-number")
-      .set("Referer", "/")
-      .set("Cookie", [`${COOKIE_NAME}=123`]);
-
-    expect(response.status).toEqual(200);
-    expect(response.text).toMatch(/What is the company number/);
-  });
-
   it("should return error code and page if requested page doesn't exist", async () => {
     const response = await request(app)
       .get("/gibberish");

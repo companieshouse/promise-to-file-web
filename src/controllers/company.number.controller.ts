@@ -2,6 +2,7 @@ import {NextFunction, Request, Response} from "express";
 import {check, validationResult} from "express-validator/check";
 import * as errorMessages from "../model/error.messages";
 import {createGovUkErrorData, GovUkErrorData} from "../model/govuk.error.data";
+import {PROMISE_TO_FILE_CHECK_COMPANY} from "../model/page.urls";
 import * as templatePaths from "../model/template.paths";
 import {ValidationError} from "../model/validation.error";
 
@@ -51,6 +52,8 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
       errorList: [companyNumberErrorData],
       templateName: templatePaths.COMPANY_NUMBER,
     });
+  } else {
+    return res.redirect(PROMISE_TO_FILE_CHECK_COMPANY);
   }
 };
 
