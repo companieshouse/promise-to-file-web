@@ -27,3 +27,7 @@ export interface ISignInInfo {
   signedIn?: boolean;
   userProfile?: IUserProfile;
 }
+
+export interface IPromiseToFileSession {
+  company_number_in_context: string;
+}

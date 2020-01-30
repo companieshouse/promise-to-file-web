@@ -76,6 +76,17 @@ export default class Session {
     this.data[keys.CLIENT_SIG] = data.digest("hex");
   }
 
+  public appendData(key: string, value: any): void {
+    this.data[key] = value;
+  }
+
+  public accessToken(): string | undefined {
+    const signInInfo = unmarshalSignInInfo(this._data);
+    if (signInInfo && signInInfo.accessToken && signInInfo.accessToken.token) {
+      return signInInfo.accessToken.token;
+    }
+  }
+
   public isSignedIn(): boolean {
     const signInInfo = unmarshalSignInInfo(this._data);
     if (!signInInfo) {
