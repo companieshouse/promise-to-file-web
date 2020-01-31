@@ -9,4 +9,8 @@ export default async () => {
   process.env.PIWIK_URL = "piwik_url";
   process.env.PIWIK_SITE_ID = "piwik_site_id";
   process.env.SESSION_CREATE = "off";
+  process.env.OAUTH2_REQUEST_KEY = "SWFu";
+  process.env.OAUTH2_AUTH_URI = "g";
+  process.env.OAUTH2_CLIENT_ID = "g";
+  process.env.OAUTH2_REDIRECT_URI = "g";
 };
