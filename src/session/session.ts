@@ -85,6 +85,13 @@ export default class Session {
     return signInInfo.signedIn as boolean;
   }
 
+  public accessToken(): string | undefined {
+    const signInInfo = unmarshalSignInInfo(this._data);
+    if (signInInfo && signInInfo.accessToken && signInInfo.accessToken.token) {
+      return signInInfo.accessToken.token;
+    }
+  }
+
   /**
    * Generates a new cookie id.
    */
