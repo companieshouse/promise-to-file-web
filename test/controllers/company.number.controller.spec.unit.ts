@@ -25,6 +25,16 @@ describe("company number validation tests", () => {
     loadMockSession(mockCacheService);
   });
 
+  it("should find company number page", async () => {
+    const response = await request(app)
+      .get("/promise-to-file/company-number")
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+
+    expect(response.status).toEqual(200);
+    expect(response.text).toMatch(/What is the company number/);
+  });
+
   it("should create an error message when no company number is supplied (empty string)", async () => {
     const response = await request(app)
       .post(pageURLs.PROMISE_TO_FILE_COMPANY_NUMBER)
