@@ -18,47 +18,47 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-xl">Check company details</h1>
-      <h2 class="govuk-heading-l">{{scenario.company.name}}</h2>
+      <h2 class="govuk-heading-l">{{company.companyName}}</h2>
 
       {% set inactiveHTML %}
-        {% if scenario.company.status === "Inactive" %}
+        {% if company.companyStatus === "Inactive" %}
           <span class="govuk-!-font-weight-bold">Dissolved</span>
         {% else %}
-          {{scenario.company.status}}
+          {{company.companyStatus}}
         {% endif %}
       {% endset %}
 
       {% set AAoverdueHTML %}
-        {% if scenario.company.accountsStatus === "overdue" %}
-          {{scenario.company.accountsDue}}
+        {% if company.isAccountsOverdue === true %}
+          {{company.accountsDue}}
           <br/>
           <span class="govuk-!-font-weight-bold">Your accounts are overdue</span>
-        {% elseif scenario.company.accountsDue === "inactive" %}
+        {% elseif company.accountsDue === "inactive" %}
           You don’t have to file final accounts with Companies House
         {% else %}
-          {{scenario.company.accountsDue}}
+          {{company.accountsDue}}
         {% endif %}
       {% endset %}
 
       {% set CSoverdueHTML %}
-        {% if scenario.company.csStatus === "overdue" %}
-          {{scenario.company.csDue}}
+        {% if company.isConfirmationStatementOverdue === true %}
+          {{company.confirmationStatementDue}}
           <br/>
           <span class="govuk-!-font-weight-bold">Your confirmation statement is overdue</span>
-        {% elseif scenario.company.csDue === "inactive" %}
+        {% elseif company.confirmationStatementDue === "inactive" %}
           You don’t have to file final accounts with Companies House
         {% else %}
-          {{scenario.company.csDue}}
+          {{company.confirmationStatementDue}}
         {% endif %}
       {% endset %}
 
-      {% if scenario.company.PTFRequested === "yes" %}
-        {% from "warning-text/macro.njk" import govukWarningText %}
-        {{ govukWarningText({
-        text: "You've already told us you're going to file",
-        iconFallbackText: "Warning"
-        }) }}
-      {% endif %}
+      {% set address %}
+        {{company.address.line_1}}
+        <br/>
+        {{company.address.line_2}}
+        <br/>
+        {{company.address.postCode}}
+      {% endset %}
 
       {{ govukSummaryList({
         rows: [
@@ -67,7 +67,7 @@
               text: "Company number"
             },
             value: {
-              text: scenario.company.number
+              text: company.companyNumber
             }
           },
           {
@@ -83,7 +83,7 @@
               text: "Incorporation date"
             },
             value: {
-              text: scenario.company.incorporationDate
+              text: company.incorporationDate
             }
           },
           {
@@ -91,7 +91,7 @@
               text: "Company type"
             },
             value: {
-              text: scenario.company.type
+              text: company.companyType
             }
           },
           {
@@ -99,7 +99,7 @@
               text: "Registered office address"
             },
             value: {
-              html: scenario.company.address
+              html: address
             }
           },
           {

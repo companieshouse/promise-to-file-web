@@ -36,7 +36,9 @@ describe("check company tests", () => {
     expect(response.text).toContain("Active");
     expect(response.text).toContain("01 January 2000");
     expect(response.text).toContain("Private Limited Company");
-    expect(response.text).toContain("25 No Street, Nowhere, nl2br");
+    expect(response.text).toContain("25 No Street");
+    expect(response.text).toContain("Nowhere");
+    expect(response.text).toContain("nl2br");
     expect(response.text).toContain("01 January 2020");
     expect(response.text).toContain("Your accounts are overdue");
     expect(response.text).toContain("02 January 2020");
