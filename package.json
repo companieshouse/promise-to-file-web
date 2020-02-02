@@ -6,10 +6,10 @@
     "start": "node dist/bin/www.js",
     "build": "tsc && cp -r views dist/",
     "devstart": "nodemon",
-    "test": "jest --forceExit",
+    "test": "jest",
     "lint": "tslint '{src,test}/**/*'",
     "sonarqube": "sonar-scanner",
-    "coverage": "jest --forceExit --coverage"
+    "coverage": "jest --coverage"
   },
   "dependencies": {
     "ch-sdk-node": "git+ssh://git@github.com/companieshouse/ch-sdk-node.git#0.2.1",

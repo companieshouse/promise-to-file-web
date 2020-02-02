@@ -14,6 +14,8 @@ const saveSession = async (chSession: Session): Promise<void> => {
  * @param cookieId
  */
 const loadSession = async (cookieId: string): Promise<Session> => {
+  // tslint:disable-next-line:no-console
+  console.log("&&&&&&&&&%%%%%% LOAD SESION");
   const session: Session = Session.newWithCookieId(cookieId);
   session.data = await redisStore.getData(session.sessionKey());
   return session;

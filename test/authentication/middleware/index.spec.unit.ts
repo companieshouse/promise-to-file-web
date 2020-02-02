@@ -6,9 +6,15 @@ import {loadSession} from "../../../src/services/redis.service";
 import {loadMockSession} from "../../mock.utils";
 import Session from "../../../src/session/session";
 
+jest.mock("../../../src/session/store/redis.store", () => {
+  return {
+    default: {},
+  };
+});
 jest.mock("../../../src/services/redis.service");
+jest.mock("../../../src/logger");
 
-const mockCacheService = (loadSession as unknown as jest.Mock<typeof loadSession>);
+const mockCacheService = loadSession as jest.Mock;
 
 beforeEach(() => {
   mockCacheService.mockRestore();

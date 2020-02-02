@@ -5,7 +5,13 @@ import {loadMockSession} from "../mock.utils";
 import {COOKIE_NAME} from "../../src/properties";
 import * as pageURLs from "../../src/model/page.urls";
 
+jest.mock("../../src/session/store/redis.store", () => {
+  return {
+    default: {},
+  };
+});
 jest.mock("../../src/services/redis.service");
+jest.mock("../../src/logger");
 
 const NO_COMPANY_NUMBER_SUPPLIED = "No company number supplied";
 const INVALID_COMPANY_NUMBER = "Invalid company number";
@@ -13,7 +19,7 @@ const COMPANY_NUMBER_TOO_LONG = "Company number too long";
 
 describe("company number validation tests", () => {
 
-  const mockCacheService = (loadSession as unknown as jest.Mock<typeof loadSession>);
+  const mockCacheService = loadSession as jest.Mock;
 
   beforeEach(() => {
     loadMockSession(mockCacheService);
