@@ -7,7 +7,7 @@ import {appRouter} from "./routes/routes";
 import {ERROR_SUMMARY_TITLE} from "./model/error.messages";
 import * as pageURLs from "./model/page.urls";
 import sessionMiddleware from "./session/middleware";
-import ptfSessionLoader from "./session/middleware/ptf_session";
+import ptfSessionLoader from "./session/middleware/ptf.session";
 import {PIWIK_SITE_ID, PIWIK_URL} from "./properties";
 import authenticate from "./authentication/middleware/index";
 import logger from "./logger";

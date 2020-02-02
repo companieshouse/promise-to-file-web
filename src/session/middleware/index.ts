@@ -4,6 +4,9 @@ import {COOKIE_NAME} from "../../properties";
 import * as redisService from "../../services/redis.service";
 import logger from "../../logger";
 
+/**
+ * Adds chSession property to Request interface.
+ */
 declare global {
   namespace Express {
     interface Request {

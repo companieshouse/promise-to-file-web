@@ -1,15 +1,52 @@
 import Session from "../../src/session/session";
 import * as sessionService from "../../src/services/session.service";
 import * as keys from "../../src/session/keys";
+import { saveSession } from "../../src/services/redis.service";
 
 jest.mock("../../src/services/redis.service");
 
-describe ("cache service tests", () => {
+const mockSaveSession: jest.Mock = saveSession as jest.Mock;
+const testKey: string = "testKey";
+const testValue: string = "00006400";
+
+describe ("session service tests", () => {
+
+  beforeEach(() => {
+    mockSaveSession.mockClear();
+  });
 
   it("should create a new empty promise to file session", async () => {
     const session: Session = Session.newInstance();
-    await sessionService.createPromiseToFileSession(session, "");
-    await sessionService.updatePromiseToFileSessionValue(session, keys.COMPANY_NUMBER, "00006400");
-    expect(sessionService.getSessionValue(session, keys.COMPANY_NUMBER)).toEqual("00006400");
+    expect(session.data[keys.PTF_SESSION]).toBeFalsy();
+    await sessionService.createPromiseToFileSession(session);
+    expect(session.data[keys.PTF_SESSION]).toBeTruthy();
+    expect(mockSaveSession).toBeCalledTimes(1);
+    expect(mockSaveSession).toBeCalledWith(session);
+  });
+
+  it("should update the session successfully", async () => {
+    const session: Session = Session.newInstance();
+    await sessionService.createPromiseToFileSession(session);
+    expect(session.data[keys.PTF_SESSION]).toBeTruthy();
+
+    mockSaveSession.mockClear();
+    await sessionService.updatePromiseToFileSessionValue(session, testKey, testValue);
+    expect(session.data[keys.PTF_SESSION][testKey]).toEqual(testValue);
+    expect(mockSaveSession).toBeCalledTimes(1);
+    expect(mockSaveSession).toBeCalledWith(session);
+
+    const newValue: string = "10";
+    await sessionService.updatePromiseToFileSessionValue(session, testKey, newValue);
+    expect(session.data[keys.PTF_SESSION][testKey]).toEqual(newValue);
+  });
+
+  it("should retrieve from the session successfully", async () => {
+    const session: Session = Session.newInstance();
+    await sessionService.createPromiseToFileSession(session);
+    expect(session.data[keys.PTF_SESSION]).toBeTruthy();
+
+    await sessionService.updatePromiseToFileSessionValue(session, testKey, testValue);
+    const gotFromSessionValue: string = sessionService.getPromiseToFileSessionValue(session, testKey);
+    expect(gotFromSessionValue).toEqual(testValue);
   });
 });

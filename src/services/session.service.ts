@@ -1,38 +1,35 @@
 import Session from "../session/session";
-import { IPromiseToFileSession } from "session/types";
 import { saveSession } from "./redis.service";
 import * as keys from "../session/keys";
 
 /**
- * Creates a new ptf session and adds a company to the context.
- * This will override any ptf session that is already in redis.
+ * Creates a new Promise To File session.
+ * This will override an existing Promise To File session
  * @param chSession
- * @param companyNumber
  */
-const createPromiseToFileSession = async (
-  chSession: Session, companyNumber: string): Promise<IPromiseToFileSession> => {
-  const ptfSession: IPromiseToFileSession = {
-    company_in_context: companyNumber,
-  };
-  chSession.appendData(keys.PTF_SESSION, ptfSession);
-  await saveSession(chSession);
-  return ptfSession;
-};
-
-const updatePromiseToFileSessionValue = async (chSession: Session, key: string, value: any): Promise<void> => {
-  const ptfSession = await chSession.data[keys.PTF_SESSION];
-  ptfSession[key] = value;
-  chSession.appendData(keys.PTF_SESSION, ptfSession);
+const createPromiseToFileSession = async (chSession: Session): Promise<void> => {
+  chSession.appendData(keys.PTF_SESSION, {});
   await saveSession(chSession);
 };
 
 /**
- * Returns a field specfified by the key argument.
+ * Updates a field in the Promise To File session specified by the key argument.
+ * @param chSession
+ * @param key
+ * @param value
+ */
+const updatePromiseToFileSessionValue = async (chSession: Session, key: string, value: any): Promise<void> => {
+  chSession.data[keys.PTF_SESSION][key] = value;
+  await saveSession(chSession);
+};
+
+/**
+ * Returns a field from the Promise To File session specified by the key argument.
  * @param chSession
  * @param key
  */
-const getSessionValue = (chSession: Session, key: string): string => {
-  return chSession.data.ptf_session[key];
+const getPromiseToFileSessionValue = (chSession: Session, key: string): string => {
+  return chSession.data[keys.PTF_SESSION][key];
 };
 
-export { createPromiseToFileSession, getSessionValue, updatePromiseToFileSessionValue };
+export { createPromiseToFileSession, getPromiseToFileSessionValue, updatePromiseToFileSessionValue };

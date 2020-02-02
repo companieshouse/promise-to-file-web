@@ -69,7 +69,6 @@ const setNotSignedIn = () => {
   mockCacheService.prototype.constructor.mockImplementationOnce((cookieId) => {
     const session: Session = Session.newWithCookieId(cookieId);
     session.data = {
-      [keys.COMPANY_NUMBER]: "00006400",
       [keys.SIGN_IN_INFO]: {
         [keys.SIGNED_IN]: 0,
       },

@@ -80,13 +80,6 @@ export default class Session {
     this.data[key] = value;
   }
 
-  public accessToken(): string | undefined {
-    const signInInfo = unmarshalSignInInfo(this._data);
-    if (signInInfo && signInInfo.accessToken && signInInfo.accessToken.token) {
-      return signInInfo.accessToken.token;
-    }
-  }
-
   public isSignedIn(): boolean {
     const signInInfo = unmarshalSignInInfo(this._data);
     if (!signInInfo) {
