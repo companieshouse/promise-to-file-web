@@ -19,4 +19,4 @@ export const TOKEN_TYPE: string = "token_type";
 export const LOCALE: string = "locale";
 export const PERMISSIONS: string = "permissions";
 export const SCOPE: string = "scope";
-export const COMPANY_NUMBER: string = "company_number";
+export const PTF_SESSION: string = "ptf_session";

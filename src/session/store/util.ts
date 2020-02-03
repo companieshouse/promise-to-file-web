@@ -29,7 +29,6 @@ export const unmarshalSignInInfo = (data: IMap<any>): ISignInInfo | null => {
   return {
     accessToken: unmarshalAccessToken(signInInfoData),
     adminPermissions,
-    companyNumber: signInInfoData[keys.COMPANY_NUMBER],
     signedIn,
     userProfile: unmarshalUserProfile(signInInfoData),
   };
