@@ -2,8 +2,6 @@ import { NextFunction, Request, Response } from "express";
 import * as keys from "../keys";
 import * as sessionService from "../../services/session.service";
 
-jest.mock("../../services/redis.service");
-
 /**
  * Adds a "Promise to File" session object.
  * Requires req.chSession.data to be present.

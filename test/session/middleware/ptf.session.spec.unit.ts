@@ -3,6 +3,8 @@ import ptfSessionLoader from "../../../src/session/middleware/ptf.session";
 import Session from "../../../src/session/session";
 import { PTF_SESSION } from "../../../src/session/keys";
 
+jest.mock("../../../src/services/redis.service");
+
 declare global {
   namespace Express {
     interface Request {
