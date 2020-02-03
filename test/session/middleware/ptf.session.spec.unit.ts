@@ -34,6 +34,18 @@ describe("PTF session tests", () => {
     expect(mockNextFunction).toBeCalledTimes(1);
   });
 
+  it("Should not create a new PTF session if one already exists", async () => {
+    const testKey: string = "test";
+    const testValue: string = "value";
+    req.chSession = Session.newWithCookieId("123");
+    req.chSession.data = {};
+    req.chSession.data[PTF_SESSION] = {};
+    req.chSession.data[PTF_SESSION][testKey] = testValue;
+
+    await ptfSessionLoader(req, res, mockNextFunction);
+    expect(req.chSession.data[PTF_SESSION][testKey]).toEqual(testValue);
+  });
+
   it("Should throw a TypeError if req.chSession missing", async () => {
     expect(req.chSession).toBeFalsy();
     await expect(ptfSessionLoader(req, res, mockNextFunction)).rejects.toThrow(TypeError);

@@ -24,6 +24,16 @@ describe ("session service tests", () => {
     expect(mockSaveSession).toBeCalledWith(session);
   });
 
+  it("should replace an existing promise to file session if one exists", async () => {
+    const session: Session = Session.newInstance();
+    await sessionService.createPromiseToFileSession(session);
+    expect(session.data[keys.PTF_SESSION]).toBeTruthy();
+    session.data[keys.PTF_SESSION][testKey] = testValue;
+
+    await sessionService.createPromiseToFileSession(session);
+    expect(session.data[keys.PTF_SESSION][testKey]).toBeFalsy();
+  });
+
   it("should update the session successfully", async () => {
     const session: Session = Session.newInstance();
     await sessionService.createPromiseToFileSession(session);
