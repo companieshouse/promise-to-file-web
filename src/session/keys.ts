@@ -20,3 +20,4 @@ export const LOCALE: string = "locale";
 export const PERMISSIONS: string = "permissions";
 export const SCOPE: string = "scope";
 export const PTF_SESSION: string = "ptf_session";
+export const COMPANY_PROFILE: string = "company_profile";

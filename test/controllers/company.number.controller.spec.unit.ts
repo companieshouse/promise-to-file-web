@@ -5,10 +5,14 @@ import {COOKIE_NAME} from "../../src/properties";
 import * as pageURLs from "../../src/model/page.urls";
 import {getCompanyProfile} from "../../src/client/apiclient";
 import {ACCESS_TOKEN, getDummyCompanyProfile, loadMockSession} from "../mock.utils";
+import {updatePromiseToFileSessionValue} from "../../src/services/session.service";
+import {COMPANY_PROFILE} from "../../src/session/keys";
+import Session from "../../src/session/session";
 
 jest.mock("../../src/session/store/redis.store", () => import("../mocks/redis.store.mock.factory"));
 jest.mock("../../src/services/redis.service");
 jest.mock("../../src/client/apiclient");
+jest.mock("../../src/services/session.service");
 
 const COMPANY_NUMBER = "00006400";
 const NO_COMPANY_NUMBER_SUPPLIED = "No company number supplied";
@@ -125,6 +129,8 @@ describe("company number validation tests", () => {
     expect(response.header.location).toEqual(pageURLs.PROMISE_TO_FILE_CHECK_COMPANY);
     expect(response.status).toEqual(302);
     expect(mockCompanyProfile).toHaveBeenCalledWith(COMPANY_NUMBER, ACCESS_TOKEN);
+    expect(updatePromiseToFileSessionValue).toHaveBeenCalledTimes(1);
+    expect(updatePromiseToFileSessionValue).toHaveBeenCalledWith(expect.any(Session),
+      COMPANY_PROFILE, getDummyCompanyProfile(true, true));
   });
-
 });
