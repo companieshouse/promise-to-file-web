@@ -29,15 +29,11 @@ export const COMPANY_STATUS_ACTIVE = "Active";
 export const COMPANY_STATUS_LIQUIDATED = "liquidated";
 export const COMPANY_TYPE = "Limited";
 export const COMPANY_INC_DATE = "23 September 1973";
-export const HAS_BEEN_LIQUIDATED = false;
-export const HAS_CHARGES = true;
-export const HAS_INSOLVENCY_HISTORY = true;
 export const LINE_1 = "123";
 export const LINE_2 = "street";
 export const POST_CODE = "CF1 123";
 export const ACCOUNTS_NEXT_DUE_DATE = "2019-05-12";
 export const CONFIRMATION_STATEMENT_NEXT_DUE_DATE = "2019-09-03";
-export const EMAIL = "demo@ch.gov.uk";
 
 export const getDummyCompanyProfile = (isOverdue: boolean, isActive): PTFCompanyProfile => {
   return {

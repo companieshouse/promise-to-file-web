@@ -9,12 +9,13 @@ import {getPromiseToFileSessionValue} from "../../src/services/session.service";
 import {COMPANY_PROFILE} from "../../src/session/keys";
 import Session from "../../src/session/session";
 
+jest.mock("../../src/session/store/redis.store", () => import("../mocks/redis.store.mock.factory"));
 jest.mock("../../src/services/redis.service");
 jest.mock("../../src/services/session.service");
 
 describe("check company tests", () => {
 
-  const mockCacheService = (loadSession as unknown as jest.Mock<typeof loadSession>);
+  const mockCacheService = loadSession as jest.Mock;
 
   beforeEach(() => {
     loadMockSession(mockCacheService);
