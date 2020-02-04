@@ -6,19 +6,15 @@ import app from "../../../src/app";
 import {COOKIE_NAME} from "../../../src/properties";
 import * as keys from "../../../src/session/keys";
 
+jest.mock("../../../src/session/store/redis.store",
+  () => import("../../mocks/redis.store.mock.factory"));
 jest.mock("../../../src/services/redis.service");
 
-const mockCacheService = (loadSession as unknown as jest.Mock<typeof loadSession>);
+const mockCacheService = loadSession as jest.Mock;
 
 beforeEach(() => {
   mockCacheService.mockRestore();
   loadMockSession(mockCacheService);
-});
-
-jest.mock("../../../src/session/store/redis.store", () => {
-  return {
-    default: {},
-  };
 });
 
 describe("Web Security Middleware tests", () => {

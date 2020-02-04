@@ -59,7 +59,7 @@ async function getAuthRedirectUri(req: Request, companyNumber?: string): Promise
   const session = req.chSession;
   const nonce = generateNonce();
   session.data[keys.NONCE] = nonce;
-  redisService.saveSession(session);
+  await redisService.saveSession(session);
 
   return await createAuthUri(originalUrl, nonce, scope);
 }
