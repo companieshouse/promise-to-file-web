@@ -9,8 +9,9 @@ export default async () => {
   process.env.PIWIK_URL = "piwik_url";
   process.env.PIWIK_SITE_ID = "piwik_site_id";
   process.env.SESSION_CREATE = "off";
-  process.env.OAUTH2_REQUEST_KEY = "SWFu";
-  process.env.OAUTH2_AUTH_URI = "g";
-  process.env.OAUTH2_CLIENT_ID = "g";
-  process.env.OAUTH2_REDIRECT_URI = "g";
+  // This Request key is just a random 256 bit base64 encoded string
+  process.env.OAUTH2_REQUEST_KEY = "uqq1imjrxynuNrPPSr32fsC5KQaHV42uu08MKgizyj0=";
+  process.env.OAUTH2_AUTH_URI = "http://auth.url.com";
+  process.env.OAUTH2_CLIENT_ID = "1234";
+  process.env.OAUTH2_REDIRECT_URI = "http://return.url";
 };

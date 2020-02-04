@@ -1,35 +1,35 @@
 import {NextFunction, Request, Response} from "express";
 import {COOKIE_NAME, OAUTH2_AUTH_URI, OAUTH2_CLIENT_ID,
-  OAUTH2_REDIRECT_URI, OAUTH2_REQUEST_KEY} from "../../properties";
+  OAUTH2_REDIRECT_URI} from "../../properties";
 import * as redisService from "../../services/redis.service";
 import * as keys from "../../session/keys";
-import * as jose from "node-jose";
-import * as crypto from "crypto";
+import logger from "../../logger";
+import {jweEncodeWithNonce, generateNonce} from "../jwt.encryption";
 
 const OAUTH_SCOPE_PREFIX = "https://api.companieshouse.gov.uk/company/";
+const COMPANY_NUMBER_KEY = "company_number";
 
 export default async (req: Request, res: Response, next: NextFunction) => {
-  const cookieId = req.cookies[COOKIE_NAME];
+  // Get CompanyNumber from URI
+  const companyNumber = getCompanyFromPath(req.originalUrl);
+  if (companyNumber === "") {
+    return next(new Error("No Company Number"));
+  }
 
+  const cookieId = req.cookies[COOKIE_NAME];
   if (cookieId) {
     req.chSession = await redisService.loadSession(cookieId);
-    // Get CompanyNumber from URI
-    const companyNumber = getCompanyFromPath(req.path);
-    if (companyNumber === "") {
-      throw new Error("No Company Number");
-    }
     const signInInfo = req.chSession.getSignedInInfo();
     if (isAuthorisedForCompany(signInInfo, companyNumber)) {
-      next();
+        logger.info("User is authenticated for %s", companyNumber);
+        return next();
     } else {
-      const tmp = await redirectForAuth(req, res, companyNumber);
-      return res.redirect(tmp);
+      return res.redirect(await getAuthRedirectUri(req, companyNumber));
     }
   } else {
     // TODO: Process no session
+    return next(new Error("No session present for company auth filter"));
   }
-
-  next();
 };
 
 function getCompanyFromPath(path: string): string {
@@ -44,13 +44,10 @@ function getCompanyFromPath(path: string): string {
 }
 
 function isAuthorisedForCompany(signInInfo: string, companyNumber: string): boolean {
-  // console.log(signInInfo.company_number);
-  // console.log(signInInfo.company_number === companyNumber);
-
-  return signInInfo["company_number"] === companyNumber;
+  return signInInfo[COMPANY_NUMBER_KEY] === companyNumber;
 }
 
-async function redirectForAuth(req: Request, res: Response, companyNumber?: string): Promise<string> {
+async function getAuthRedirectUri(req: Request, companyNumber?: string): Promise<string> {
   const originalUrl = req.originalUrl;
 
   let scope = "";
@@ -69,7 +66,10 @@ async function redirectForAuth(req: Request, res: Response, companyNumber?: stri
 
 async function createAuthUri(originalUri: string, nonce: string, scope?: string): Promise<string> {
   let authUri = "";
-  authUri = authUri.concat(OAUTH2_AUTH_URI, "?", "client_id=", OAUTH2_CLIENT_ID, "&redirect_uri=", OAUTH2_REDIRECT_URI, "&response_type=code");
+  authUri = authUri.concat(OAUTH2_AUTH_URI, "?",
+    "client_id=", OAUTH2_CLIENT_ID,
+    "&redirect_uri=", OAUTH2_REDIRECT_URI,
+    "&response_type=code");
 
   if (scope != null) {
     authUri = authUri.concat("&scope=", scope);
@@ -78,40 +78,3 @@ async function createAuthUri(originalUri: string, nonce: string, scope?: string)
   authUri = authUri.concat("&state=", await jweEncodeWithNonce(originalUri, nonce, "content"));
   return authUri;
 }
-
-function generateNonce(): string {
-  const bytes = crypto.randomBytes(5);
-  const buffer = Buffer.from(bytes);
-  return buffer.toString("base64");
-}
-
-async function jweEncodeWithNonce(returnUri: string, nonce: string, attributeName: string): Promise<string> {
-  const payloadObject = {"nonce" : nonce, "content" : returnUri};
-  // payloadObject[nonce] = nonce;
-  // payloadObject[attributeName] = returnUri;
-
-  const payload = JSON.stringify(payloadObject);
-  const decoded = Buffer.from(OAUTH2_REQUEST_KEY, "base64");
-
-  const ks = await jose.JWK.asKeyStore([{
-    kid: "key",
-    kty: "oct",
-    k: decoded,
-    alg: "A128CBC-HS256",
-    use: "enc",
-  }]);
-
-  const key = await ks.get("key");
-
-  return await jose.JWE.createEncrypt({
-    format: "compact",
-  }, {
-    key,
-    header: {
-      enc: "A128CBC-HS256",
-      alg: "dir",
-    },
-  }).update(payload).final();
-}
-
-export {jweEncodeWithNonce};

@@ -1,28 +1,94 @@
-import * as security from "../../../src/web.security/middleware/index";
-import {OAUTH2_REQUEST_KEY} from "../../../src/properties";
-import * as jose from "node-jose";
+import Session from "../../../src/session/session";
+import {loadMockSession} from "../../mock.utils";
+import {loadSession} from "../../../src/services/redis.service";
+import * as request from "supertest";
+import app from "../../../src/app";
+import {COOKIE_NAME} from "../../../src/properties";
+import * as keys from "../../../src/session/keys";
 
-describe("Web Security tests", () => {
+jest.mock("../../../src/services/redis.service");
 
-  it("Assert JWE encoding is performed correctly with URI content", async () => {
+const mockCacheService = (<unknown>loadSession as jest.Mock<typeof loadSession>);
 
-    const decodedKey = Buffer.from(OAUTH2_REQUEST_KEY, "base64");
-
-    const ks = await jose.JWK.asKeyStore([{
-      kid: 'key',
-      kty: 'oct',
-      k: decodedKey,
-      alg: 'A128CBC-HS256',
-      use: 'enc'
-    }]);
-
-    const jwe = await security.jweEncodeWithNonce("http://accounts.companieshouse.gov.uk/test", "1234567", "content");
-
-    const tmp = await jose.JWE.createDecrypt(ks.getKey('key').decrypt(jwe)).then(djwt => {
-      console.log(JSON.stringify(djwt, null, "    "));
-    });
-
-    expec
-    console.log(tmp);
+beforeEach(() => {
+  loadMockSession(mockCacheService);
+  mockCacheService.mockClear();
+  mockCacheService.prototype.constructor.mockImplementationOnce((cookieId) => {
+    const session: Session = Session.newWithCookieId(cookieId);
+    session.data = {};
+    return session;
   });
 });
+
+jest.mock("../../../src/session/store/redis.store", () => {
+  return {
+    default: {},
+  };
+});
+
+describe("Web Security Middleware tests", () => {
+
+  it("should redirect to account service if user signed in", async () => {
+    const response = await request(app)
+      .get("/promise-to-file/company/00006400/")
+      .set("Cookie", `${COOKIE_NAME}=123456789`);
+    expect(response.status).toEqual(302);
+  });
+
+  it("should continue to original url if user already authenticated", async () => {
+    signInToCompany("00006400");
+
+    const response = await request(app)
+      .get("/promise-to-file/company/00006400/")
+      .set("Cookie", `${COOKIE_NAME}=123456789`);
+    expect(response.status).toEqual(200);
+  });
+
+  it("should respond with 500 if invalid company number in path", async () => {
+    const response = await request(app)
+      .get("/promise-to-file/company/NOTACOMPANYNUMBER/")
+      .set("Cookie", `${COOKIE_NAME}=123456789`);
+    expect(response.status).toEqual(500);
+  });
+
+  it("should redirect to auth if the user has session but is not signed in", async () => {
+    setNotSignedIn();
+
+    const response = await request(app)
+      .get("/promise-to-file/company/00006400/")
+      .set("Cookie", `${COOKIE_NAME}=123456789`);
+    expect(response.status).toEqual(302);
+  });
+
+  it("should respond with 500 if the user has no session", async () => {
+    setNotSignedIn();
+
+    const response = await request(app)
+      .get("/promise-to-file/company/00006400/")
+    expect(response.status).toEqual(500);
+  });
+});
+
+const signInToCompany = (companyNumber: string) => {
+  mockCacheService.prototype.constructor.mockImplementationOnce((cookieId) => {
+    const session: Session = Session.newWithCookieId(cookieId);
+    session.data = {
+      [keys.SIGN_IN_INFO]: {
+        [keys.COMPANY_NUMBER]: companyNumber,
+      },
+    };
+    return session;
+  });
+};
+
+const setNotSignedIn = () => {
+  mockCacheService.prototype.constructor.mockImplementationOnce((cookieId) => {
+    const session: Session = Session.newWithCookieId(cookieId);
+    session.data = {
+      [keys.SIGN_IN_INFO]: {
+        [keys.SIGNED_IN]: 0,
+      },
+    };
+    return session;
+  });
+};

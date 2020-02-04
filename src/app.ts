@@ -47,7 +47,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(sessionMiddleware);
-app.use(companyAuthMiddleware);
+app.use(`${pageURLs.PROMISE_TO_FILE}/company/*`, companyAuthMiddleware);
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(pageURLs.PROMISE_TO_FILE, appRouter);
