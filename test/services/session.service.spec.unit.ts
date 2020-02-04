@@ -3,11 +3,7 @@ import * as sessionService from "../../src/services/session.service";
 import * as keys from "../../src/session/keys";
 import { saveSession } from "../../src/services/redis.service";
 
-jest.mock("../../src/session/store/redis.store", () => {
-  return {
-    default: {},
-  };
-});
+jest.mock("../../src/session/store/redis.store", () => import("../mocks/redis.store.mock.factory"));
 jest.mock("../../src/services/redis.service");
 
 const mockSaveSession: jest.Mock = saveSession as jest.Mock;

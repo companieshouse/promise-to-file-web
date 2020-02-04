@@ -4,11 +4,7 @@ import * as request from "supertest";
 import {loadMockSession} from "../mock.utils";
 import {COOKIE_NAME} from "../../src/properties";
 
-jest.mock("../../src/session/store/redis.store", () => {
-  return {
-    default: {},
-  };
-});
+jest.mock("../../src/session/store/redis.store", () => import("../mocks/redis.store.mock.factory"));
 jest.mock("../../src/services/redis.service");
 
 const mockCacheService = loadSession as jest.Mock;

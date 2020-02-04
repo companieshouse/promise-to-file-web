@@ -3,11 +3,8 @@ import ptfSessionLoader from "../../../src/session/middleware/ptf.session";
 import Session from "../../../src/session/session";
 import { PTF_SESSION } from "../../../src/session/keys";
 
-jest.mock("../../../src/session/store/redis.store", () => {
-  return {
-    default: {},
-  };
-});
+jest.mock("../../../src/session/store/redis.store",
+  () => import("../../mocks/redis.store.mock.factory"));
 jest.mock("../../../src/services/redis.service");
 
 declare global {

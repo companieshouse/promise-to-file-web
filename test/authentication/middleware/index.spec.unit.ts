@@ -6,11 +6,8 @@ import {loadSession} from "../../../src/services/redis.service";
 import {loadMockSession} from "../../mock.utils";
 import Session from "../../../src/session/session";
 
-jest.mock("../../../src/session/store/redis.store", () => {
-  return {
-    default: {},
-  };
-});
+jest.mock("../../../src/session/store/redis.store",
+  () => import("../../mocks/redis.store.mock.factory"));
 jest.mock("../../../src/services/redis.service");
 
 const mockCacheService = loadSession as jest.Mock;
