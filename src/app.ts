@@ -10,6 +10,7 @@ import sessionMiddleware from "./session/middleware";
 import ptfSessionLoader from "./session/middleware/ptf.session";
 import {PIWIK_SITE_ID, PIWIK_URL} from "./properties";
 import authenticate from "./authentication/middleware/index";
+import companyAuthenticate from "./web.security/middleware/index";
 import logger from "./logger";
 import httpLogger from "./http.logger";
 
@@ -40,6 +41,7 @@ app.use(sessionMiddleware);
 app.use(ptfSessionLoader);
 
 app.use(`${pageURLs.PROMISE_TO_FILE}/*`, authenticate);
+app.use(`${pageURLs.PROMISE_TO_FILE}${pageURLs.COMPANY_AUTH_PROTECTED_ROUTE}*`, companyAuthenticate);
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
