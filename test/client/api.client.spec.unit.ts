@@ -6,7 +6,6 @@ import {CompanyProfile} from "ch-sdk-node/dist/services/company-profile";
 import CompanyProfileService from "ch-sdk-node/dist/services/company-profile/service";
 
 jest.mock("ch-sdk-node/dist/services/company-profile/service");
-jest.mock("../../src/logger");
 
 describe("apiclient company profile unit tests", () => {
   const mockGetCompanyProfile = (CompanyProfileService.prototype.getCompanyProfile as jest.Mock);

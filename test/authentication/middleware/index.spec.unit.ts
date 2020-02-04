@@ -12,7 +12,6 @@ jest.mock("../../../src/session/store/redis.store", () => {
   };
 });
 jest.mock("../../../src/services/redis.service");
-jest.mock("../../../src/logger");
 
 const mockCacheService = loadSession as jest.Mock;
 

@@ -11,7 +11,6 @@ jest.mock("../../src/session/store/redis.store", () => {
   };
 });
 jest.mock("../../src/services/redis.service");
-jest.mock("../../src/logger");
 
 describe("check company tests", () => {
 
