@@ -28,7 +28,7 @@ const updatePromiseToFileSessionValue = async (chSession: Session, key: string, 
  * @param chSession
  * @param key
  */
-const getPromiseToFileSessionValue = (chSession: Session, key: string): string => {
+const getPromiseToFileSessionValue = (chSession: Session, key: string): any => {
   return chSession.data[keys.PTF_SESSION][key];
 };
 

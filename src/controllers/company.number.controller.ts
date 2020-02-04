@@ -8,6 +8,8 @@ import logger from "../logger";
 import {PTFCompanyProfile} from "../model/company.profile";
 import {getCompanyProfile} from "../client/apiclient";
 import {PROMISE_TO_FILE_CHECK_COMPANY} from "../model/page.urls";
+import {updatePromiseToFileSessionValue} from "../services/session.service";
+import {COMPANY_PROFILE} from "../session/keys";
 
 // validator middleware that checks for an empty or too long input
 const preValidators = [
@@ -61,7 +63,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
     const token: string = req.chSession.accessToken() as string;
     const company: PTFCompanyProfile = await getCompanyProfile(companyNumber, token);
 
-    // TODO Place the retrieved company details into the PTF session, once available - covered by task LFA-1332
+    updatePromiseToFileSessionValue(req.chSession, COMPANY_PROFILE, company);
 
     return res.redirect(PROMISE_TO_FILE_CHECK_COMPANY);
   } catch (e) {
