@@ -1,12 +1,13 @@
+import {loadSession} from "../../src/services/redis.service";
 import app from "../../src/app";
 import * as request from "supertest";
-import {loadSession} from "../../src/services/redis.service";
 import {loadMockSession} from "../mock.utils";
 import {COOKIE_NAME} from "../../src/properties";
 
+jest.mock("../../src/session/store/redis.store", () => import("../mocks/redis.store.mock.factory"));
 jest.mock("../../src/services/redis.service");
 
-const mockCacheService = (loadSession as unknown as jest.Mock<typeof loadSession>);
+const mockCacheService = loadSession as jest.Mock;
 
 beforeEach(() => {
   loadMockSession(mockCacheService);

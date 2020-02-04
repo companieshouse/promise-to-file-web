@@ -1,12 +1,12 @@
 import app from "../../src/app";
 import * as request from "supertest";
 import {loadSession} from "../../src/services/redis.service";
-import {loadMockSession} from "../mock.utils";
 import {COOKIE_NAME} from "../../src/properties";
 import * as pageURLs from "../../src/model/page.urls";
 import {getCompanyProfile} from "../../src/client/apiclient";
-import * as mockUtils from "../mock.utils";
+import {ACCESS_TOKEN, getDummyCompanyProfile, loadMockSession} from "../mock.utils";
 
+jest.mock("../../src/session/store/redis.store", () => import("../mocks/redis.store.mock.factory"));
 jest.mock("../../src/services/redis.service");
 jest.mock("../../src/client/apiclient");
 
@@ -18,8 +18,8 @@ const COMPANY_NOT_FOUND: string = "Company number not found";
 
 describe("company number validation tests", () => {
 
-  const mockCompanyProfile: jest.Mock = (getCompanyProfile as unknown as jest.Mock<typeof getCompanyProfile>);
-  const mockCacheService = (loadSession as unknown as jest.Mock<typeof loadSession>);
+  const mockCacheService = loadSession as jest.Mock;
+  const mockCompanyProfile = getCompanyProfile as jest.Mock;
 
   beforeEach(() => {
     loadMockSession(mockCacheService);
@@ -114,7 +114,7 @@ describe("company number validation tests", () => {
   });
 
   it("should redirect to the check company details screen when company is found", async () => {
-    mockCompanyProfile.mockResolvedValue(mockUtils.getDummyCompanyProfile(true, true));
+    mockCompanyProfile.mockResolvedValue(getDummyCompanyProfile(true, true));
 
     const response = await request(app)
       .post(pageURLs.PROMISE_TO_FILE_COMPANY_NUMBER)
@@ -124,7 +124,7 @@ describe("company number validation tests", () => {
 
     expect(response.header.location).toEqual(pageURLs.PROMISE_TO_FILE_CHECK_COMPANY);
     expect(response.status).toEqual(302);
-    expect(mockCompanyProfile).toHaveBeenCalledWith(COMPANY_NUMBER, mockUtils.ACCESS_TOKEN);
+    expect(mockCompanyProfile).toHaveBeenCalledWith(COMPANY_NUMBER, ACCESS_TOKEN);
   });
 
 });

@@ -5,11 +5,12 @@ import {loadMockSession} from "../mock.utils";
 import {COOKIE_NAME} from "../../src/properties";
 import * as pageURLs from "../../src/model/page.urls";
 
+jest.mock("../../src/session/store/redis.store", () => import("../mocks/redis.store.mock.factory"));
 jest.mock("../../src/services/redis.service");
 
 describe("check company tests", () => {
 
-  const mockCacheService = (loadSession as unknown as jest.Mock<typeof loadSession>);
+  const mockCacheService = loadSession as jest.Mock;
 
   beforeEach(() => {
     loadMockSession(mockCacheService);
