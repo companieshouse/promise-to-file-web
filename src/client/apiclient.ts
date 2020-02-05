@@ -24,7 +24,7 @@ export const getCompanyProfile = async (companyNumber: string, token: string): P
 
   if (sdkResponse.httpStatusCode >= 400) {
     throw {
-        status: sdkResponse.httpStatusCode,
+      status: sdkResponse.httpStatusCode,
     };
   }
 
@@ -32,14 +32,17 @@ export const getCompanyProfile = async (companyNumber: string, token: string): P
 
   const companyProfile = sdkResponse.resource as CompanyProfile;
 
+  const isAccountsDueDatePassed: boolean = checkDueDate(companyProfile.accounts.nextDue);
+  const isConfirmationStatementDueDatePassed: boolean = checkDueDate(companyProfile.confirmationStatement.nextDue);
+
   return {
     accountingPeriodEndOn: companyProfile.accounts.nextAccounts.periodEndOn,
     accountingPeriodStartOn: companyProfile.accounts.nextAccounts.periodStartOn,
     accountsDue: formatDateForDisplay(companyProfile.accounts.nextDue),
     address: {
-        line_1: companyProfile.registeredOfficeAddress.addressLineOne,
-        line_2: companyProfile.registeredOfficeAddress.addressLineTwo,
-        postCode: companyProfile.registeredOfficeAddress.postalCode,
+      line_1: companyProfile.registeredOfficeAddress.addressLineOne,
+      line_2: companyProfile.registeredOfficeAddress.addressLineTwo,
+      postCode: companyProfile.registeredOfficeAddress.postalCode,
     },
     companyName: companyProfile.companyName,
     companyNumber: companyProfile.companyNumber,
@@ -47,7 +50,22 @@ export const getCompanyProfile = async (companyNumber: string, token: string): P
     companyType: lookupCompanyType(companyProfile.type),
     confirmationStatementDue: formatDateForDisplay(companyProfile.confirmationStatement.nextDue),
     incorporationDate: formatDateForDisplay(companyProfile.dateOfCreation),
-    isAccountsOverdue: companyProfile.accounts.overdue,
-    isConfirmationStatementOverdue: companyProfile.confirmationStatement.overdue,
+    isAccountsOverdue:
+      (companyProfile.accounts.overdue) || (isAccountsDueDatePassed),
+    isConfirmationStatementOverdue:
+      (companyProfile.confirmationStatement.overdue) || (isConfirmationStatementDueDatePassed),
   };
+};
+
+/**
+ * Checks if the date supplied as a string is before today and returns true or false.
+ *
+ * @param dueDateAsString The date to check
+ */
+const checkDueDate = (dueDateAsString: string): boolean => {
+  const currentDate: Date = new Date(Date.now());
+  currentDate.setHours(0, 0, 0);
+  const dueDate: Date = new Date(dueDateAsString);
+  dueDate.setHours(23, 59, 59);
+  return dueDate < currentDate;
 };
