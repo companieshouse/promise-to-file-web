@@ -35,13 +35,6 @@
   <script src="/html5-shiv/html5shiv.js"></script>
   <![endif]-->
 
-  <script src="https://code.jquery.com/jquery-1.12.4.min.js"
-          integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
-          crossorigin="anonymous">
-  </script>
-
-  <div id="templateName" data-id='{{templateName}}' hidden></div>
-
   {% block download %}
   {% endblock %}
 {% endblock %}
@@ -58,10 +51,11 @@
 {% block beforeContent %}
   {{ govukPhaseBanner({
     tag: {
-      text: "beta"
+      text: "alpha"
     },
     html: 'This is a new service – your <a class="govuk-link" href="https://www.research.net/r/promise-to-file-feedback">feedback</a> will help us to improve it.'
   }) }}
+  <div id="templateName" data-id='{{templateName}}' hidden></div>
   {% block backLink %}
   {% endblock %}
 {% endblock %}

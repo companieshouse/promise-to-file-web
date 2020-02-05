@@ -4,6 +4,12 @@ import * as errorMessages from "../model/error.messages";
 import {createGovUkErrorData, GovUkErrorData} from "../model/govuk.error.data";
 import * as templatePaths from "../model/template.paths";
 import {ValidationError} from "../model/validation.error";
+import logger from "../logger";
+import {PTFCompanyProfile} from "../model/company.profile";
+import {getCompanyProfile} from "../client/apiclient";
+import {PROMISE_TO_FILE_CHECK_COMPANY} from "../model/page.urls";
+import {updatePromiseToFileSessionValue} from "../services/session.service";
+import {COMPANY_PROFILE} from "../session/keys";
 
 // validator middleware that checks for an empty or too long input
 const preValidators = [
@@ -37,6 +43,8 @@ const postValidators = [
 ];
 
 const route = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  logger.debug("Attempt to retrieve and show the company details");
+
   const errors = validationResult(req);
 
   // render errors in the view
@@ -44,14 +52,41 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
     const errorText = errors.array({ onlyFirstError: true })
                             .map((err: ValidationError) => err.msg)
                             .pop() as string;
-    const companyNumberErrorData: GovUkErrorData = createGovUkErrorData(errorText, "#company-number", true, "");
 
-    return res.render(templatePaths.COMPANY_NUMBER, {
-      companyNumberErr: companyNumberErrorData,
-      errorList: [companyNumberErrorData],
-      templateName: templatePaths.COMPANY_NUMBER,
-    });
+    return buildError(res, errorText);
   }
+
+  const companyNumber: string = req.body.companyNumber;
+
+  try {
+    logger.info("Retrieving company profile for company number ${companyNumber}");
+    const token: string = req.chSession.accessToken() as string;
+    const company: PTFCompanyProfile = await getCompanyProfile(companyNumber, token);
+
+    updatePromiseToFileSessionValue(req.chSession, COMPANY_PROFILE, company);
+
+    return res.redirect(PROMISE_TO_FILE_CHECK_COMPANY);
+  } catch (e) {
+    logger.error("Error fetching company profile for company number ${companyNumber}", e);
+    if (e.status === 404) {
+      buildError(res, errorMessages.COMPANY_NOT_FOUND);
+    } else {
+      return next(e);
+    }
+  }
+};
+
+const buildError = (res: Response, errorMessage: string): void => {
+  const companyNumberErrorData: GovUkErrorData = createGovUkErrorData(
+    errorMessage,
+    "#company-number",
+    true,
+    "");
+  return res.render(templatePaths.COMPANY_NUMBER, {
+    companyNumberErr: companyNumberErrorData,
+    errorList: [companyNumberErrorData],
+    templateName: templatePaths.COMPANY_NUMBER,
+  });
 };
 
 export default [...preValidators, padCompanyNumber, ...postValidators, route];

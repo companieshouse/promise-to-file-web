@@ -4,5 +4,7 @@ node_modules/
 .idea/
 .settings/
 .vscode/
+*.code-workspace
 .DS_Store
 coverage
+/api-enumerations/

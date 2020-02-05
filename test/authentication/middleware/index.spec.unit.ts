@@ -6,9 +6,11 @@ import {loadSession} from "../../../src/services/redis.service";
 import {loadMockSession} from "../../mock.utils";
 import Session from "../../../src/session/session";
 
+jest.mock("../../../src/session/store/redis.store",
+  () => import("../../mocks/redis.store.mock.factory"));
 jest.mock("../../../src/services/redis.service");
 
-const mockCacheService = (loadSession as unknown as jest.Mock<typeof loadSession>);
+const mockCacheService = loadSession as jest.Mock;
 
 beforeEach(() => {
   mockCacheService.mockRestore();
@@ -60,7 +62,7 @@ describe("Authentication middleware", () => {
     setNotSignedIn();
     const response = await request(app)
       .get("/promise-to-file/company-number")
-      .expect("Location", "/promise-to-file");
+      .expect("Location", "/signin?return_to=/promise-to-file");
     expect(response.status).toEqual(302);
   });
 });
@@ -69,7 +71,6 @@ const setNotSignedIn = () => {
   mockCacheService.prototype.constructor.mockImplementationOnce((cookieId) => {
     const session: Session = Session.newWithCookieId(cookieId);
     session.data = {
-      [keys.COMPANY_NUMBER]: "00006400",
       [keys.SIGN_IN_INFO]: {
         [keys.SIGNED_IN]: 0,
       },

@@ -10,7 +10,7 @@
 {% block backLink %}
   {{ govukBackLink({
     text: "Back",
-    href: "/promise-to-file/back-link",
+    href: "/promise-to-file",
     attributes: {
       "data-event-id": "back-button"
     }
@@ -55,9 +55,6 @@
       }) }}
 
       {{ govukDetails({
-        attributes: {
-          "data-event-id": "help-with-company-number"
-        },
         summaryText: "Help with company number",
         html: "<p>Use the <a target='blank' href='https://beta.companieshouse.gov.uk/'>Companies House service</a> to find
         it.</p>"
