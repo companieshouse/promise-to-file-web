@@ -1,0 +1,79 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+  {% if errorList.length > 0 %}
+    Error:
+  {% endif %}
+  Tell us if {{company.companyName}} is required
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "/promise-to-file/check-company",
+    attributes: {
+      "data-event-id": "back-button"
+    }
+  }) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {% if errorList.length > 0 %}
+        {{ govukErrorSummary({
+          titleText: ERROR_SUMMARY_TITLE,
+          errorList: errorList
+        }) }}
+      {% endif %}
+
+      {% set titleHTML %}
+      Is
+      {{company.companyName}}
+      still required?
+      {% endset %}
+
+      <form method="post">
+        {% if stillRequiredErr.flag %}
+          {% set stillRequiredErrorMessage = {
+            text: stillRequiredErr.text
+          } %}
+        {% else %}
+          {% set stillRequiredErrorMessage = false %}
+        {% endif %}
+
+        {{ govukRadios({
+          classes: "govuk-radios--inline",
+          idPrefix: "still-required",
+          name: "stillRequired",
+          errorMessage: stillRequiredError,
+          fieldset: {
+            legend: {
+              html: titleHTML,
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--xl"
+            }
+          },
+          items: [
+            {
+              value: "yes",
+              text: "Yes"
+            },
+            {
+              value: "no",
+              text: "No"
+            }
+          ]
+        }) }}
+
+        {{ govukButton({
+          text: "Continue",
+          attributes: {
+            "data-event-id": "continue-button",
+            id: "submit"
+          }
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

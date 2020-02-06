@@ -20,4 +20,4 @@ export const PROMISE_TO_FILE_CHECK_COMPANY: string = PROMISE_TO_FILE + CHECK_COM
 /**
  * Company Auth protected routes
  */
-export const CONTINUE_TRADING: string = COMPANY_AUTH_PROTECTED_ROUTE + template.CONTINUE_TRADING;
+export const STILL_REQUIRED: string = COMPANY_AUTH_PROTECTED_ROUTE + template.STILL_REQUIRED;
