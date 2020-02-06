@@ -1,6 +1,6 @@
+import {INTEGER_PARSE_BASE} from "../../properties";
 import * as keys from "../keys";
 import {IAccessToken, IMap, ISignInInfo, IUserProfile} from "../types";
-import {INTEGER_PARSE_BASE} from "../../properties";
 
 /**
  * Generate sign in info from data map.

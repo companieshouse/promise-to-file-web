@@ -1,6 +1,6 @@
+import * as keys from "../session/keys";
 import Session from "../session/session";
 import { saveSession } from "./redis.service";
-import * as keys from "../session/keys";
 
 /**
  * Creates a new Promise To File session.

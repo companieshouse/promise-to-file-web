@@ -1,10 +1,10 @@
-import {lookupCompanyStatus, lookupCompanyType} from "./api.enumerations";
-import logger from "../logger";
-import { formatDateForDisplay } from "./date.formatter";
 import { createApiClient } from "ch-sdk-node";
-import Resource from "ch-sdk-node/dist/services/resource";
 import { CompanyProfile } from "ch-sdk-node/dist/services/company-profile";
+import Resource from "ch-sdk-node/dist/services/resource";
+import logger from "../logger";
 import { PTFCompanyProfile } from "../model/company.profile";
+import {lookupCompanyStatus, lookupCompanyType} from "./api.enumerations";
+import { formatDateForDisplay } from "./date.formatter";
 
 /**
  * Get the company profile from the api. If the company does not exist or there has been an error, an exception

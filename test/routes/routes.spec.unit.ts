@@ -1,9 +1,9 @@
-import {loadSession} from "../../src/services/redis.service";
-import app from "../../src/app";
 import * as request from "supertest";
-import {getDummyCompanyProfile, loadCompanyAuthenticatedSession, loadMockSession} from "../mock.utils";
+import app from "../../src/app";
 import {COOKIE_NAME} from "../../src/properties";
+import {loadSession} from "../../src/services/redis.service";
 import {getPromiseToFileSessionValue} from "../../src/services/session.service";
+import {getDummyCompanyProfile, loadCompanyAuthenticatedSession, loadMockSession} from "../mock.utils";
 
 jest.mock("../../src/session/store/redis.store", () => import("../mocks/redis.store.mock.factory"));
 jest.mock("../../src/services/redis.service");

@@ -1,6 +1,6 @@
 import {NextFunction, Request, Response, Router} from "express";
-import companyNumberRoute from "../controllers/company.number.controller";
 import checkCompanyRoute from "../controllers/check.company.controller";
+import companyNumberRoute from "../controllers/company.number.controller";
 import stillRequiredRoute from "../controllers/still.required.controller";
 import * as pageURLs from "../model/page.urls";
 import * as templatePaths from "../model/template.paths";

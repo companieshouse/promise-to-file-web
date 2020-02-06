@@ -1,6 +1,6 @@
 import {NextFunction, Request, Response} from "express";
-import {STILL_REQUIRED} from "../model/template.paths";
 import {PTFCompanyProfile} from "../model/company.profile";
+import {STILL_REQUIRED} from "../model/template.paths";
 import {getPromiseToFileSessionValue} from "../services/session.service";
 import {COMPANY_PROFILE} from "../session/keys";
 
