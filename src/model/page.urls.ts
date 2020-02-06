@@ -9,6 +9,7 @@ const SEPARATOR: string = "/";
 export const PROMISE_TO_FILE: string = SEPARATOR + "promise-to-file";
 export const COMPANY_NUMBER: string = SEPARATOR + template.COMPANY_NUMBER;
 export const CHECK_COMPANY: string = SEPARATOR + template.CHECK_COMPANY;
+export const COMPANY_AUTH_PROTECTED_ROUTE: string = SEPARATOR + "company/:companyNumber/";
 export const STILL_REQUIRED: string = SEPARATOR + template.STILL_REQUIRED;
 
 /**
@@ -16,3 +17,8 @@ export const STILL_REQUIRED: string = SEPARATOR + template.STILL_REQUIRED;
  */
 export const PROMISE_TO_FILE_COMPANY_NUMBER: string = PROMISE_TO_FILE + COMPANY_NUMBER;
 export const PROMISE_TO_FILE_CHECK_COMPANY: string = PROMISE_TO_FILE + CHECK_COMPANY;
+
+/**
+ * Company Auth protected routes
+ */
+export const CONTINUE_TRADING: string = COMPANY_AUTH_PROTECTED_ROUTE + template.STILL_REQUIRED;

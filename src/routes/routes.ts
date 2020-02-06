@@ -22,6 +22,7 @@ router.get(pageURLs.COMPANY_NUMBER, renderTemplate(templatePaths.COMPANY_NUMBER)
 router.post(pageURLs.COMPANY_NUMBER, ...companyNumberRoute);
 
 router.get(pageURLs.CHECK_COMPANY, checkCompanyRoute);
+router.get(pageURLs.CONTINUE_TRADING, renderTemplate(templatePaths.CONTINUE_TRADING));
 
 router.get(pageURLs.STILL_REQUIRED, stillRequiredRoute);
 
