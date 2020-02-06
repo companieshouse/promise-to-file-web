@@ -9,7 +9,7 @@ const SEPARATOR: string = "/";
 export const PROMISE_TO_FILE: string = SEPARATOR + "promise-to-file";
 export const COMPANY_NUMBER: string = SEPARATOR + template.COMPANY_NUMBER;
 export const CHECK_COMPANY: string = SEPARATOR + template.CHECK_COMPANY;
-export const COMPANY_AUTH_PROTECTED_ROUTE = SEPARATOR + "company/:companyNumber/";
+export const COMPANY_AUTH_PROTECTED_ROUTE: string = SEPARATOR + "company/:companyNumber/";
 
 /**
  * URLs for redirects will need to start with the application name
@@ -17,4 +17,7 @@ export const COMPANY_AUTH_PROTECTED_ROUTE = SEPARATOR + "company/:companyNumber/
 export const PROMISE_TO_FILE_COMPANY_NUMBER: string = PROMISE_TO_FILE + COMPANY_NUMBER;
 export const PROMISE_TO_FILE_CHECK_COMPANY: string = PROMISE_TO_FILE + CHECK_COMPANY;
 
-export const CONTINUE_TRADING = COMPANY_AUTH_PROTECTED_ROUTE + template.CONTINUE_TRADING;
+/**
+ * Company Auth protected routes
+ */
+export const CONTINUE_TRADING: string = COMPANY_AUTH_PROTECTED_ROUTE + template.CONTINUE_TRADING;
