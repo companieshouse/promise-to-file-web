@@ -23,6 +23,20 @@ export const loadMockSession = (mockLoadSessionFunction: jest.Mock<typeof loadSe
   });
 };
 
+export const loadCompanyAuthenticatedSession = (mockLoadSessionFunction: jest.Mock<typeof loadSession>,
+                                         companyNumber?: string): void => {
+  mockLoadSessionFunction.prototype.constructor.mockImplementation(async (cookieId) => {
+    const session = Session.newWithCookieId(cookieId);
+    session.data = {
+      [keys.SIGN_IN_INFO]: {
+        [keys.SIGNED_IN]: 1,
+        [keys.COMPANY_NUMBER]: companyNumber,
+      },
+    };
+    return session;
+  });
+};
+
 export const COMPANY_NUMBER = "00006400";
 export const COMPANY_NAME = "GIRLS TRUST";
 export const COMPANY_STATUS_ACTIVE = "Active";

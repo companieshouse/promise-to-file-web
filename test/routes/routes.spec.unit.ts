@@ -1,7 +1,7 @@
 import {loadSession} from "../../src/services/redis.service";
 import app from "../../src/app";
 import * as request from "supertest";
-import {getDummyCompanyProfile, loadMockSession} from "../mock.utils";
+import {getDummyCompanyProfile, loadCompanyAuthenticatedSession, loadMockSession} from "../mock.utils";
 import {COOKIE_NAME} from "../../src/properties";
 import {getPromiseToFileSessionValue} from "../../src/services/session.service";
 
@@ -55,12 +55,13 @@ describe("Basic URL Tests", () => {
   });
 
   it("should find the still required page", async () => {
+    loadCompanyAuthenticatedSession(mockCacheService, "00006400");
     const mockGetPromiseToFileSessionValue = getPromiseToFileSessionValue as jest.Mock;
     mockGetPromiseToFileSessionValue.mockReset();
     mockGetPromiseToFileSessionValue.mockImplementation(() => getDummyCompanyProfile(true, true));
 
     const response = await request(app)
-      .get("/promise-to-file/still-required")
+      .get("/promise-to-file/company/00006400/still-required")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
