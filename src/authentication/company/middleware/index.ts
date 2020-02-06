@@ -1,10 +1,10 @@
 import {NextFunction, Request, Response} from "express";
+import logger from "../../../logger";
 import {COOKIE_NAME, OAUTH2_AUTH_URI, OAUTH2_CLIENT_ID,
   OAUTH2_REDIRECT_URI} from "../../../properties";
-import {saveSession, loadSession} from "../../../services/redis.service";
+import {loadSession, saveSession} from "../../../services/redis.service";
 import {COMPANY_NUMBER, NONCE} from "../../../session/keys";
-import logger from "../../../logger";
-import {jweEncodeWithNonce, generateNonce} from "../jwt.encryption";
+import {generateNonce, jweEncodeWithNonce} from "../jwt.encryption";
 
 const OAUTH_SCOPE_PREFIX = "https://api.companieshouse.gov.uk/company/";
 

@@ -1,6 +1,6 @@
 import {randomBytes} from "crypto";
-import {OAUTH2_REQUEST_KEY} from "../../properties";
 import {JWE, JWK} from "node-jose";
+import {OAUTH2_REQUEST_KEY} from "../../properties";
 
 /**
  * Implementation referenced from

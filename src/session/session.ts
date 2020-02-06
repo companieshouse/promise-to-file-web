@@ -1,8 +1,8 @@
-import {IMap} from "./types";
 import * as crypto from "crypto";
 import {COOKIE_SECRET, DEFAULT_SESSION_EXPIRATION, INTEGER_PARSE_BASE} from "../properties";
-import { unmarshalSignInInfo } from "./store/util";
 import * as keys from "./keys";
+import { unmarshalSignInInfo } from "./store/util";
+import {IMap} from "./types";
 
 export default class Session {
   get cookieId(): string {
@@ -96,15 +96,15 @@ export default class Session {
     }
   }
 
+  public getSignedInInfo(): string {
+    return this.data[keys.SIGN_IN_INFO];
+  }
+
   /**
    * Generates a new cookie id.
    */
   private generateNewCookieId() {
     const key = Session.generateSessionKey();
     this._cookieId = key + Session.generateSignature(key);
-  }
-
-  public getSignedInInfo(): string {
-    return this.data[keys.SIGN_IN_INFO];
   }
 }

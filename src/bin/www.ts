@@ -4,9 +4,9 @@
  * Module dependencies.
  */
 
-import app from "../app";
 import * as http from "http";
 import * as yargs from "yargs";
+import app from "../app";
 import logger from "../logger";
 
 /**

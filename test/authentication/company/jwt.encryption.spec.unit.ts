@@ -1,7 +1,7 @@
-import * as jwt from "../../../src/authentication/company/jwt.encryption";
-import {OAUTH2_REQUEST_KEY} from "../../../src/properties";
 import * as jose from "node-jose";
+import * as jwt from "../../../src/authentication/company/jwt.encryption";
 import {generateNonce} from "../../../src/authentication/company/jwt.encryption";
+import {OAUTH2_REQUEST_KEY} from "../../../src/properties";
 
 jest.mock("../../../src/session/store/redis.store", () => import("../../mocks/redis.store.mock.factory"));
 

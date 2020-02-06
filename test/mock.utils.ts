@@ -1,7 +1,7 @@
-import * as keys from "../src/session/keys";
-import {loadSession} from "../src/services/redis.service";
-import Session from "../src/session/session";
 import {PTFCompanyProfile} from "../src/model/company.profile";
+import {loadSession} from "../src/services/redis.service";
+import * as keys from "../src/session/keys";
+import Session from "../src/session/session";
 
 export const ACCESS_TOKEN = "KGGGUYUYJHHVK1234";
 
@@ -24,7 +24,7 @@ export const loadMockSession = (mockLoadSessionFunction: jest.Mock<typeof loadSe
 };
 
 export const loadCompanyAuthenticatedSession = (mockLoadSessionFunction: jest.Mock<typeof loadSession>,
-                                         companyNumber?: string): void => {
+                                                companyNumber?: string): void => {
   mockLoadSessionFunction.prototype.constructor.mockImplementation(async (cookieId) => {
     const session = Session.newWithCookieId(cookieId);
     session.data = {
