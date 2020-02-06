@@ -9,6 +9,7 @@ const SEPARATOR: string = "/";
 export const PROMISE_TO_FILE: string = SEPARATOR + "promise-to-file";
 export const COMPANY_NUMBER: string = SEPARATOR + template.COMPANY_NUMBER;
 export const CHECK_COMPANY: string = SEPARATOR + template.CHECK_COMPANY;
+export const STILL_REQUIRED: string = SEPARATOR + template.STILL_REQUIRED;
 
 /**
  * URLs for redirects will need to start with the application name

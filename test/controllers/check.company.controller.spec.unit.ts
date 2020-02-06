@@ -3,8 +3,8 @@ import * as request from "supertest";
 import {loadSession} from "../../src/services/redis.service";
 import {loadMockSession} from "../mock.utils";
 import {COOKIE_NAME} from "../../src/properties";
-import * as pageURLs from "../../src/model/page.urls";
-import * as mockUtils from "../mock.utils";
+import {PROMISE_TO_FILE_CHECK_COMPANY} from "../../src/model/page.urls";
+import {getDummyCompanyProfile} from "../mock.utils";
 import {getPromiseToFileSessionValue} from "../../src/services/session.service";
 import {COMPANY_PROFILE} from "../../src/session/keys";
 import Session from "../../src/session/session";
@@ -21,24 +21,14 @@ describe("check company tests", () => {
     loadMockSession(mockCacheService);
   });
 
-  it("should find check company page", async () => {
-    const response = await request(app)
-      .get("/promise-to-file/check-company")
-      .set("Referer", "/")
-      .set("Cookie", [`${COOKIE_NAME}=123`]);
-
-    expect(response.status).toEqual(200);
-    expect(response.text).toMatch(/Check company details/);
-  });
-
   it("should render the page with company data from the session", async () => {
 
     const mockGetPromiseToFileSessionValue = getPromiseToFileSessionValue as jest.Mock;
 
     mockGetPromiseToFileSessionValue.mockReset();
-    mockGetPromiseToFileSessionValue.mockImplementation(() => mockUtils.getDummyCompanyProfile(true, true));
+    mockGetPromiseToFileSessionValue.mockImplementation(() => getDummyCompanyProfile(true, true));
 
-    const response = await request(app).get(pageURLs.PROMISE_TO_FILE_CHECK_COMPANY)
+    const response = await request(app).get(PROMISE_TO_FILE_CHECK_COMPANY)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 

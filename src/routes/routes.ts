@@ -1,6 +1,7 @@
 import {NextFunction, Request, Response, Router} from "express";
 import companyNumberRoute from "../controllers/company.number.controller";
 import checkCompanyRoute from "../controllers/check.company.controller";
+import stillRequiredRoute from "../controllers/still.required.controller";
 import * as pageURLs from "../model/page.urls";
 import * as templatePaths from "../model/template.paths";
 
@@ -21,5 +22,7 @@ router.get(pageURLs.COMPANY_NUMBER, renderTemplate(templatePaths.COMPANY_NUMBER)
 router.post(pageURLs.COMPANY_NUMBER, ...companyNumberRoute);
 
 router.get(pageURLs.CHECK_COMPANY, checkCompanyRoute);
+
+router.get(pageURLs.STILL_REQUIRED, stillRequiredRoute);
 
 export const appRouter = router;
