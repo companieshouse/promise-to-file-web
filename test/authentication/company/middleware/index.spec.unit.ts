@@ -1,14 +1,14 @@
-import Session from "../../../src/session/session";
-import {ACCESS_TOKEN, loadMockSession} from "../../mock.utils";
-import {loadSession} from "../../../src/services/redis.service";
+import Session from "../../../../src/session/session";
+import {loadMockSession} from "../../../mock.utils";
+import {loadSession} from "../../../../src/services/redis.service";
 import * as request from "supertest";
-import app from "../../../src/app";
-import {COOKIE_NAME} from "../../../src/properties";
-import * as keys from "../../../src/session/keys";
+import app from "../../../../src/app";
+import {COOKIE_NAME} from "../../../../src/properties";
+import {SIGN_IN_INFO, SIGNED_IN, COMPANY_NUMBER} from "../../../../src/session/keys";
 
-jest.mock("../../../src/session/store/redis.store",
-  () => import("../../mocks/redis.store.mock.factory"));
-jest.mock("../../../src/services/redis.service");
+jest.mock("../../../../src/session/store/redis.store",
+  () => import("../../../mocks/redis.store.mock.factory"));
+jest.mock("../../../../src/services/redis.service");
 
 const mockCacheService = loadSession as jest.Mock;
 
@@ -55,9 +55,9 @@ const loadCompanyAuthenticatedSession = (mockLoadSessionFunction: jest.Mock<type
   mockLoadSessionFunction.prototype.constructor.mockImplementation(async (cookieId) => {
     const session = Session.newWithCookieId(cookieId);
     session.data = {
-      [keys.SIGN_IN_INFO]: {
-        [keys.SIGNED_IN]: 1,
-        [keys.COMPANY_NUMBER]: companyNumber,
+      [SIGN_IN_INFO]: {
+        [SIGNED_IN]: 1,
+        [COMPANY_NUMBER]: companyNumber,
       },
     };
     return session;

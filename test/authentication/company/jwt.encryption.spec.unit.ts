@@ -1,13 +1,9 @@
-import * as jwt from "../../src/web.security/jwt.encryption";
-import {OAUTH2_REQUEST_KEY} from "../../src/properties";
+import * as jwt from "../../../src/authentication/company/jwt.encryption";
+import {OAUTH2_REQUEST_KEY} from "../../../src/properties";
 import * as jose from "node-jose";
-import {generateNonce} from "../../src/web.security/jwt.encryption";
+import {generateNonce} from "../../../src/authentication/company/jwt.encryption";
 
-jest.mock("../../src/session/store/redis.store", () => {
-  return {
-    default: {},
-  };
-});
+jest.mock("../../../src/session/store/redis.store", () => import("../../mocks/redis.store.mock.factory"));
 
 const NONCE = "123bh*";
 const RETURN_URI = "https://test.uri.gov.uk/testing";

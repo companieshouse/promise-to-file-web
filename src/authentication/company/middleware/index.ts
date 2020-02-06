@@ -1,38 +1,37 @@
 import {NextFunction, Request, Response} from "express";
 import {COOKIE_NAME, OAUTH2_AUTH_URI, OAUTH2_CLIENT_ID,
-  OAUTH2_REDIRECT_URI} from "../../properties";
-import * as redisService from "../../services/redis.service";
-import * as keys from "../../session/keys";
-import logger from "../../logger";
+  OAUTH2_REDIRECT_URI} from "../../../properties";
+import {saveSession, loadSession} from "../../../services/redis.service";
+import {COMPANY_NUMBER, NONCE} from "../../../session/keys";
+import logger from "../../../logger";
 import {jweEncodeWithNonce, generateNonce} from "../jwt.encryption";
 
 const OAUTH_SCOPE_PREFIX = "https://api.companieshouse.gov.uk/company/";
-const COMPANY_NUMBER_KEY = "company_number";
 
 export default async (req: Request, res: Response, next: NextFunction) => {
   // Get CompanyNumber from URI
-  const companyNumber = getCompanyFromPath(req.originalUrl);
+  const companyNumber = getCompanyNumberFromPath(req.originalUrl);
   if (companyNumber === "") {
-    return next(new Error("No Company Number"));
+    return next(new Error("No Company Number in URL"));
   }
 
   const cookieId = req.cookies[COOKIE_NAME];
   if (cookieId) {
-    req.chSession = await redisService.loadSession(cookieId);
+    req.chSession = await loadSession(cookieId);
     const signInInfo = req.chSession.getSignedInInfo();
     if (isAuthorisedForCompany(signInInfo, companyNumber)) {
-        logger.info("User is authenticated for %s", companyNumber);
-        return next();
+      logger.info("User is authenticated for %s", companyNumber);
+      return next();
     } else {
+      logger.info("User is not authenticated for %s, redirecting", companyNumber);
       return res.redirect(await getAuthRedirectUri(req, companyNumber));
     }
   } else {
-    // TODO: Process no session
     return next(new Error("No session present for company auth filter"));
   }
 };
 
-function getCompanyFromPath(path: string): string {
+function getCompanyNumberFromPath(path: string): string {
   const regexPattern = "/company/([0-9a-zA-Z]{8})/";
 
   const found = path.match(regexPattern);
@@ -44,7 +43,7 @@ function getCompanyFromPath(path: string): string {
 }
 
 function isAuthorisedForCompany(signInInfo: string, companyNumber: string): boolean {
-  return signInInfo[COMPANY_NUMBER_KEY] === companyNumber;
+  return signInInfo[COMPANY_NUMBER] === companyNumber;
 }
 
 async function getAuthRedirectUri(req: Request, companyNumber?: string): Promise<string> {
@@ -58,15 +57,14 @@ async function getAuthRedirectUri(req: Request, companyNumber?: string): Promise
 
   const session = req.chSession;
   const nonce = generateNonce();
-  session.data[keys.NONCE] = nonce;
-  await redisService.saveSession(session);
+  session.data[NONCE] = nonce;
+  await saveSession(session);
 
   return await createAuthUri(originalUrl, nonce, scope);
 }
 
 async function createAuthUri(originalUri: string, nonce: string, scope?: string): Promise<string> {
-  let authUri = "";
-  authUri = authUri.concat(OAUTH2_AUTH_URI, "?",
+  let authUri = OAUTH2_AUTH_URI.concat("?",
     "client_id=", OAUTH2_CLIENT_ID,
     "&redirect_uri=", OAUTH2_REDIRECT_URI,
     "&response_type=code");
