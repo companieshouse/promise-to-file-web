@@ -1,5 +1,5 @@
-import Session from "../../src/session/session";
 import * as keys from "../../src/session/keys";
+import Session from "../../src/session/session";
 
 describe("Session tests", () => {
 

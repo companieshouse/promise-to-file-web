@@ -35,3 +35,11 @@ export const HTTP_LOG_FORMAT = getEnvironmentValue("HTTP_LOG_FORMAT", "tiny");
 // If wishing to override the default log level of 'info', available levels are documented
 // here - https://stritti.github.io/log4js/docu/users-guide.html#configuration
 export const LOG_LEVEL = getEnvironmentValue("LOG_LEVEL", "info");
+
+export const OAUTH2_REQUEST_KEY = getEnvironmentValue("OAUTH2_REQUEST_KEY");
+
+export const OAUTH2_AUTH_URI = getEnvironmentValue("OAUTH2_AUTH_URI");
+
+export const OAUTH2_CLIENT_ID = getEnvironmentValue("OAUTH2_CLIENT_ID");
+
+export const OAUTH2_REDIRECT_URI = getEnvironmentValue("OAUTH2_REDIRECT_URI");

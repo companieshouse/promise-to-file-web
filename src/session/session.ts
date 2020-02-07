@@ -1,8 +1,8 @@
-import {IMap} from "./types";
 import * as crypto from "crypto";
 import {COOKIE_SECRET, DEFAULT_SESSION_EXPIRATION, INTEGER_PARSE_BASE} from "../properties";
-import { unmarshalSignInInfo } from "./store/util";
 import * as keys from "./keys";
+import { unmarshalSignInInfo } from "./store/util";
+import {IMap} from "./types";
 
 export default class Session {
   get cookieId(): string {
@@ -94,6 +94,10 @@ export default class Session {
     if (signInInfo && signInInfo.accessToken && signInInfo.accessToken.token) {
       return signInInfo.accessToken.token;
     }
+  }
+
+  public getSignedInInfo(): string {
+    return this.data[keys.SIGN_IN_INFO];
   }
 
   /**

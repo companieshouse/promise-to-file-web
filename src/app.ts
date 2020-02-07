@@ -1,17 +1,18 @@
 import * as cookieParser from "cookie-parser";
 import * as express from "express";
+import * as createError from "http-errors";
 import * as nunjucks from "nunjucks";
 import * as path from "path";
-import * as createError from "http-errors";
-import {appRouter} from "./routes/routes";
+import companyAuthenticate from "./authentication/company/middleware/index";
+import authenticate from "./authentication/user/middleware/index";
+import httpLogger from "./http.logger";
+import logger from "./logger";
 import {ERROR_SUMMARY_TITLE} from "./model/error.messages";
 import * as pageURLs from "./model/page.urls";
+import {PIWIK_SITE_ID, PIWIK_URL} from "./properties";
+import {appRouter} from "./routes/routes";
 import sessionMiddleware from "./session/middleware";
 import ptfSessionLoader from "./session/middleware/ptf.session";
-import {PIWIK_SITE_ID, PIWIK_URL} from "./properties";
-import authenticate from "./authentication/middleware/index";
-import logger from "./logger";
-import httpLogger from "./http.logger";
 
 const app = express();
 
@@ -40,6 +41,7 @@ app.use(sessionMiddleware);
 app.use(ptfSessionLoader);
 
 app.use(`${pageURLs.PROMISE_TO_FILE}/*`, authenticate);
+app.use(`${pageURLs.PROMISE_TO_FILE}${pageURLs.COMPANY_AUTH_PROTECTED_ROUTE}*`, companyAuthenticate);
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));

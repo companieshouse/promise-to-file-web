@@ -1,13 +1,13 @@
-import app from "../../src/app";
 import * as request from "supertest";
-import {loadSession} from "../../src/services/redis.service";
-import {COOKIE_NAME} from "../../src/properties";
-import * as pageURLs from "../../src/model/page.urls";
+import app from "../../src/app";
 import {getCompanyProfile} from "../../src/client/apiclient";
-import {ACCESS_TOKEN, getDummyCompanyProfile, loadMockSession} from "../mock.utils";
+import {PROMISE_TO_FILE_CHECK_COMPANY, PROMISE_TO_FILE_COMPANY_NUMBER} from "../../src/model/page.urls";
+import {COOKIE_NAME} from "../../src/properties";
+import {loadSession} from "../../src/services/redis.service";
 import {updatePromiseToFileSessionValue} from "../../src/services/session.service";
 import {COMPANY_PROFILE} from "../../src/session/keys";
 import Session from "../../src/session/session";
+import {ACCESS_TOKEN, getDummyCompanyProfile, loadMockSession} from "../mock.utils";
 
 jest.mock("../../src/session/store/redis.store", () => import("../mocks/redis.store.mock.factory"));
 jest.mock("../../src/services/redis.service");
@@ -29,19 +29,9 @@ describe("company number validation tests", () => {
     loadMockSession(mockCacheService);
   });
 
-  it("should find company number page", async () => {
-    const response = await request(app)
-      .get("/promise-to-file/company-number")
-      .set("Referer", "/")
-      .set("Cookie", [`${COOKIE_NAME}=123`]);
-
-    expect(response.status).toEqual(200);
-    expect(response.text).toMatch(/What is the company number/);
-  });
-
   it("should create an error message when no company number is supplied (empty string)", async () => {
     const response = await request(app)
-      .post(pageURLs.PROMISE_TO_FILE_COMPANY_NUMBER)
+      .post(PROMISE_TO_FILE_COMPANY_NUMBER)
       .set("Accept", "application/json")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({companyNumber: ""});
@@ -55,7 +45,7 @@ describe("company number validation tests", () => {
 
   it("should create an error message when no company number is supplied (spaces)", async () => {
     const response = await request(app)
-      .post(pageURLs.PROMISE_TO_FILE_COMPANY_NUMBER)
+      .post(PROMISE_TO_FILE_COMPANY_NUMBER)
       .set("Accept", "application/json")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({companyNumber: "    "});
@@ -69,7 +59,7 @@ describe("company number validation tests", () => {
 
   it("should create an error message when company number is invalid (characters)", async () => {
     const response = await request(app)
-      .post(pageURLs.PROMISE_TO_FILE_COMPANY_NUMBER)
+      .post(PROMISE_TO_FILE_COMPANY_NUMBER)
       .set("Accept", "application/json")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({companyNumber: "asdfg!!@"});
@@ -83,7 +73,7 @@ describe("company number validation tests", () => {
 
   it("should create an error message when company number is too long", async () => {
     const response = await request(app)
-      .post(pageURLs.PROMISE_TO_FILE_COMPANY_NUMBER)
+      .post(PROMISE_TO_FILE_COMPANY_NUMBER)
       .set("Accept", "application/json")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({companyNumber: "000064000"});
@@ -104,7 +94,7 @@ describe("company number validation tests", () => {
     });
 
     const response = await request(app)
-      .post(pageURLs.PROMISE_TO_FILE_COMPANY_NUMBER)
+      .post(PROMISE_TO_FILE_COMPANY_NUMBER)
       .set("Accept", "application/json")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({companyNumber: "00012345"});
@@ -121,12 +111,12 @@ describe("company number validation tests", () => {
     mockCompanyProfile.mockResolvedValue(getDummyCompanyProfile(true, true));
 
     const response = await request(app)
-      .post(pageURLs.PROMISE_TO_FILE_COMPANY_NUMBER)
+      .post(PROMISE_TO_FILE_COMPANY_NUMBER)
       .set("Accept", "application/json")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({companyNumber: COMPANY_NUMBER});
 
-    expect(response.header.location).toEqual(pageURLs.PROMISE_TO_FILE_CHECK_COMPANY);
+    expect(response.header.location).toEqual(PROMISE_TO_FILE_CHECK_COMPANY);
     expect(response.status).toEqual(302);
     expect(mockCompanyProfile).toHaveBeenCalledWith(COMPANY_NUMBER, ACCESS_TOKEN);
     expect(updatePromiseToFileSessionValue).toHaveBeenCalledTimes(1);

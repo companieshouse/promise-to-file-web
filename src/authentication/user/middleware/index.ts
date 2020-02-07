@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import logger from "../../logger";
-import * as pageURLs from "../../model/page.urls";
+import logger from "../../../logger";
+import * as pageURLs from "../../../model/page.urls";
 
 export default (req: Request, res: Response, next: NextFunction) => {
 

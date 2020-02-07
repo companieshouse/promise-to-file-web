@@ -1,8 +1,8 @@
-import Session from "../session";
 import {NextFunction, Request, Response} from "express";
+import logger from "../../logger";
 import {COOKIE_NAME} from "../../properties";
 import * as redisService from "../../services/redis.service";
-import logger from "../../logger";
+import Session from "../session";
 
 /**
  * Adds chSession property to Request interface.

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
+import { PTF_SESSION } from "../../../src/session/keys";
 import ptfSessionLoader from "../../../src/session/middleware/ptf.session";
 import Session from "../../../src/session/session";
-import { PTF_SESSION } from "../../../src/session/keys";
 
 jest.mock("../../../src/session/store/redis.store",
   () => import("../../mocks/redis.store.mock.factory"));

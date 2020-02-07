@@ -1,13 +1,13 @@
 import {NextFunction, Request, Response} from "express";
 import {check, validationResult} from "express-validator/check";
-import * as errorMessages from "../model/error.messages";
-import {createGovUkErrorData, GovUkErrorData} from "../model/govuk.error.data";
-import * as templatePaths from "../model/template.paths";
-import {ValidationError} from "../model/validation.error";
+import {getCompanyProfile} from "../client/apiclient";
 import logger from "../logger";
 import {PTFCompanyProfile} from "../model/company.profile";
-import {getCompanyProfile} from "../client/apiclient";
+import * as errorMessages from "../model/error.messages";
+import {createGovUkErrorData, GovUkErrorData} from "../model/govuk.error.data";
 import {PROMISE_TO_FILE_CHECK_COMPANY} from "../model/page.urls";
+import * as templatePaths from "../model/template.paths";
+import {ValidationError} from "../model/validation.error";
 import {updatePromiseToFileSessionValue} from "../services/session.service";
 import {COMPANY_PROFILE} from "../session/keys";
 

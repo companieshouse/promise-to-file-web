@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import * as keys from "../keys";
 import * as sessionService from "../../services/session.service";
+import * as keys from "../keys";
 
 /**
  * Adds a "Promise to File" session object.
