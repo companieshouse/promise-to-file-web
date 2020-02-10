@@ -4,7 +4,7 @@ import {getCompanyProfile} from "../client/apiclient";
 import logger from "../logger";
 import {PTFCompanyProfile} from "../model/company.profile";
 import {COMPANY_NOT_FOUND, COMPANY_NUMBER_TOO_LONG,
-  INVALID_COMPANY_NUMBER, NO_COMPANY_NUMBER_SUPPLIED} from "../model/error.messages";
+    INVALID_COMPANY_NUMBER, NO_COMPANY_NUMBER_SUPPLIED} from "../model/error.messages";
 import {createGovUkErrorData, GovUkErrorData} from "../model/govuk.error.data";
 import {PROMISE_TO_FILE_CHECK_COMPANY} from "../model/page.urls";
 import {COMPANY_NUMBER} from "../model/template.paths";

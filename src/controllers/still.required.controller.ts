@@ -49,8 +49,8 @@ const renderPageWithError = (res: Response, errorMessage: string, companyName: s
     "");
   return res.render(STILL_REQUIRED, {
     companyName,
-    stillRequiredError: stillRequiredErrorData,
     errorList: [stillRequiredErrorData],
+    stillRequiredError: stillRequiredErrorData,
     templateName: STILL_REQUIRED,
   });
 };
