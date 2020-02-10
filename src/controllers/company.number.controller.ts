@@ -3,18 +3,19 @@ import {check, validationResult} from "express-validator/check";
 import {getCompanyProfile} from "../client/apiclient";
 import logger from "../logger";
 import {PTFCompanyProfile} from "../model/company.profile";
-import * as errorMessages from "../model/error.messages";
+import {COMPANY_NOT_FOUND, COMPANY_NUMBER_TOO_LONG,
+  INVALID_COMPANY_NUMBER, NO_COMPANY_NUMBER_SUPPLIED} from "../model/error.messages";
 import {createGovUkErrorData, GovUkErrorData} from "../model/govuk.error.data";
 import {PROMISE_TO_FILE_CHECK_COMPANY} from "../model/page.urls";
-import * as templatePaths from "../model/template.paths";
+import {COMPANY_NUMBER} from "../model/template.paths";
 import {ValidationError} from "../model/validation.error";
 import {updatePromiseToFileSessionValue} from "../services/session.service";
 import {COMPANY_PROFILE} from "../session/keys";
 
 // validator middleware that checks for an empty or too long input
 const preValidators = [
-  check("companyNumber").blacklist(" ").escape().not().isEmpty().withMessage(errorMessages.NO_COMPANY_NUMBER_SUPPLIED),
-  check("companyNumber").blacklist(" ").escape().isLength({max: 8}).withMessage(errorMessages.COMPANY_NUMBER_TOO_LONG),
+  check("companyNumber").blacklist(" ").escape().not().isEmpty().withMessage(NO_COMPANY_NUMBER_SUPPLIED),
+  check("companyNumber").blacklist(" ").escape().isLength({max: 8}).withMessage(COMPANY_NUMBER_TOO_LONG),
 ];
 
 // pads company number to 8 digits with 0's and removes whitespace
@@ -36,7 +37,7 @@ const padCompanyNumber = async (req: Request, res: Response, next: NextFunction)
 const postValidators = [
   check("companyNumber").blacklist(" ").escape().custom((value: string) => {
     if (!/^([a-zA-Z]{2})?[0-9]{6,8}$/gm.test(value)) {
-      throw new Error(errorMessages.INVALID_COMPANY_NUMBER);
+      throw new Error(INVALID_COMPANY_NUMBER);
     }
     return true;
   }),
@@ -63,13 +64,13 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
     const token: string = req.chSession.accessToken() as string;
     const company: PTFCompanyProfile = await getCompanyProfile(companyNumber, token);
 
-    updatePromiseToFileSessionValue(req.chSession, COMPANY_PROFILE, company);
+    await updatePromiseToFileSessionValue(req.chSession, COMPANY_PROFILE, company);
 
     return res.redirect(PROMISE_TO_FILE_CHECK_COMPANY);
   } catch (e) {
     logger.error("Error fetching company profile for company number ${companyNumber}", e);
     if (e.status === 404) {
-      buildError(res, errorMessages.COMPANY_NOT_FOUND);
+      buildError(res, COMPANY_NOT_FOUND);
     } else {
       return next(e);
     }
@@ -82,10 +83,10 @@ const buildError = (res: Response, errorMessage: string): void => {
     "#company-number",
     true,
     "");
-  return res.render(templatePaths.COMPANY_NUMBER, {
+  return res.render(COMPANY_NUMBER, {
     companyNumberErr: companyNumberErrorData,
     errorList: [companyNumberErrorData],
-    templateName: templatePaths.COMPANY_NUMBER,
+    templateName: COMPANY_NUMBER,
   });
 };
 
