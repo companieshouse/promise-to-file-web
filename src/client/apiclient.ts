@@ -20,7 +20,7 @@ export const getCompanyProfile = async (companyNumber: string, token: string): P
 
   logger.info(`Looking for company profile with company number ${companyNumber}`);
   const sdkResponse: Resource<CompanyProfile> =
-    await api.companyProfile.getCompanyProfile(companyNumber.toUpperCase()) as Resource<CompanyProfile>;
+    await api.companyProfile.getCompanyProfile(companyNumber.toUpperCase());
 
   if (sdkResponse.httpStatusCode >= 400) {
     throw {

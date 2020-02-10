@@ -35,6 +35,7 @@ export class RedisStore implements IStore {
         return msgpack().decode(raw);
       }
     } catch (e) {
+      logger.error(REDIS_PROBLEM + " Unable to get data", e);
       throw e;
     }
     return {};
