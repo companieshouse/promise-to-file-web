@@ -21,3 +21,4 @@ export const PROMISE_TO_FILE_CHECK_COMPANY: string = PROMISE_TO_FILE + CHECK_COM
  * Company Auth protected routes
  */
 export const STILL_REQUIRED: string = COMPANY_AUTH_PROTECTED_ROUTE + template.STILL_REQUIRED;
+export const CONFIRMATION: string = COMPANY_AUTH_PROTECTED_ROUTE + "confirmation";
