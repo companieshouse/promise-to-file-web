@@ -4,7 +4,7 @@
   {% if errorList.length > 0 %}
     Error:
   {% endif %}
-  Tell us if {{company.companyName}} is required
+  Tell us if {{companyName}} is required
 {% endblock %}
 
 {% block backLink %}
@@ -29,7 +29,7 @@
 
       {% set titleHTML %}
       Is
-      {{company.companyName}}
+      {{companyName}}
       still required?
       {% endset %}
 
