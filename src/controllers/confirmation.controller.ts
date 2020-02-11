@@ -7,8 +7,8 @@ import * as sessionService from "../services/session.service";
 import {ALREADY_SUBMITTED, COMPANY_NUMBER, COMPANY_PROFILE, SIGN_IN_INFO, USER_PROFILE} from "../session/keys";
 import {IUserProfile} from "../session/types";
 
-const ACCOUNTS_NEW_DEADLINE: number = 28;
-const CS_NEW_DEADLINE: number = 14;
+const ACCOUNTS_EXT_DEADLINE_IN_DAYS: number = 28;
+const CONFIRMATION_STATEMENT_EXT_DEADLINE_IN_DAYS: number = 14;
 
 const createMissingError = (item: string): Error => {
     const errMsg: string = item + " missing from session";
@@ -18,31 +18,25 @@ const createMissingError = (item: string): Error => {
 const route = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const companyProfile: PTFCompanyProfile =
       await sessionService.getPromiseToFileSessionValue(req.chSession, COMPANY_PROFILE);
+
+  if (!companyProfile) {
+    return next(createMissingError("Company profile"));
+  }
+
   const signInInfo = req.chSession.getSignedInInfo();
   const userProfile: IUserProfile = signInInfo[USER_PROFILE] as IUserProfile;
-
   const email = userProfile.email;
-  const dateRequested: Date = new Date(Date.now());
-  const extensionPeriodInDays =
-      (companyProfile.isAccountsOverdue) ? ACCOUNTS_NEW_DEADLINE : CS_NEW_DEADLINE;
-  const extension: Date = new Date(dateRequested);
-  extension.setDate(dateRequested.getDate() + extensionPeriodInDays);
 
-  const isSubmitted: boolean = await sessionService.getPromiseToFileSessionValue(req.chSession, ALREADY_SUBMITTED);
-  const token: string = req.chSession.accessToken() as string;
-
-  if (!(isSubmitted && token)) {
-    try {
-      await sessionService.updatePromiseToFileSessionValue(req.chSession, ALREADY_SUBMITTED, true);
-      // TODO LFA-TBC call promise-to-file api
-    } catch (e) {
-       logger.error("Error processing application " + JSON.stringify(e));
-       await sessionService.updatePromiseToFileSessionValue(req.chSession, ALREADY_SUBMITTED, false);
-       return next(e);
-    }
-  } else {
-    logger.error("Form already submitted, not processing again");
+  if (!email) {
+    return next(createMissingError("User Email"));
   }
+  const dateRequested: Date = new Date(Date.now());
+  const deadlineExtPeriodInDays =
+      (companyProfile.isAccountsOverdue) ? ACCOUNTS_EXT_DEADLINE_IN_DAYS : CONFIRMATION_STATEMENT_EXT_DEADLINE_IN_DAYS;
+  const updatedDeadline: Date = new Date(dateRequested);
+  updatedDeadline.setDate(dateRequested.getDate() + deadlineExtPeriodInDays);
+
+  // TODO LFA-TBC call promise-to-file api
 
   // TODO LFA-1380 need to add decision "is company still required" as a flag to the session.
   const isRequired: boolean = false;
@@ -50,7 +44,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
     return res.render(templatePaths.CONFIRMATION_STILL_REQUIRED,
      {
        company: companyProfile,
-       newDeadline: formatDateForDisplay(extension.toUTCString()),
+       newDeadline: formatDateForDisplay(updatedDeadline.toUTCString()),
        userEmail: email,
      });
   } else {
