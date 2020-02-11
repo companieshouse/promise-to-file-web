@@ -20,7 +20,7 @@ describe("still required validation tests", () => {
   });
 
   it("should create an error message when nothing is selected", async () => {
-    loadCompanyAuthenticatedSession(mockCacheService, "00006400");
+    loadCompanyAuthenticatedSession(mockCacheService, "00006400", "");
     const mockGetPromiseToFileSessionValue = getPromiseToFileSessionValue as jest.Mock;
     mockGetPromiseToFileSessionValue.mockReset();
     mockGetPromiseToFileSessionValue.mockImplementation(() => getDummyCompanyProfile(true, true));
@@ -31,7 +31,7 @@ describe("still required validation tests", () => {
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
     expect(response.status).toEqual(200);
-    expect(response.text).toContain("Tell us if GIRLS TRUST is required");
+    expect(response.text).toContain("Tell us if THE GIRLS DAY SCHOOL TRUST is required");
     expect(response.text).toContain(COMPANY_REQUIRED_NOT_SELECTED);
   });
 });

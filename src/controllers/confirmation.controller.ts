@@ -31,10 +31,14 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
     return next(createMissingError("User Email"));
   }
   const dateRequested: Date = new Date(Date.now());
-  const deadlineExtPeriodInDays =
-      (companyProfile.isAccountsOverdue) ? ACCOUNTS_EXT_DEADLINE_IN_DAYS : CONFIRMATION_STATEMENT_EXT_DEADLINE_IN_DAYS;
-  const updatedDeadline: Date = new Date(dateRequested);
-  updatedDeadline.setDate(dateRequested.getDate() + deadlineExtPeriodInDays);
+
+  let updatedDeadline: Date= dateRequested;
+  if (companyProfile.isAccountsOverdue || companyProfile.isConfirmationStatementOverdue) {
+      const deadlineExtPeriodInDays = (companyProfile.isAccountsOverdue) ?
+          ACCOUNTS_EXT_DEADLINE_IN_DAYS : CONFIRMATION_STATEMENT_EXT_DEADLINE_IN_DAYS;
+      updatedDeadline = new Date(dateRequested);
+      updatedDeadline.setDate(dateRequested.getDate() + deadlineExtPeriodInDays);
+  }
 
   // TODO LFA-TBC call promise-to-file api
 
