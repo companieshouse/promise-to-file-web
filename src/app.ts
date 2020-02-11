@@ -61,7 +61,7 @@ app.use((req, res, next) => {
 // error handler
 app.use((err, req, res, next) => {
 
-  logger.error("An error has occured. Re-routing to the error screen - " + err.stack);
+  logger.error("An error has occurred. Re-routing to the error screen - " + err.stack);
 
   // set locals, only providing error in development
   res.locals.message = err.message;

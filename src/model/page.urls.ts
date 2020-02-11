@@ -12,13 +12,12 @@ export const CHECK_COMPANY: string = SEPARATOR + template.CHECK_COMPANY;
 export const COMPANY_AUTH_PROTECTED_ROUTE: string = SEPARATOR + "company/:companyNumber/";
 
 /**
- * URLs for redirects will need to start with the application name
- */
-export const PROMISE_TO_FILE_COMPANY_NUMBER: string = PROMISE_TO_FILE + COMPANY_NUMBER;
-export const PROMISE_TO_FILE_CHECK_COMPANY: string = PROMISE_TO_FILE + CHECK_COMPANY;
-
-/**
  * Company Auth protected routes
  */
 export const STILL_REQUIRED: string = COMPANY_AUTH_PROTECTED_ROUTE + template.STILL_REQUIRED;
 export const CONFIRMATION: string = COMPANY_AUTH_PROTECTED_ROUTE + "confirmation";
+/**
+ * URLs for redirects will need to start with the application name
+ */
+export const PROMISE_TO_FILE_COMPANY_NUMBER: string = PROMISE_TO_FILE + COMPANY_NUMBER;
+export const PROMISE_TO_FILE_CHECK_COMPANY: string = PROMISE_TO_FILE + CHECK_COMPANY;
