@@ -31,7 +31,7 @@ describe("still required validation tests", () => {
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
     expect(response.status).toEqual(200);
-    expect(response.text).toContain("Tell us if GIRLS TRUST is required");
+    expect(response.text).toContain("Tell us if THE GIRLS DAY SCHOOL TRUST is required");
     expect(response.text).toContain(COMPANY_REQUIRED_NOT_SELECTED);
   });
 });

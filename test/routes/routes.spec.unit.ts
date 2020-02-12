@@ -66,6 +66,6 @@ describe("Basic URL Tests", () => {
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
     expect(response.status).toEqual(200);
-    expect(response.text).toMatch(/Tell us if GIRLS TRUST is required/);
+    expect(response.text).toMatch(/Tell us if THE GIRLS DAY SCHOOL TRUST is required/);
   });
 });
