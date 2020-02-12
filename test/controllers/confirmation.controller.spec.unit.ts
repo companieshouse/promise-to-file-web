@@ -1,6 +1,6 @@
 import * as request from "supertest";
 import app from "../../src/app";
-import * as pageURLs from "../../src/model/page.urls";
+import {PROMISE_TO_FILE} from "../../src/model/page.urls";
 import {COOKIE_NAME} from "../../src/properties";
 import {loadSession} from "../../src/services/redis.service";
 import {getPromiseToFileSessionValue} from "../../src/services/session.service";
@@ -15,7 +15,7 @@ const COMPANY_NUMBER: string = "00006400";
 const COMPANY_NAME: string = "THE GIRLS DAY SCHOOL TRUST";
 const EMAIL: string = "test@demo.ch.gov.uk";
 const PAGE_TITLE: string = "Confirmation page";
-const URL: string = pageURLs.PROMISE_TO_FILE + "/company/" + COMPANY_NUMBER + "/confirmation";
+const URL: string = PROMISE_TO_FILE + "/company/" + COMPANY_NUMBER + "/confirmation";
 const ERROR_PAGE: string = "Sorry, there is a problem with the service";
 
 describe("confirmation screen stating that the company is no longer required", () => {
