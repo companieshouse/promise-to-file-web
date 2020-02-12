@@ -37,7 +37,7 @@ describe("check company tests", () => {
 
     expect(response.status).toEqual(200);
 
-    expect(response.text).toContain("GIRLS TRUST");
+    expect(response.text).toContain("THE GIRLS DAY SCHOOL TRUST");
     expect(response.text).toContain("00006400");
     expect(response.text).toContain("Active");
     expect(response.text).toContain("23 September 1973");
