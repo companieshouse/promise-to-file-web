@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import {formatDateForDisplay} from "../client/date.formatter";
-import logger from "../logger";
 import {PTFCompanyProfile} from "../model/company.profile";
 import * as templatePaths from "../model/template.paths";
 import * as sessionService from "../services/session.service";
@@ -32,8 +31,9 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   }
   const dateRequested: Date = new Date(Date.now());
 
-  let updatedDeadline: Date= dateRequested;
+  let updatedDeadline: Date = dateRequested;
   if (companyProfile.isAccountsOverdue || companyProfile.isConfirmationStatementOverdue) {
+      // TODO LFA-1169 Calrify what the ext deadline period will be for accounts and cs.
       const deadlineExtPeriodInDays = (companyProfile.isAccountsOverdue) ?
           ACCOUNTS_EXT_DEADLINE_IN_DAYS : CONFIRMATION_STATEMENT_EXT_DEADLINE_IN_DAYS;
       updatedDeadline = new Date(dateRequested);
