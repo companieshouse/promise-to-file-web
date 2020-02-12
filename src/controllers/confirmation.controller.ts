@@ -1,13 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import {formatDateForDisplay} from "../client/date.formatter";
 import {PTFCompanyProfile} from "../model/company.profile";
 import * as templatePaths from "../model/template.paths";
 import * as sessionService from "../services/session.service";
 import {COMPANY_PROFILE, USER_PROFILE} from "../session/keys";
 import {IUserProfile} from "../session/types";
-
-const ACCOUNTS_EXT_DEADLINE_IN_DAYS: number = 28;
-const CONFIRMATION_STATEMENT_EXT_DEADLINE_IN_DAYS: number = 14;
 
 const createMissingError = (item: string): Error => {
     const errMsg: string = item + " missing from session";
@@ -29,16 +25,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   if (!email) {
     return next(createMissingError("User Email"));
   }
-  const dateRequested: Date = new Date(Date.now());
-
-  let updatedDeadline: Date = dateRequested;
-  if (companyProfile.isAccountsOverdue || companyProfile.isConfirmationStatementOverdue) {
-      // TODO LFA-1169 Calrify what the ext deadline period will be for accounts and cs.
-      const deadlineExtPeriodInDays = (companyProfile.isAccountsOverdue) ?
-          ACCOUNTS_EXT_DEADLINE_IN_DAYS : CONFIRMATION_STATEMENT_EXT_DEADLINE_IN_DAYS;
-      updatedDeadline = new Date(dateRequested);
-      updatedDeadline.setDate(dateRequested.getDate() + deadlineExtPeriodInDays);
-  }
+  // TODO LFA-1169 Calrify what the ext deadline period will be for accounts and cs.
 
   // TODO LFA-TBC call promise-to-file api
 
@@ -48,7 +35,6 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
     return res.render(templatePaths.CONFIRMATION_STILL_REQUIRED,
      {
        company: companyProfile,
-       newDeadline: formatDateForDisplay(updatedDeadline.toUTCString()),
        userEmail: email,
      });
   } else {
@@ -56,7 +42,6 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
      {
         company: companyProfile,
         reason: (companyProfile.isAccountsOverdue) ? "your accounts" : "confirmation statement",
-        requestedDate: formatDateForDisplay(dateRequested.toUTCString()),
         userEmail: email,
      });
   }
