@@ -42,7 +42,7 @@ describe("confirmation screen stating that the company is no longer required", (
   it("should return the error page if email is missing from session", async () => {
     mockCacheService.mockClear();
     mockPTFSession.mockClear();
-    loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, null);
+    loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER);
     const resp = await request(app)
         .get(URL)
         .set("Referer", "/")
