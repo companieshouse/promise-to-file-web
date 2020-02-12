@@ -20,7 +20,7 @@ describe("still required validation tests", () => {
   });
 
   it("should create an error message when nothing is selected", async () => {
-    loadCompanyAuthenticatedSession(mockCacheService, "00006400", "");
+    loadCompanyAuthenticatedSession(mockCacheService, "00006400");
     const mockGetPromiseToFileSessionValue = getPromiseToFileSessionValue as jest.Mock;
     mockGetPromiseToFileSessionValue.mockReset();
     mockGetPromiseToFileSessionValue.mockImplementation(() => getDummyCompanyProfile(true, true));

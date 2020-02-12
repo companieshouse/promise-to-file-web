@@ -24,7 +24,7 @@ export const loadMockSession = (mockLoadSessionFunction: jest.Mock<typeof loadSe
 };
 
 export const loadCompanyAuthenticatedSession = (mockLoadSessionFunction: jest.Mock<typeof loadSession>,
-                                                companyNumber, email): void => {
+                                                companyNumber?, email?): void => {
   mockLoadSessionFunction.prototype.constructor.mockImplementation(async (cookieId) => {
     const session = Session.newWithCookieId(cookieId);
     session.data = {
