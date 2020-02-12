@@ -3,7 +3,7 @@ import {formatDateForDisplay} from "../client/date.formatter";
 import {PTFCompanyProfile} from "../model/company.profile";
 import * as templatePaths from "../model/template.paths";
 import * as sessionService from "../services/session.service";
-import {ALREADY_SUBMITTED, COMPANY_NUMBER, COMPANY_PROFILE, SIGN_IN_INFO, USER_PROFILE} from "../session/keys";
+import {COMPANY_PROFILE, USER_PROFILE} from "../session/keys";
 import {IUserProfile} from "../session/types";
 
 const ACCOUNTS_EXT_DEADLINE_IN_DAYS: number = 28;

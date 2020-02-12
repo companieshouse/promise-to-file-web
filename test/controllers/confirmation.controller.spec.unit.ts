@@ -3,8 +3,8 @@ import app from "../../src/app";
 import * as pageURLs from "../../src/model/page.urls";
 import {COOKIE_NAME} from "../../src/properties";
 import {loadSession} from "../../src/services/redis.service";
-import {getPromiseToFileSessionValue, updatePromiseToFileSessionValue} from "../../src/services/session.service";
-import {getDummyCompanyProfile, loadCompanyAuthenticatedSession, loadMockSession} from "../mock.utils";
+import {getPromiseToFileSessionValue} from "../../src/services/session.service";
+import {getDummyCompanyProfile, loadCompanyAuthenticatedSession} from "../mock.utils";
 
 jest.mock("../../src/session/store/redis.store", () => import("../mocks/redis.store.mock.factory"));
 jest.mock("../../src/services/redis.service");
@@ -22,7 +22,7 @@ describe("confirmation screen stating that the company is no longer required", (
 
   const mockCacheService = loadSession as jest.Mock;
   const mockPTFSession =  getPromiseToFileSessionValue as jest.Mock;
- 
+
   it("should render the confirmation no longer required page", async () => {
     mockCacheService.mockClear();
     mockPTFSession.mockClear();
