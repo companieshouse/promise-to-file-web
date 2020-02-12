@@ -22,8 +22,7 @@ describe("confirmation screen stating that the company is no longer required", (
 
   const mockCacheService = loadSession as jest.Mock;
   const mockPTFSession =  getPromiseToFileSessionValue as jest.Mock;
-  const mockUpdatePromiseToFileSessionValue = updatePromiseToFileSessionValue as jest.Mock;
-
+ 
   it("should render the confirmation no longer required page", async () => {
     mockCacheService.mockClear();
     mockPTFSession.mockClear();
