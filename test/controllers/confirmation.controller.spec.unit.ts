@@ -26,8 +26,9 @@ describe("confirmation screen stating that the company is no longer required", (
   it("should render the confirmation no longer required page", async () => {
     mockCacheService.mockClear();
     mockPTFSession.mockClear();
-    loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL, "no");
-    mockPTFSession.mockResolvedValue(getDummyCompanyProfile(true, true));
+    loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
+    mockPTFSession.mockImplementationOnce(() => getDummyCompanyProfile(true, true));
+    mockPTFSession.mockImplementationOnce(() => "no");
     const resp = await request(app)
         .get(URL)
         .set("Cookie", [`${COOKIE_NAME}=123`]);
@@ -59,8 +60,9 @@ describe("confirmation screen stating that the company is no longer required", (
   it("should return the error page if company profile is missing from session", async () => {
     mockCacheService.mockClear();
     mockPTFSession.mockClear();
-    loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL, "no");
-    mockPTFSession.mockResolvedValue(null);
+    loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
+    mockPTFSession.mockImplementationOnce(() => null);
+    mockPTFSession.mockImplementationOnce(() => "no");
     const resp = await request(app)
         .get(URL)
         .set("Referer", "/")

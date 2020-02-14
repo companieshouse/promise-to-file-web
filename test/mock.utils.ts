@@ -24,8 +24,7 @@ export const loadMockSession = (mockLoadSessionFunction: jest.Mock<typeof loadSe
 };
 
 export const loadCompanyAuthenticatedSession = (mockLoadSessionFunction: jest.Mock<typeof loadSession>,
-                                                companyNumber?: string, email?: string,
-                                                isStillRequired?: string): void => {
+                                                companyNumber?: string, email?: string): void => {
   mockLoadSessionFunction.prototype.constructor.mockImplementation(async (cookieId) => {
     const session = Session.newWithCookieId(cookieId);
     session.data = {
@@ -41,7 +40,6 @@ export const loadCompanyAuthenticatedSession = (mockLoadSessionFunction: jest.Mo
         },
       },
       [keys.PTF_SESSION]: {
-        [keys.IS_STILL_REQUIRED]: isStillRequired,
         [keys.COMPANY_PROFILE]: {
           companyName: "THE GIRLS SCHOOL TRUST",
           companyNumber: "00640000",

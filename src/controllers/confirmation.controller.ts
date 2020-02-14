@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import logger from "../logger";
 import { PTFCompanyProfile } from "../model/company.profile";
 import { CONFIRMATION_NOT_REQUIRED, CONFIRMATION_STILL_REQUIRED } from "../model/template.paths";
 import {getPromiseToFileSessionValue} from "../services/session.service";
@@ -44,7 +45,8 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
         userEmail: email,
      });
   } else {
-      console.error("Neither yes nor no for some reason but is " + JSON.stringify(isStillRequired) + " why?");
+      logger.error("No decision on compay still required found - " + JSON.stringify(isStillRequired) + " was found instead");
+      next();
   }
 };
 
