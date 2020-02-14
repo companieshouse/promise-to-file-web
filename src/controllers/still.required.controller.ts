@@ -8,7 +8,7 @@ import {getPromiseToFileSessionValue} from "../services/session.service";
 import {COMPANY_PROFILE} from "../session/keys";
 
 const validators = [
-  check("continuedIllness").not().isEmpty().withMessage(COMPANY_REQUIRED_NOT_SELECTED),
+  check("stillRequired").not().isEmpty().withMessage(COMPANY_REQUIRED_NOT_SELECTED),
 ];
 
 export const getRoute = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
