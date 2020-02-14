@@ -26,30 +26,35 @@ export const loadMockSession = (mockLoadSessionFunction: jest.Mock<typeof loadSe
 export const loadCompanyAuthenticatedSession = (mockLoadSessionFunction: jest.Mock<typeof loadSession>,
                                                 companyNumber?: string, email?: string): void => {
   mockLoadSessionFunction.prototype.constructor.mockImplementation(async (cookieId) => {
-    const session = Session.newWithCookieId(cookieId);
-    session.data = {
-      [keys.SIGN_IN_INFO]: {
-        [keys.SIGNED_IN]: 1,
-        [keys.COMPANY_NUMBER]: companyNumber,
-        [keys.ACCESS_TOKEN]: {
-          [keys.ACCESS_TOKEN]: ACCESS_TOKEN,
-        },
-        [keys.USER_PROFILE]: {
-          [keys.USER_ID]: "123",
-          [keys.EMAIL]: email,
-        },
-      },
-      [keys.PTF_SESSION]: {
-        [keys.COMPANY_PROFILE]: {
-          companyName: "THE GIRLS SCHOOL TRUST",
-          companyNumber: "00640000",
-          isAccountsOverdue: true,
-          isConfirmationStatementOverdue: true,
-        },
-      },
-    };
+    const session: Session = buildDummySession(cookieId, companyNumber, email);
     return session;
   });
+};
+
+export const buildDummySession = (cookieId: string, companyNumber?: string, email?: string): Session => {
+  const session = Session.newWithCookieId(cookieId);
+  session.data = {
+    [keys.SIGN_IN_INFO]: {
+      [keys.SIGNED_IN]: 1,
+      [keys.COMPANY_NUMBER]: companyNumber,
+      [keys.ACCESS_TOKEN]: {
+        [keys.ACCESS_TOKEN]: ACCESS_TOKEN,
+      },
+      [keys.USER_PROFILE]: {
+        [keys.USER_ID]: "123",
+        [keys.EMAIL]: email,
+      },
+    },
+    [keys.PTF_SESSION]: {
+      [keys.COMPANY_PROFILE]: {
+        companyName: "THE GIRLS SCHOOL TRUST",
+        companyNumber: "00640000",
+        isAccountsOverdue: true,
+        isConfirmationStatementOverdue: true,
+      },
+    },
+  };
+  return session;
 };
 
 export const COMPANY_NUMBER = "00006400";
