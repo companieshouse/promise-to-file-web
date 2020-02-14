@@ -55,7 +55,7 @@ export const buildDummySession = (cookieId: string, companyNumber?: string, emai
     },
   };
   return session;
-}
+};
 
 export const COMPANY_NUMBER = "00006400";
 export const COMPANY_NAME = "THE GIRLS DAY SCHOOL TRUST";
