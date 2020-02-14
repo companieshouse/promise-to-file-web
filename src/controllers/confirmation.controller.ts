@@ -45,7 +45,8 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
         userEmail: email,
      });
   } else {
-      logger.error("No decision on compay still required found - " + JSON.stringify(isStillRequired) + " was found instead");
+      logger.error("Decision either yes or no on company still required not found -  " +
+          "value found: " + JSON.stringify(isStillRequired));
       next();
   }
 };
