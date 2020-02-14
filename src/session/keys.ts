@@ -23,4 +23,4 @@ export const SCOPE: string = "scope";
 export const PTF_SESSION: string = "ptf_session";
 export const COMPANY_NUMBER: string = "company_number";
 export const COMPANY_PROFILE: string = "company_profile";
-export const ALREADY_SUBMITTED: string = "already_submitted";
+export const IS_STILL_REQUIRED: string = "is_still_required";

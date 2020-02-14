@@ -27,7 +27,8 @@ describe("confirmation screen stating that the company is no longer required", (
     mockCacheService.mockClear();
     mockPTFSession.mockClear();
     loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
-    mockPTFSession.mockResolvedValue(getDummyCompanyProfile(true, true));
+    mockPTFSession.mockImplementationOnce(() => getDummyCompanyProfile(true, true));
+    mockPTFSession.mockImplementationOnce(() => false);
     const resp = await request(app)
         .get(URL)
         .set("Cookie", [`${COOKIE_NAME}=123`]);
@@ -60,7 +61,8 @@ describe("confirmation screen stating that the company is no longer required", (
     mockCacheService.mockClear();
     mockPTFSession.mockClear();
     loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
-    mockPTFSession.mockResolvedValue(null);
+    mockPTFSession.mockImplementationOnce(() => null);
+    mockPTFSession.mockImplementationOnce(() => false);
     const resp = await request(app)
         .get(URL)
         .set("Referer", "/")

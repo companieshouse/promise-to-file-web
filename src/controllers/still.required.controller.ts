@@ -1,11 +1,14 @@
 import {NextFunction, Request, Response} from "express";
 import {check, validationResult} from "express-validator/check";
+import {PTFCompanyProfile} from "../model/company.profile";
 import {COMPANY_REQUIRED_NOT_SELECTED} from "../model/error.messages";
 import {createGovUkErrorData, GovUkErrorData} from "../model/govuk.error.data";
+import {PROMISE_TO_FILE_CONFIRMATION} from "../model/page.urls";
 import {STILL_REQUIRED} from "../model/template.paths";
 import {ValidationError} from "../model/validation.error";
-import {getPromiseToFileSessionValue} from "../services/session.service";
-import {COMPANY_PROFILE} from "../session/keys";
+import {getPromiseToFileSessionValue, updatePromiseToFileSessionValue} from "../services/session.service";
+import {COMPANY_PROFILE, IS_STILL_REQUIRED} from "../session/keys";
+import Session from "../session/session";
 
 const validators = [
   check("stillRequired").not().isEmpty().withMessage(COMPANY_REQUIRED_NOT_SELECTED),
@@ -24,7 +27,7 @@ export const getRoute = async (req: Request, res: Response, next: NextFunction):
 const postRoute = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 
   const errors = validationResult(req);
-  const companyName: string = getPromiseToFileSessionValue(req.chSession, COMPANY_PROFILE).companyName;
+  const companyProfile: PTFCompanyProfile = getPromiseToFileSessionValue(req.chSession, COMPANY_PROFILE);
 
   // render errors in the view
   if (!errors.isEmpty()) {
@@ -32,13 +35,17 @@ const postRoute = async (req: Request, res: Response, next: NextFunction): Promi
       .map((err: ValidationError) => err.msg)
       .pop() as string;
 
-    return renderPageWithError(res, errorText, companyName);
+    return renderPageWithError(res, errorText, companyProfile.companyName);
   } else {
-    return res.render(STILL_REQUIRED, {
-      companyName,
-      templateName: STILL_REQUIRED,
-    });
+    await addDecisionToSession(req.body.stillRequired, req.chSession);
+    const url = PROMISE_TO_FILE_CONFIRMATION.replace(":companyNumber", companyProfile.companyNumber);
+    return res.redirect(url);
   }
+};
+
+const addDecisionToSession = async (decision: string, session: Session): Promise<void> => {
+  const decisionFlag: boolean = decision.toUpperCase() === "YES";
+  await updatePromiseToFileSessionValue(session,  IS_STILL_REQUIRED, decisionFlag);
 };
 
 const renderPageWithError = (res: Response, errorMessage: string, companyName: string): void => {
