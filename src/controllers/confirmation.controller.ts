@@ -30,24 +30,20 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
 
   // TODO LFA-TBC call promise-to-file api
 
-  const isStillRequired: string = getPromiseToFileSessionValue(req.chSession, IS_STILL_REQUIRED);
-  if (isStillRequired === "yes") {
+  const isStillRequired: boolean = getPromiseToFileSessionValue(req.chSession, IS_STILL_REQUIRED);
+  if (isStillRequired) {
     return res.render(CONFIRMATION_STILL_REQUIRED,
      {
        company: companyProfile,
        userEmail: email,
      });
-  } else if (isStillRequired === "no") {
-    return res.render(CONFIRMATION_NOT_REQUIRED,
-     {
-        company: companyProfile,
-        reason: (companyProfile.isAccountsOverdue) ? "your accounts" : "confirmation statement",
-        userEmail: email,
-     });
   } else {
-      logger.error("Decision either yes or no on company still required not found -  " +
-          "value found: " + JSON.stringify(isStillRequired));
-      next();
+    return res.render(CONFIRMATION_NOT_REQUIRED,
+    {
+      company: companyProfile,
+      reason: (companyProfile.isAccountsOverdue) ? "your accounts" : "confirmation statement",
+      userEmail: email,
+    });
   }
 };
 

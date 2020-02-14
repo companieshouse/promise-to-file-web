@@ -40,7 +40,7 @@ describe("still required validation and session tests", () => {
         .post("/promise-to-file/company/00006400/still-required")
         .set("Referer", "/")
         .set("Cookie", [`${COOKIE_NAME}=123`])
-        .send({stillRequired: "yes"});
+        .send({stillRequired: true});
 
     expect(response.status).toEqual(302);
   });
@@ -51,7 +51,7 @@ describe("still required validation and session tests", () => {
         .post("/promise-to-file/company/00006400/still-required")
         .set("Referer", "/")
         .set("Cookie", [`${COOKIE_NAME}=123`])
-        .send({stillRequired: "no"});
+        .send({stillRequired: false});
 
     expect(response.status).toEqual(302);
   });

@@ -44,7 +44,8 @@ const postRoute = async (req: Request, res: Response, next: NextFunction): Promi
 };
 
 const addDecisionToSession = async (decision: string, session: Session): Promise<void> => {
-  await updatePromiseToFileSessionValue(session,  IS_STILL_REQUIRED, decision);
+  const decisionFlag: boolean = decision === "yes";
+  await updatePromiseToFileSessionValue(session,  IS_STILL_REQUIRED, decisionFlag);
 };
 
 const renderPageWithError = (res: Response, errorMessage: string, companyName: string): void => {
