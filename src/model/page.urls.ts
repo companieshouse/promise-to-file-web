@@ -16,6 +16,7 @@ export const COMPANY_AUTH_PROTECTED_ROUTE: string = SEPARATOR + "company/:compan
  */
 export const STILL_REQUIRED: string = COMPANY_AUTH_PROTECTED_ROUTE + template.STILL_REQUIRED;
 export const CONFIRMATION: string = COMPANY_AUTH_PROTECTED_ROUTE + "confirmation";
+export const APPEND_CONFIRMATION: string = SEPARATOR + "confirmation";
 /**
  * URLs for redirects will need to start with the application name
  */

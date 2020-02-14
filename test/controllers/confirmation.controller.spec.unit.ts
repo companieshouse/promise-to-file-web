@@ -26,7 +26,7 @@ describe("confirmation screen stating that the company is no longer required", (
   it("should render the confirmation no longer required page", async () => {
     mockCacheService.mockClear();
     mockPTFSession.mockClear();
-    loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
+    loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL, "no");
     mockPTFSession.mockResolvedValue(getDummyCompanyProfile(true, true));
     const resp = await request(app)
         .get(URL)
@@ -59,7 +59,7 @@ describe("confirmation screen stating that the company is no longer required", (
   it("should return the error page if company profile is missing from session", async () => {
     mockCacheService.mockClear();
     mockPTFSession.mockClear();
-    loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
+    loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL, "no");
     mockPTFSession.mockResolvedValue(null);
     const resp = await request(app)
         .get(URL)

@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { PTFCompanyProfile } from "../model/company.profile";
 import { CONFIRMATION_NOT_REQUIRED, CONFIRMATION_STILL_REQUIRED } from "../model/template.paths";
-import * as sessionService from "../services/session.service";
-import {COMPANY_PROFILE, USER_PROFILE} from "../session/keys";
+import {getPromiseToFileSessionValue} from "../services/session.service";
+import {COMPANY_PROFILE, IS_STILL_REQUIRED, USER_PROFILE} from "../session/keys";
 import {IUserProfile} from "../session/types";
 
 const createMissingError = (item: string): Error => {
@@ -12,7 +12,7 @@ const createMissingError = (item: string): Error => {
 
 const route = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const companyProfile: PTFCompanyProfile =
-      await sessionService.getPromiseToFileSessionValue(req.chSession, COMPANY_PROFILE);
+      getPromiseToFileSessionValue(req.chSession, COMPANY_PROFILE);
 
   if (!companyProfile) {
     return next(createMissingError("Company profile"));
@@ -29,21 +29,22 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
 
   // TODO LFA-TBC call promise-to-file api
 
-  // TODO LFA-1380 need to add decision "is company still required" as a flag to the session.
-  const isRequired: boolean = false;
-  if (isRequired) {
+  const isStillRequired: string = getPromiseToFileSessionValue(req.chSession, IS_STILL_REQUIRED);
+  if (isStillRequired === "yes") {
     return res.render(CONFIRMATION_STILL_REQUIRED,
      {
        company: companyProfile,
        userEmail: email,
      });
-  } else {
+  } else if (isStillRequired === "no") {
     return res.render(CONFIRMATION_NOT_REQUIRED,
      {
         company: companyProfile,
         reason: (companyProfile.isAccountsOverdue) ? "your accounts" : "confirmation statement",
         userEmail: email,
      });
+  } else {
+      console.error("Neither yes nor no for some reason but is " + JSON.stringify(isStillRequired) + " why?");
   }
 };
 

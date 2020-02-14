@@ -2,13 +2,15 @@ import {NextFunction, Request, Response} from "express";
 import {check, validationResult} from "express-validator/check";
 import {COMPANY_REQUIRED_NOT_SELECTED} from "../model/error.messages";
 import {createGovUkErrorData, GovUkErrorData} from "../model/govuk.error.data";
+import {APPEND_CONFIRMATION, PROMISE_TO_FILE} from "../model/page.urls";
 import {STILL_REQUIRED} from "../model/template.paths";
 import {ValidationError} from "../model/validation.error";
-import {getPromiseToFileSessionValue} from "../services/session.service";
-import {COMPANY_PROFILE} from "../session/keys";
+import {getPromiseToFileSessionValue, updatePromiseToFileSessionValue} from "../services/session.service";
+import {COMPANY_PROFILE, IS_STILL_REQUIRED} from "../session/keys";
+import Session from "../session/session";
 
 const validators = [
-  check("continuedIllness").not().isEmpty().withMessage(COMPANY_REQUIRED_NOT_SELECTED),
+  check("stillRequired").not().isEmpty().withMessage(COMPANY_REQUIRED_NOT_SELECTED),
 ];
 
 export const getRoute = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -34,11 +36,15 @@ const postRoute = async (req: Request, res: Response, next: NextFunction): Promi
 
     return renderPageWithError(res, errorText, companyName);
   } else {
-    return res.render(STILL_REQUIRED, {
-      companyName,
-      templateName: STILL_REQUIRED,
-    });
+    await addDecisionToSession(req.body.stillRequired, req.chSession);
+    const companyNumber = getPromiseToFileSessionValue(req.chSession, COMPANY_PROFILE).companyNumber;
+    const url = PROMISE_TO_FILE + "/company/" + companyNumber + APPEND_CONFIRMATION;
+    return res.redirect(url);
   }
+};
+
+const addDecisionToSession = async (decision: string, session: Session): Promise<void> => {
+  await updatePromiseToFileSessionValue(session,  IS_STILL_REQUIRED, decision);
 };
 
 const renderPageWithError = (res: Response, errorMessage: string, companyName: string): void => {
