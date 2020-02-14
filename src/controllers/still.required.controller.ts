@@ -1,8 +1,9 @@
 import {NextFunction, Request, Response} from "express";
 import {check, validationResult} from "express-validator/check";
+import {PTFCompanyProfile} from "../model/company.profile";
 import {COMPANY_REQUIRED_NOT_SELECTED} from "../model/error.messages";
 import {createGovUkErrorData, GovUkErrorData} from "../model/govuk.error.data";
-import {APPEND_CONFIRMATION, PROMISE_TO_FILE} from "../model/page.urls";
+import {PROMISE_TO_FILE_CONFIRMATION} from "../model/page.urls";
 import {STILL_REQUIRED} from "../model/template.paths";
 import {ValidationError} from "../model/validation.error";
 import {getPromiseToFileSessionValue, updatePromiseToFileSessionValue} from "../services/session.service";
@@ -26,7 +27,7 @@ export const getRoute = async (req: Request, res: Response, next: NextFunction):
 const postRoute = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 
   const errors = validationResult(req);
-  const companyName: string = getPromiseToFileSessionValue(req.chSession, COMPANY_PROFILE).companyName;
+  const companyProfile: PTFCompanyProfile = getPromiseToFileSessionValue(req.chSession, COMPANY_PROFILE);
 
   // render errors in the view
   if (!errors.isEmpty()) {
@@ -34,17 +35,16 @@ const postRoute = async (req: Request, res: Response, next: NextFunction): Promi
       .map((err: ValidationError) => err.msg)
       .pop() as string;
 
-    return renderPageWithError(res, errorText, companyName);
+    return renderPageWithError(res, errorText, companyProfile.companyName);
   } else {
     await addDecisionToSession(req.body.stillRequired, req.chSession);
-    const companyNumber = getPromiseToFileSessionValue(req.chSession, COMPANY_PROFILE).companyNumber;
-    const url = PROMISE_TO_FILE + "/company/" + companyNumber + APPEND_CONFIRMATION;
+    const url = PROMISE_TO_FILE_CONFIRMATION.replace(":companyNumber", companyProfile.companyNumber);
     return res.redirect(url);
   }
 };
 
 const addDecisionToSession = async (decision: string, session: Session): Promise<void> => {
-  const decisionFlag: boolean = decision === "yes";
+  const decisionFlag: boolean = decision.toUpperCase() === "YES";
   await updatePromiseToFileSessionValue(session,  IS_STILL_REQUIRED, decisionFlag);
 };
 

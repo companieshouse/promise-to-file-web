@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import logger from "../logger";
 import { PTFCompanyProfile } from "../model/company.profile";
 import { CONFIRMATION_NOT_REQUIRED, CONFIRMATION_STILL_REQUIRED } from "../model/template.paths";
 import {getPromiseToFileSessionValue} from "../services/session.service";
