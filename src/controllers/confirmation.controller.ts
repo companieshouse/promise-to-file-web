@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { PTFCompanyProfile } from "../model/company.profile";
-import { CONFIRMATION_NOT_REQUIRED, CONFIRMATION_STILL_REQUIRED } from "../model/template.paths";
+import { Templates } from "../model/template.paths";
 import {getPromiseToFileSessionValue} from "../services/session.service";
 import {COMPANY_PROFILE, IS_STILL_REQUIRED, USER_PROFILE} from "../session/keys";
 import {IUserProfile} from "../session/types";
@@ -31,13 +31,13 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
 
   const isStillRequired: boolean = getPromiseToFileSessionValue(req.chSession, IS_STILL_REQUIRED);
   if (isStillRequired) {
-    return res.render(CONFIRMATION_STILL_REQUIRED,
+    return res.render(Templates.CONFIRMATION_STILL_REQUIRED,
      {
        company: companyProfile,
        userEmail: email,
      });
   } else {
-    return res.render(CONFIRMATION_NOT_REQUIRED,
+    return res.render(Templates.CONFIRMATION_NOT_REQUIRED,
     {
       company: companyProfile,
       reason: (companyProfile.isAccountsOverdue) ? "your accounts" : "confirmation statement",

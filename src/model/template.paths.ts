@@ -1,6 +1,8 @@
-export const INDEX: string = "index";
-export const COMPANY_NUMBER: string = "company-number";
-export const CHECK_COMPANY: string = "check-company";
-export const STILL_REQUIRED: string = "still-required";
-export const CONFIRMATION_STILL_REQUIRED: string = "confirmation-still-required";
-export const CONFIRMATION_NOT_REQUIRED: string = "confirmation-not-required";
+export enum Templates {
+  INDEX = "index",
+  COMPANY_NUMBER = "company-number",
+  CHECK_COMPANY = "check-company",
+  STILL_REQUIRED = "still-required",
+  CONFIRMATION_STILL_REQUIRED = "confirmation-still-required",
+  CONFIRMATION_NOT_REQUIRED = "confirmation-not-required",
+}
