@@ -34,7 +34,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   const token: string = req.chSession.accessToken() as string;
   try {
     if (token) {
-      // TODO  LFA-TBC Add isSubmitted flag to prevent this being sent twice
+      // TODO  LFA-1406 Add isSubmitted flag to prevent this being sent twice
       await callPromiseToFileAPI(companyProfile.companyNumber, token, isStillRequired);
     }
   } catch (e) {
