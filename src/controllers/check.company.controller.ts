@@ -6,9 +6,9 @@ import { COMPANY_PROFILE } from "../session/keys";
 
 /**
  * GET controller for check company details screen
- * @param req 
- * @param res 
- * @param next 
+ * @param req
+ * @param res
+ * @param next
  */
 export const route = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 

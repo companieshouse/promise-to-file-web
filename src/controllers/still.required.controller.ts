@@ -16,9 +16,9 @@ const validators = [
 
 /**
  * GET controller for still required screen
- * @param req 
- * @param res 
- * @param next 
+ * @param req
+ * @param res
+ * @param next
  */
 export const getRoute = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 
@@ -32,9 +32,9 @@ export const getRoute = async (req: Request, res: Response, next: NextFunction):
 
 /**
  * POST controller for still required screen
- * @param req 
- * @param res 
- * @param next 
+ * @param req
+ * @param res
+ * @param next
  */
 const postRoute = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 

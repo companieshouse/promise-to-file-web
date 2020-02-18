@@ -62,7 +62,7 @@ export const getCompanyProfile = async (companyNumber: string, token: string): P
 
 /**
  * Sends a request to the Promise To File API. Typically called at the end of the web journey.
- * @param companyNumber 
+ * @param companyNumber
  * @param token API security token
  * @param isStillRequired Is this company still needed
  */

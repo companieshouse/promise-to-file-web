@@ -45,9 +45,9 @@ const postValidators = [
 
 /**
  * POST controller for company number screen
- * @param req 
- * @param res 
- * @param next 
+ * @param req
+ * @param res
+ * @param next
  */
 const route = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   logger.debug("Attempt to retrieve and show the company details");

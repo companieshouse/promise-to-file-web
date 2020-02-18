@@ -43,7 +43,7 @@ describe("axios call handler", () => {
     const errorMessage = "There is an error";
     const dataError = "Test error";
 
-    const axiosError: AxiosError = {
+    const axiosError = {
       message: errorMessage,
       response: {
         data: {
@@ -54,12 +54,13 @@ describe("axios call handler", () => {
     } as AxiosError;
 
     callCurrentMockRequest.mockRejectedValueOnce(axiosError);
-    expect.assertions(3);
 
-    await makeAPICall(config).catch((e) => {
-      expect(e.data).toContain(dataError);
-      expect(e.message).toBe(errorMessage);
-      expect(e.status).toEqual(500);
-    });
+    const expectedError = {
+      data: [dataError],
+      message: errorMessage,
+      status: 500,
+    };
+
+    await expect(makeAPICall(config)).rejects.toMatchObject(expectedError);
   });
 });
