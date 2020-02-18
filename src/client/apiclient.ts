@@ -60,14 +60,15 @@ export const getCompanyProfile = async (companyNumber: string, token: string): P
   };
 };
 
-export const callCurrent = async (companyNumber: string, token: string, isStillRequired: boolean): Promise<void> => {
+export const callPromiseToFileAPI = async (companyNumber: string, token: string, isStillRequired: boolean):
+    Promise<AxiosResponse> => {
   const CURRENT_API_PATH = `${PROMISE_TO_FILE_API_URL}/company/${companyNumber}/promise-to-file/current`;
   const config: AxiosRequestConfig = getBaseAxiosRequestConfig(token);
   config.data = { company_required: isStillRequired };
   config.method = HTTP_POST;
   config.url = CURRENT_API_PATH;
   logger.info(`Calling promise to file current api for company ${companyNumber} with the value of ${isStillRequired}`);
-  await makeAPICall(config);
+  return await makeAPICall(config);
 };
 
 /**

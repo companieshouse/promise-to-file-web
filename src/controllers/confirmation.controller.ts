@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import {callCurrent} from "../client/apiclient";
+import {callPromiseToFileAPI} from "../client/apiclient";
 import logger from "../logger";
 import { PTFCompanyProfile } from "../model/company.profile";
 import { CONFIRMATION_NOT_REQUIRED, CONFIRMATION_STILL_REQUIRED } from "../model/template.paths";
@@ -35,7 +35,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   try {
     if (token) {
       // TODO  LFA-TBC Add isSubmitted flag to prevent this being sent twice
-      await callCurrent(companyProfile.companyNumber, token, isStillRequired);
+      await callPromiseToFileAPI(companyProfile.companyNumber, token, isStillRequired);
     }
   } catch (e) {
     logger.error("Error processing application " + JSON.stringify(e));
