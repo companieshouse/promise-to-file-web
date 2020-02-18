@@ -19,7 +19,7 @@ export const getBaseAxiosRequestConfig = (token: string): AxiosRequestConfig => 
 };
 
 /**
- * Makes a call to whatever url` is set in AxiosRequestConfig and returns the result of that
+ * Makes a call to whatever url is set in AxiosRequestConfig and returns the result of that
  * call in AxiosResponse.
  * Will throw error if unable to make call.
  * Throws error if unable to make call
