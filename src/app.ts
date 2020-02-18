@@ -7,10 +7,10 @@ import companyAuthenticate from "./authentication/company/middleware/index";
 import authenticate from "./authentication/user/middleware/index";
 import httpLogger from "./http.logger";
 import logger from "./logger";
-import {ERROR_SUMMARY_TITLE} from "./model/error.messages";
+import { ERROR_SUMMARY_TITLE } from "./model/error.messages";
 import * as pageURLs from "./model/page.urls";
-import {PIWIK_SITE_ID, PIWIK_URL} from "./properties";
-import {appRouter} from "./routes/routes";
+import { PIWIK_SITE_ID, PIWIK_URL } from "./properties";
+import { appRouter } from "./routes/routes";
 import sessionMiddleware from "./session/middleware";
 import ptfSessionLoader from "./session/middleware/ptf.session";
 

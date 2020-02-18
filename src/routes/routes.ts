@@ -1,9 +1,8 @@
-import {NextFunction, Request, Response, Router} from "express";
+import { NextFunction, Request, Response, Router } from "express";
 import checkCompanyRoute from "../controllers/check.company.controller";
 import companyNumberRoute from "../controllers/company.number.controller";
 import confirmationRoute from "../controllers/confirmation.controller";
-import stillRequiredRoute from "../controllers/still.required.controller";
-import stillRequiredPostRoute, {getRoute as stillRequiredGetRoute} from "../controllers/still.required.controller";
+import stillRequiredPostRoute, { getRoute as stillRequiredGetRoute } from "../controllers/still.required.controller";
 import * as pageURLs from "../model/page.urls";
 import * as templatePaths from "../model/template.paths";
 
@@ -15,7 +14,7 @@ const router: Router = Router();
  * @param template the template name
  */
 const renderTemplate = (template: string) => (req: Request, res: Response, next: NextFunction) => {
-  return res.render(template, {templateName: template});
+  return res.render(template, { templateName: template });
 };
 
 router.get(pageURLs.ROOT, renderTemplate(templatePaths.INDEX));

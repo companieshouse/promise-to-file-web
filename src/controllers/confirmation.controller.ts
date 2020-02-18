@@ -1,20 +1,26 @@
 import { NextFunction, Request, Response } from "express";
-import {callPromiseToFileAPI} from "../client/apiclient";
+import { callPromiseToFileAPI } from "../client/apiclient";
 import logger from "../logger";
 import { PTFCompanyProfile } from "../model/company.profile";
 import { CONFIRMATION_NOT_REQUIRED, CONFIRMATION_STILL_REQUIRED } from "../model/template.paths";
-import {getPromiseToFileSessionValue} from "../services/session.service";
-import {COMPANY_PROFILE, IS_STILL_REQUIRED, USER_PROFILE} from "../session/keys";
-import {IUserProfile} from "../session/types";
+import { getPromiseToFileSessionValue } from "../services/session.service";
+import { COMPANY_PROFILE, IS_STILL_REQUIRED, USER_PROFILE } from "../session/keys";
+import { IUserProfile } from "../session/types";
 
 const createMissingError = (item: string): Error => {
     const errMsg: string = item + " missing from session";
     return new Error(errMsg);
 };
 
+/**
+ * GET controller for confirmation screen
+ * @param req 
+ * @param res 
+ * @param next 
+ */
 const route = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const companyProfile: PTFCompanyProfile =
-      getPromiseToFileSessionValue(req.chSession, COMPANY_PROFILE);
+    getPromiseToFileSessionValue(req.chSession, COMPANY_PROFILE);
 
   if (!companyProfile) {
     return next(createMissingError("Company profile"));

@@ -1,5 +1,5 @@
-import {PTFCompanyProfile} from "../src/model/company.profile";
-import {loadSession} from "../src/services/redis.service";
+import { PTFCompanyProfile } from "../src/model/company.profile";
+import { loadSession } from "../src/services/redis.service";
 import * as keys from "../src/session/keys";
 import Session from "../src/session/session";
 

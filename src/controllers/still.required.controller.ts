@@ -1,19 +1,25 @@
-import {NextFunction, Request, Response} from "express";
-import {check, validationResult} from "express-validator/check";
-import {PTFCompanyProfile} from "../model/company.profile";
-import {COMPANY_REQUIRED_NOT_SELECTED} from "../model/error.messages";
-import {createGovUkErrorData, GovUkErrorData} from "../model/govuk.error.data";
-import {PROMISE_TO_FILE_CONFIRMATION} from "../model/page.urls";
-import {STILL_REQUIRED} from "../model/template.paths";
-import {ValidationError} from "../model/validation.error";
-import {getPromiseToFileSessionValue, updatePromiseToFileSessionValue} from "../services/session.service";
-import {COMPANY_PROFILE, IS_STILL_REQUIRED} from "../session/keys";
+import { NextFunction, Request, Response } from "express";
+import { check, validationResult } from "express-validator/check";
+import { PTFCompanyProfile } from "../model/company.profile";
+import { COMPANY_REQUIRED_NOT_SELECTED } from "../model/error.messages";
+import { createGovUkErrorData, GovUkErrorData } from "../model/govuk.error.data";
+import { PROMISE_TO_FILE_CONFIRMATION } from "../model/page.urls";
+import { STILL_REQUIRED } from "../model/template.paths";
+import { ValidationError } from "../model/validation.error";
+import { getPromiseToFileSessionValue, updatePromiseToFileSessionValue } from "../services/session.service";
+import { COMPANY_PROFILE, IS_STILL_REQUIRED } from "../session/keys";
 import Session from "../session/session";
 
 const validators = [
   check("stillRequired").not().isEmpty().withMessage(COMPANY_REQUIRED_NOT_SELECTED),
 ];
 
+/**
+ * GET controller for still required screen
+ * @param req 
+ * @param res 
+ * @param next 
+ */
 export const getRoute = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 
   const companyName: string = getPromiseToFileSessionValue(req.chSession, COMPANY_PROFILE).companyName;
@@ -24,6 +30,12 @@ export const getRoute = async (req: Request, res: Response, next: NextFunction):
   });
 };
 
+/**
+ * POST controller for still required screen
+ * @param req 
+ * @param res 
+ * @param next 
+ */
 const postRoute = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 
   const errors = validationResult(req);
