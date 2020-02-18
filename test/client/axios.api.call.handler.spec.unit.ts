@@ -38,10 +38,10 @@ describe("axios call handler", () => {
 
   it("should handle axios errors", async () => {
     const config: AxiosRequestConfig = {};
-    dummyAxiosResponse.status = 500;
 
     const errorMessage = "There is an error";
     const dataError = "Test error";
+    const statusCode = 500;
 
     const axiosError = {
       message: errorMessage,
@@ -49,7 +49,7 @@ describe("axios call handler", () => {
         data: {
           errors: [dataError],
         },
-        status: 500,
+        status: statusCode,
       },
     } as AxiosError;
 
@@ -58,7 +58,7 @@ describe("axios call handler", () => {
     const expectedError = {
       data: [dataError],
       message: errorMessage,
-      status: 500,
+      status: statusCode,
     };
 
     await expect(makeAPICall(config)).rejects.toMatchObject(expectedError);
