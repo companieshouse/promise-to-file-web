@@ -1,4 +1,6 @@
 import { NextFunction, Request, Response } from "express";
+import {callPromiseToFileAPI} from "../client/apiclient";
+import logger from "../logger";
 import { PTFCompanyProfile } from "../model/company.profile";
 import { CONFIRMATION_NOT_REQUIRED, CONFIRMATION_STILL_REQUIRED } from "../model/template.paths";
 import {getPromiseToFileSessionValue} from "../services/session.service";
@@ -27,9 +29,19 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   }
   // TODO LFA-1169 Clarify what the ext deadline period will be for accounts and cs.
 
-  // TODO LFA-TBC call promise-to-file api
-
   const isStillRequired: boolean = getPromiseToFileSessionValue(req.chSession, IS_STILL_REQUIRED);
+
+  const token: string = req.chSession.accessToken() as string;
+  try {
+    if (token) {
+      // TODO  LFA-1406 Add isSubmitted flag to prevent this being sent twice
+      await callPromiseToFileAPI(companyProfile.companyNumber, token, isStillRequired);
+    }
+  } catch (e) {
+    logger.error("Error processing application " + JSON.stringify(e));
+    return next(e);
+  }
+
   if (isStillRequired) {
     return res.render(CONFIRMATION_STILL_REQUIRED,
      {
