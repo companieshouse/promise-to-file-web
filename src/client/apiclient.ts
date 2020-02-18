@@ -4,7 +4,7 @@ import { CompanyProfile } from "ch-sdk-node/dist/services/company-profile";
 import Resource from "ch-sdk-node/dist/services/resource";
 import logger from "../logger";
 import { PTFCompanyProfile } from "../model/company.profile";
-import { PROMISE_TO_FILE_API_URL } from "../session/config";
+import { PROMISE_TO_FILE_API_URL } from "../properties";
 import {lookupCompanyStatus, lookupCompanyType} from "./api.enumerations";
 import {getBaseAxiosRequestConfig, HTTP_POST, makeAPICall} from "./axios.api.call.handler";
 import { formatDateForDisplay } from "./date.formatter";
