@@ -1,6 +1,6 @@
-import {NextFunction, Request, Response} from "express";
+import { NextFunction, Request, Response } from "express";
 import logger from "../../logger";
-import {COOKIE_NAME} from "../../properties";
+import { COOKIE_NAME } from "../../properties";
 import * as redisService from "../../services/redis.service";
 import Session from "../session";
 

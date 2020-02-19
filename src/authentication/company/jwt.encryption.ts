@@ -1,6 +1,6 @@
-import {randomBytes} from "crypto";
-import {JWE, JWK} from "node-jose";
-import {OAUTH2_REQUEST_KEY} from "../../properties";
+import { randomBytes } from "crypto";
+import { JWE, JWK } from "node-jose";
+import { OAUTH2_REQUEST_KEY } from "../../properties";
 
 /**
  * Implementation referenced from
@@ -44,4 +44,4 @@ async function jweEncodeWithNonce(returnUri: string, nonce: string, attributeNam
   }).update(payload).final();
 }
 
-export {jweEncodeWithNonce, generateNonce};
+export { jweEncodeWithNonce, generateNonce };

@@ -1,16 +1,16 @@
-import {NextFunction, Request, Response} from "express";
-import {check, validationResult} from "express-validator/check";
-import {getCompanyProfile} from "../client/apiclient";
+import { NextFunction, Request, Response } from "express";
+import { check, validationResult } from "express-validator/check";
+import { getCompanyProfile } from "../client/apiclient";
 import logger from "../logger";
-import {PTFCompanyProfile} from "../model/company.profile";
-import {COMPANY_NOT_FOUND, COMPANY_NUMBER_TOO_LONG,
-    INVALID_COMPANY_NUMBER, NO_COMPANY_NUMBER_SUPPLIED} from "../model/error.messages";
-import {createGovUkErrorData, GovUkErrorData} from "../model/govuk.error.data";
-import {PROMISE_TO_FILE_CHECK_COMPANY} from "../model/page.urls";
-import {COMPANY_NUMBER} from "../model/template.paths";
-import {ValidationError} from "../model/validation.error";
-import {updatePromiseToFileSessionValue} from "../services/session.service";
-import {COMPANY_PROFILE} from "../session/keys";
+import { PTFCompanyProfile } from "../model/company.profile";
+import { COMPANY_NOT_FOUND, COMPANY_NUMBER_TOO_LONG,
+    INVALID_COMPANY_NUMBER, NO_COMPANY_NUMBER_SUPPLIED } from "../model/error.messages";
+import { createGovUkErrorData, GovUkErrorData } from "../model/govuk.error.data";
+import { PROMISE_TO_FILE_CHECK_COMPANY } from "../model/page.urls";
+import { COMPANY_NUMBER } from "../model/template.paths";
+import { ValidationError } from "../model/validation.error";
+import { updatePromiseToFileSessionValue } from "../services/session.service";
+import { COMPANY_PROFILE } from "../session/keys";
 
 // validator middleware that checks for an empty or too long input
 const preValidators = [
@@ -27,8 +27,8 @@ const padCompanyNumber = async (req: Request, res: Response, next: NextFunction)
     trailingChars = trailingChars.padStart(6, "0");
     companyNumber = leadingLetters + trailingChars;
   } else {
-      companyNumber = companyNumber.padStart(8, "0");
-    }
+    companyNumber = companyNumber.padStart(8, "0");
+  }
   req.body.companyNumber = companyNumber;
   return next();
 };
@@ -43,6 +43,12 @@ const postValidators = [
   }),
 ];
 
+/**
+ * POST controller for company number screen
+ * @param req
+ * @param res
+ * @param next
+ */
 const route = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   logger.debug("Attempt to retrieve and show the company details");
 

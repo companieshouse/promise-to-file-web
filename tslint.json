@@ -6,7 +6,17 @@
   "jsRules": {},
   "rules": {
     "interface-name": false,
-    "variable-name": [true, "check-format", "allow-leading-underscore"]
+    "variable-name": [true, "check-format", "allow-leading-underscore"],
+    "whitespace": [true,
+      "check-branch",
+      "check-decl",
+      "check-operator",
+      "check-typecast",
+      "check-separator",
+      "check-module",
+      "check-type",
+      "check-type-operator",
+      "check-preblock"]
   },
   "linterOptions": {
     "exclude": [

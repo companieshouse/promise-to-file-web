@@ -7,8 +7,8 @@ jest.mock("axios", () => {
     };
 });
 
-import {AxiosResponse} from "axios";
-import {callPromiseToFileAPI} from "../../src/client/apiclient";
+import { AxiosResponse } from "axios";
+import { callPromiseToFileAPI } from "../../src/client/apiclient";
 
 const companyNumber: string = "00006400";
 const token: string = "abc123";

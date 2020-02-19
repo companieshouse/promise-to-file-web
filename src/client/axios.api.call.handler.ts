@@ -1,9 +1,13 @@
-import {AxiosError, AxiosRequestConfig, AxiosResponse, Method} from "axios";
+import { AxiosError, AxiosRequestConfig, AxiosResponse, Method } from "axios";
 import axios from "axios";
 import logger from "../logger";
 
 export const HTTP_POST: Method = "post";
 
+/**
+ * A base axios config that is common for API calls.
+ * @param token Bearer token for API call
+ */
 export const getBaseAxiosRequestConfig = (token: string): AxiosRequestConfig => {
     return {
         headers: {
@@ -14,11 +18,18 @@ export const getBaseAxiosRequestConfig = (token: string): AxiosRequestConfig => 
     };
 };
 
+/**
+ * Makes a call to whatever url is set in AxiosRequestConfig and returns the result of that
+ * call in AxiosResponse.
+ * Will throw error if unable to make call.
+ * Throws error if unable to make call
+ * @param config: AxiosRequestConfig
+ */
 export const makeAPICall = async (config: AxiosRequestConfig): Promise<AxiosResponse> => {
     try {
         return await axios.request<any>(config);
     } catch (err) {
-        logger.error(`API ERROR ${err}`);
+        logger.error(`API ERROR ${JSON.stringify(err, null, 2)}`);
         const axiosError = err as AxiosError;
         const {response, message} = axiosError;
         throw {
