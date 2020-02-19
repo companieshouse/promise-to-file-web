@@ -44,4 +44,4 @@ async function jweEncodeWithNonce(returnUri: string, nonce: string, attributeNam
   }).update(payload).final();
 }
 
-export {jweEncodeWithNonce, generateNonce};
+export { jweEncodeWithNonce, generateNonce };
