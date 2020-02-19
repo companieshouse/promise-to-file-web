@@ -1,6 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import {callPromiseToFileAPI} from "../client/apiclient";
-import logger from "../logger";
 import { PTFCompanyProfile } from "../model/company.profile";
 import { CONFIRMATION_NOT_REQUIRED, CONFIRMATION_STILL_REQUIRED } from "../model/template.paths";
 import {getPromiseToFileSessionValue} from "../services/session.service";
@@ -31,6 +29,8 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
 
   const isStillRequired: boolean = getPromiseToFileSessionValue(req.chSession, IS_STILL_REQUIRED);
 
+  // TODO problem on api contacting CHIPS still in dev; reintroduce when LFA-1184 is complete
+  /*
   const token: string = req.chSession.accessToken() as string;
   try {
     if (token) {
@@ -40,7 +40,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   } catch (e) {
     logger.error("Error processing application " + JSON.stringify(e));
     return next(e);
-  }
+  }*/
 
   if (isStillRequired) {
     return res.render(CONFIRMATION_STILL_REQUIRED,
