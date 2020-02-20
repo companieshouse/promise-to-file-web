@@ -1,5 +1,5 @@
-import {unmarshalAccessToken, unmarshalSignInInfo, unmarshalUserProfile} from "../../src/session/store/util";
-import {IAccessToken, IMap, ISignInInfo, IUserProfile} from "../../src/session/types";
+import { unmarshalAccessToken, unmarshalSignInInfo, unmarshalUserProfile } from "../../src/session/store/util";
+import { IAccessToken, IMap, ISignInInfo, IUserProfile } from "../../src/session/types";
 
 const DUMMY_TOKEN = {
   access_token: "token",

@@ -1,10 +1,10 @@
 import * as msgpack from "msgpack5";
 import * as redis from "redis";
-import {promisify} from "util";
+import { promisify } from "util";
 import logger from "../../logger";
-import {CACHE_SERVER} from "../../properties";
+import { CACHE_SERVER } from "../../properties";
 import Session from "../session";
-import {IMap} from "../types";
+import { IMap } from "../types";
 import IStore from "./store";
 
 export interface IRedisStoreOptions {

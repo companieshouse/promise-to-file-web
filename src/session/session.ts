@@ -1,8 +1,8 @@
 import * as crypto from "crypto";
-import {COOKIE_SECRET, DEFAULT_SESSION_EXPIRATION, INTEGER_PARSE_BASE} from "../properties";
+import { COOKIE_SECRET, DEFAULT_SESSION_EXPIRATION, INTEGER_PARSE_BASE } from "../properties";
 import * as keys from "./keys";
 import { unmarshalSignInInfo } from "./store/util";
-import {IMap} from "./types";
+import { IMap } from "./types";
 
 export default class Session {
   get cookieId(): string {

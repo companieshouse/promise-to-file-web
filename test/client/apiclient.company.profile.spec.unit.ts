@@ -1,8 +1,8 @@
-import {CompanyProfile} from "ch-sdk-node/dist/services/company-profile";
+import { CompanyProfile } from "ch-sdk-node/dist/services/company-profile";
 import CompanyProfileService from "ch-sdk-node/dist/services/company-profile/service";
 import Resource from "ch-sdk-node/dist/services/resource";
-import {getCompanyProfile} from "../../src/client/apiclient";
-import {PTFCompanyProfile} from "../../src/model/company.profile";
+import { getCompanyProfile } from "../../src/client/apiclient";
+import { PTFCompanyProfile } from "../../src/model/company.profile";
 import * as mockUtils from "../mock.utils";
 
 jest.mock("ch-sdk-node/dist/services/company-profile/service");
@@ -167,35 +167,35 @@ const dummySDKResponse: Resource<CompanyProfile> = {
   httpStatusCode: 200,
   resource: {
     accounts: {
-        nextAccounts: {
-            periodEndOn: "2019-10-10",
-            periodStartOn: "2019-01-01",
-        },
-        nextDue: "2020-05-31",
-        overdue: false,
+      nextAccounts: {
+          periodEndOn: "2019-10-10",
+          periodStartOn: "2019-01-01",
+      },
+      nextDue: "2020-05-31",
+      overdue: false,
     },
     companyName: "Girl's school trust",
     companyNumber: "00006400",
     companyStatus: "active",
     companyStatusDetail: "company status detail",
     confirmationStatement: {
-        nextDue: "2020-04-30",
-        overdue: false,
+      nextDue: "2020-04-30",
+      overdue: false,
     },
     dateOfCreation: "1872-06-26",
     hasBeenLiquidated: false,
     hasCharges: false,
     hasInsolvencyHistory: false,
     registeredOfficeAddress: {
-        addressLineOne: "line1",
-        addressLineTwo: "line2",
-        careOf: "careOf",
-        country: "uk",
-        locality: "locality",
-        poBox: "123",
-        postalCode: "post code",
-        premises: "premises",
-        region: "region",
+      addressLineOne: "line1",
+      addressLineTwo: "line2",
+      careOf: "careOf",
+      country: "uk",
+      locality: "locality",
+      poBox: "123",
+      postalCode: "post code",
+      premises: "premises",
+      region: "region",
     },
     sicCodes: ["123"],
     type: "limited",

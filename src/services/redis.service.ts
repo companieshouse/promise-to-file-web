@@ -19,4 +19,4 @@ const loadSession = async (cookieId: string): Promise<Session> => {
   return session;
 };
 
-export {saveSession, loadSession};
+export { saveSession, loadSession };

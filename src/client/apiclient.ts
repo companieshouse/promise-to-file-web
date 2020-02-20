@@ -1,9 +1,12 @@
+import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { createApiClient } from "ch-sdk-node";
 import { CompanyProfile } from "ch-sdk-node/dist/services/company-profile";
 import Resource from "ch-sdk-node/dist/services/resource";
 import logger from "../logger";
 import { PTFCompanyProfile } from "../model/company.profile";
-import {lookupCompanyStatus, lookupCompanyType} from "./api.enumerations";
+import { PROMISE_TO_FILE_API_URL } from "../properties";
+import { lookupCompanyStatus, lookupCompanyType } from "./api.enumerations";
+import { getBaseAxiosRequestConfig, HTTP_POST, makeAPICall } from "./axios.api.call.handler";
 import { formatDateForDisplay } from "./date.formatter";
 
 /**
@@ -55,6 +58,23 @@ export const getCompanyProfile = async (companyNumber: string, token: string): P
     isConfirmationStatementOverdue:
       (companyProfile.confirmationStatement.overdue) || (isConfirmationStatementDueDatePassed),
   };
+};
+
+/**
+ * Sends a request to the Promise To File API. Typically called at the end of the web journey.
+ * @param companyNumber
+ * @param token API security token
+ * @param isStillRequired Is this company still needed
+ */
+export const callPromiseToFileAPI = async (companyNumber: string, token: string, isStillRequired: boolean):
+    Promise<AxiosResponse> => {
+  const CURRENT_API_PATH = `${PROMISE_TO_FILE_API_URL}/company/${companyNumber}/promise-to-file/current`;
+  const config: AxiosRequestConfig = getBaseAxiosRequestConfig(token);
+  config.data = { company_required: isStillRequired };
+  config.method = HTTP_POST;
+  config.url = CURRENT_API_PATH;
+  logger.info(`Calling promise to file current api for company ${companyNumber} with the value of ${isStillRequired}`);
+  return await makeAPICall(config);
 };
 
 /**

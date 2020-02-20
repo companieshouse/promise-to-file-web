@@ -1,10 +1,10 @@
 import * as request from "supertest";
 import app from "../../../../src/app";
-import {COOKIE_NAME} from "../../../../src/properties";
-import {loadSession} from "../../../../src/services/redis.service";
+import { COOKIE_NAME } from "../../../../src/properties";
+import { loadSession } from "../../../../src/services/redis.service";
 import * as keys from "../../../../src/session/keys";
 import Session from "../../../../src/session/session";
-import {loadMockSession} from "../../../mock.utils";
+import { loadMockSession } from "../../../mock.utils";
 
 jest.mock("../../../../src/session/store/redis.store",
   () => import("../../../mocks/redis.store.mock.factory"));

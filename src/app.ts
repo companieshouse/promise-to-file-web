@@ -7,10 +7,10 @@ import companyAuthenticate from "./authentication/company/middleware/index";
 import authenticate from "./authentication/user/middleware/index";
 import httpLogger from "./http.logger";
 import logger from "./logger";
-import {ERROR_SUMMARY_TITLE} from "./model/error.messages";
+import { ERROR_SUMMARY_TITLE } from "./model/error.messages";
 import * as pageURLs from "./model/page.urls";
-import {PIWIK_SITE_ID, PIWIK_URL} from "./properties";
-import {appRouter} from "./routes/routes";
+import { PIWIK_SITE_ID, PIWIK_URL } from "./properties";
+import { appRouter } from "./routes/routes";
 import sessionMiddleware from "./session/middleware";
 import ptfSessionLoader from "./session/middleware/ptf.session";
 
@@ -65,7 +65,7 @@ app.use((err, req, res, next) => {
 
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
+  res.locals.error = req.app.get("env") === "development" ? err : { };
 
   // render the error page
   res.status(err.status || 500);

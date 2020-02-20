@@ -1,18 +1,26 @@
 import { NextFunction, Request, Response } from "express";
+import { callPromiseToFileAPI } from "../client/apiclient";
+import logger from "../logger";
 import { PTFCompanyProfile } from "../model/company.profile";
 import { Templates } from "../model/template.paths";
-import {getPromiseToFileSessionValue} from "../services/session.service";
-import {COMPANY_PROFILE, IS_STILL_REQUIRED, USER_PROFILE} from "../session/keys";
-import {IUserProfile} from "../session/types";
+import { getPromiseToFileSessionValue } from "../services/session.service";
+import { COMPANY_PROFILE, IS_STILL_REQUIRED, USER_PROFILE } from "../session/keys";
+import { IUserProfile } from "../session/types";
 
 const createMissingError = (item: string): Error => {
     const errMsg: string = item + " missing from session";
     return new Error(errMsg);
 };
 
+/**
+ * GET controller for confirmation screen
+ * @param req
+ * @param res
+ * @param next
+ */
 const route = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const companyProfile: PTFCompanyProfile =
-      getPromiseToFileSessionValue(req.chSession, COMPANY_PROFILE);
+    getPromiseToFileSessionValue(req.chSession, COMPANY_PROFILE);
 
   if (!companyProfile) {
     return next(createMissingError("Company profile"));
@@ -27,9 +35,21 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   }
   // TODO LFA-1169 Clarify what the ext deadline period will be for accounts and cs.
 
-  // TODO LFA-TBC call promise-to-file api
-
   const isStillRequired: boolean = getPromiseToFileSessionValue(req.chSession, IS_STILL_REQUIRED);
+
+  // TODO problem on api contacting CHIPS still in dev; reintroduce when LFA-1184 is complete
+  /*
+  const token: string = req.chSession.accessToken() as string;
+  try {
+    if (token) {
+      // TODO  LFA-1406 Add isSubmitted flag to prevent this being sent twice
+      await callPromiseToFileAPI(companyProfile.companyNumber, token, isStillRequired);
+    }
+  } catch (e) {
+    logger.error("Error processing application " + JSON.stringify(e));
+    return next(e);
+  }*/
+
   if (isStillRequired) {
     return res.render(Templates.CONFIRMATION_STILL_REQUIRED,
      {
@@ -40,7 +60,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
     return res.render(Templates.CONFIRMATION_NOT_REQUIRED,
     {
       company: companyProfile,
-      reason: (companyProfile.isAccountsOverdue) ? "your accounts" : "confirmation statement",
+      overdueFiling: (companyProfile.isAccountsOverdue) ? "accounts" : "confirmation statement",
       userEmail: email,
     });
   }

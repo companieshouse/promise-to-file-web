@@ -1,13 +1,13 @@
 import * as request from "supertest";
 import app from "../../src/app";
-import {getCompanyProfile} from "../../src/client/apiclient";
-import {PROMISE_TO_FILE_CHECK_COMPANY, PROMISE_TO_FILE_COMPANY_NUMBER} from "../../src/model/page.urls";
-import {COOKIE_NAME} from "../../src/properties";
-import {loadSession} from "../../src/services/redis.service";
-import {updatePromiseToFileSessionValue} from "../../src/services/session.service";
-import {COMPANY_PROFILE} from "../../src/session/keys";
+import { getCompanyProfile } from "../../src/client/apiclient";
+import { PROMISE_TO_FILE_CHECK_COMPANY, PROMISE_TO_FILE_COMPANY_NUMBER } from "../../src/model/page.urls";
+import { COOKIE_NAME } from "../../src/properties";
+import { loadSession } from "../../src/services/redis.service";
+import { updatePromiseToFileSessionValue } from "../../src/services/session.service";
+import { COMPANY_PROFILE } from "../../src/session/keys";
 import Session from "../../src/session/session";
-import {ACCESS_TOKEN, getDummyCompanyProfile, loadMockSession} from "../mock.utils";
+import { ACCESS_TOKEN, getDummyCompanyProfile, loadMockSession } from "../mock.utils";
 
 jest.mock("../../src/session/store/redis.store", () => import("../mocks/redis.store.mock.factory"));
 jest.mock("../../src/services/redis.service");
