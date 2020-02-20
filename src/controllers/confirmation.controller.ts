@@ -60,7 +60,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
     return res.render(CONFIRMATION_NOT_REQUIRED,
     {
       company: companyProfile,
-      reason: (companyProfile.isAccountsOverdue) ? "your accounts" : "confirmation statement",
+      overdueFiling: (companyProfile.isAccountsOverdue) ? "accounts" : "confirmation statement",
       userEmail: email,
     });
   }
