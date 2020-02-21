@@ -23,7 +23,7 @@ describe("Basic URL Tests", () => {
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
     expect(response.status).toEqual(200);
-    expect(response.text).toMatch(/Use this service to stop us from removing a company/);
+    expect(response.text).toMatch(/Use this service to tell us if you still require a company that has overdue filing/);
   });
 
   it("should return error code and page if requested page doesn't exist", async () => {
