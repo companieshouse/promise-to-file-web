@@ -32,7 +32,18 @@
       <h1 class="govuk-heading-xl">
         Tell us if a company is still required
       </h1>
-      <p class="govuk-body-l">Use this service to stop us from removing a company with overdue filings from the register.</p>
+      <p class="govuk-body-l">Use this service to tell us if you still require a company that has overdue filing.</p>
+
+      <p>This will temporarily stop us from closing it on your behalf if we think it is not operational. The company must still file, and it will receive a fine for filing late that increases over time.</p>
+
+      <p>If the company is not required, you should
+        <a href="http://resources.companieshouse.gov.uk/close-a-company/index.html">close the company</a>.</p>
+
+      {{ govukWarningText({
+        text: "Not filing for a company is a criminal offence. The directors of the company risk prosecution and company assets may be seized.",
+        iconFallbackText: "Warning"
+      }) }}
+
       <p>It takes about 5 minutes to complete this service.</p>
       <a id="start-now" href="/promise-to-file/company-number" role="button" class="govuk-button govuk-button--start govuk-!-margin-top-2 govuk-!-margin-bottom-8"
          data-event-id="start-now-button" onclick="_paq.push(['trackGoal', 3])">Start now</a>
