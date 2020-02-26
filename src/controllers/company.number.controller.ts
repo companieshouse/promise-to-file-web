@@ -7,7 +7,7 @@ import { COMPANY_NOT_FOUND, COMPANY_NUMBER_TOO_LONG,
     INVALID_COMPANY_NUMBER, NO_COMPANY_NUMBER_SUPPLIED } from "../model/error.messages";
 import { createGovUkErrorData, GovUkErrorData } from "../model/govuk.error.data";
 import { PROMISE_TO_FILE_CHECK_COMPANY } from "../model/page.urls";
-import { COMPANY_NUMBER } from "../model/template.paths";
+import { Templates } from "../model/template.paths";
 import { ValidationError } from "../model/validation.error";
 import { updatePromiseToFileSessionValue } from "../services/session.service";
 import { COMPANY_PROFILE } from "../session/keys";
@@ -89,10 +89,10 @@ const buildError = (res: Response, errorMessage: string): void => {
     "#company-number",
     true,
     "");
-  return res.render(COMPANY_NUMBER, {
+  return res.render(Templates.COMPANY_NUMBER, {
     companyNumberErr: companyNumberErrorData,
     errorList: [companyNumberErrorData],
-    templateName: COMPANY_NUMBER,
+    templateName: Templates.COMPANY_NUMBER,
   });
 };
 

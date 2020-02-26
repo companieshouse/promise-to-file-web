@@ -4,7 +4,7 @@ import { PTFCompanyProfile } from "../model/company.profile";
 import { COMPANY_REQUIRED_NOT_SELECTED } from "../model/error.messages";
 import { createGovUkErrorData, GovUkErrorData } from "../model/govuk.error.data";
 import { PROMISE_TO_FILE_CONFIRMATION } from "../model/page.urls";
-import { STILL_REQUIRED } from "../model/template.paths";
+import { Templates } from "../model/template.paths";
 import { ValidationError } from "../model/validation.error";
 import { getPromiseToFileSessionValue, updatePromiseToFileSessionValue } from "../services/session.service";
 import { COMPANY_PROFILE, IS_STILL_REQUIRED } from "../session/keys";
@@ -24,9 +24,9 @@ export const getRoute = async (req: Request, res: Response, next: NextFunction):
 
   const companyName: string = getPromiseToFileSessionValue(req.chSession, COMPANY_PROFILE).companyName;
 
-  return res.render(STILL_REQUIRED, {
+  return res.render(Templates.STILL_REQUIRED, {
     companyName,
-    templateName: STILL_REQUIRED,
+    templateName: Templates.STILL_REQUIRED,
   });
 };
 
@@ -66,11 +66,11 @@ const renderPageWithError = (res: Response, errorMessage: string, companyName: s
     "#still-required",
     true,
     "");
-  return res.render(STILL_REQUIRED, {
+  return res.render(Templates.STILL_REQUIRED, {
     companyName,
     errorList: [stillRequiredErrorData],
     stillRequiredError: stillRequiredErrorData,
-    templateName: STILL_REQUIRED,
+    templateName: Templates.STILL_REQUIRED,
   });
 };
 

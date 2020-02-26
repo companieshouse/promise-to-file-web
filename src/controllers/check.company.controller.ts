@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { PTFCompanyProfile } from "../model/company.profile";
-import { CHECK_COMPANY } from "../model/template.paths";
+import { Templates } from "../model/template.paths";
 import { getPromiseToFileSessionValue } from "../services/session.service";
 import { COMPANY_PROFILE } from "../session/keys";
 
@@ -14,9 +14,9 @@ export const route = async (req: Request, res: Response, next: NextFunction): Pr
 
   const company: PTFCompanyProfile = getPromiseToFileSessionValue(req.chSession, COMPANY_PROFILE);
 
-  return res.render(CHECK_COMPANY, {
+  return res.render(Templates.CHECK_COMPANY, {
     company,
-    templateName: CHECK_COMPANY,
+    templateName: Templates.CHECK_COMPANY,
   });
 };
 
