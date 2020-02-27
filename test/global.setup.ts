@@ -14,5 +14,5 @@ export default async () => {
   process.env.OAUTH2_AUTH_URI = "http://auth.url.com";
   process.env.OAUTH2_CLIENT_ID = "1234";
   process.env.OAUTH2_REDIRECT_URI = "http://return.url";
-  process.env.PROMISE_TO_FILE_API_URL = "http://localhost:9333";
+  process.env.API_LOCAL_URL = "http://localhost:9333";
 };
