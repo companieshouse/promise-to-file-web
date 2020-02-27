@@ -37,32 +37,28 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
 
   const isStillRequired: boolean = getPromiseToFileSessionValue(req.chSession, IS_STILL_REQUIRED);
 
-  // TODO problem on api contacting CHIPS still in dev; reintroduce when LFA-1184 is complete
-  /*
-  const token: string = req.chSession.accessToken() as string;
+  const token = req.chSession.accessToken() as string;
   try {
-    if (token) {
       // TODO  LFA-1406 Add isSubmitted flag to prevent this being sent twice
       await callPromiseToFileAPI(companyProfile.companyNumber, token, isStillRequired);
-    }
   } catch (e) {
     logger.error("Error processing application " + JSON.stringify(e));
     return next(e);
-  }*/
+  }
 
   if (isStillRequired) {
     return res.render(Templates.CONFIRMATION_STILL_REQUIRED,
-     {
-       company: companyProfile,
-       userEmail: email,
-     });
+      {
+        company: companyProfile,
+        userEmail: email,
+      });
   } else {
     return res.render(Templates.CONFIRMATION_NOT_REQUIRED,
-    {
-      company: companyProfile,
-      overdueFiling: (companyProfile.isAccountsOverdue) ? "accounts" : "confirmation statement",
-      userEmail: email,
-    });
+      {
+        company: companyProfile,
+        overdueFiling: (companyProfile.isAccountsOverdue) ? "accounts" : "confirmation statement",
+        userEmail: email,
+      });
   }
 };
 
