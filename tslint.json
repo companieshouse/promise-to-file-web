@@ -20,6 +20,8 @@
   },
   "linterOptions": {
     "exclude": [
+      "src/public/stylesheets/**/*.scss",
+      "src/public/stylesheets/**/*.css"
     ]
   },
   "rulesDirectory": []

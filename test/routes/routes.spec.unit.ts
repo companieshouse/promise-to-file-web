@@ -54,6 +54,21 @@ describe("Basic URL Tests", () => {
     expect(response.text).toMatch(/Check company details/);
   });
 
+  it("should find the warning page", async () => {
+    loadCompanyAuthenticatedSession(mockCacheService, "00006400");
+    const mockGetPromiseToFileSessionValue = getPromiseToFileSessionValue as jest.Mock;
+    mockGetPromiseToFileSessionValue.mockReset();
+    mockGetPromiseToFileSessionValue.mockImplementation(() => getDummyCompanyProfile(true, true));
+
+    const response = await request(app)
+      .get("/promise-to-file/company/00006400/warning")
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+
+    expect(response.status).toEqual(200);
+    expect(response.text).toMatch(/Attention/);
+  });
+
   it("should find the still required page", async () => {
     loadCompanyAuthenticatedSession(mockCacheService, "00006400");
     const mockGetPromiseToFileSessionValue = getPromiseToFileSessionValue as jest.Mock;
