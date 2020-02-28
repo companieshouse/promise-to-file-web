@@ -4,7 +4,7 @@ import { CompanyProfile } from "ch-sdk-node/dist/services/company-profile";
 import Resource from "ch-sdk-node/dist/services/resource";
 import logger from "../logger";
 import { PTFCompanyProfile } from "../model/company.profile";
-import { API_LOCAL_URL } from "../properties";
+import { INTERNALAPI_URL } from "../properties";
 import { lookupCompanyStatus, lookupCompanyType } from "./api.enumerations";
 import { getBaseAxiosRequestConfig, HTTP_POST, makeAPICall } from "./axios.api.call.handler";
 import { formatDateForDisplay } from "./date.formatter";
@@ -68,7 +68,7 @@ export const getCompanyProfile = async (companyNumber: string, token: string): P
  */
 export const callPromiseToFileAPI = async (companyNumber: string, token: string, isStillRequired: boolean):
     Promise<AxiosResponse> => {
-  const CURRENT_API_PATH = `${API_LOCAL_URL}/company/${companyNumber}/promise-to-file/current`;
+  const CURRENT_API_PATH = `${INTERNALAPI_URL}/company/${companyNumber}/promise-to-file/current`;
   const config: AxiosRequestConfig = getBaseAxiosRequestConfig(token);
   config.data = { company_required: isStillRequired };
   config.method = HTTP_POST;
