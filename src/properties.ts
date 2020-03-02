@@ -44,4 +44,4 @@ export const OAUTH2_CLIENT_ID = getEnvironmentValue("OAUTH2_CLIENT_ID");
 
 export const OAUTH2_REDIRECT_URI = getEnvironmentValue("OAUTH2_REDIRECT_URI");
 
-export const INTERNALAPI_URL = getEnvironmentValue("INTERNALAPI_URL");
+export const INTERNAL_API_URL = getEnvironmentValue("INTERNAL_API_URL");

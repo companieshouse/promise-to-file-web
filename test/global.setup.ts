@@ -14,5 +14,5 @@ export default async () => {
   process.env.OAUTH2_AUTH_URI = "http://auth.url.com";
   process.env.OAUTH2_CLIENT_ID = "1234";
   process.env.OAUTH2_REDIRECT_URI = "http://return.url";
-  process.env.INTERNALAPI_URL = "http://localhost:9333";
+  process.env.INTERNAL_API_URL = "http://localhost:9333";
 };
