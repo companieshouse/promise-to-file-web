@@ -14,6 +14,7 @@ export const COMPANY_AUTH_PROTECTED_ROUTE: string = SEPARATOR + "company/:compan
 /**
  * Company Auth protected routes
  */
+export const WARNING: string = COMPANY_AUTH_PROTECTED_ROUTE + Templates.WARNING;
 export const STILL_REQUIRED: string = COMPANY_AUTH_PROTECTED_ROUTE + Templates.STILL_REQUIRED;
 export const CONFIRMATION: string = COMPANY_AUTH_PROTECTED_ROUTE + "confirmation";
 

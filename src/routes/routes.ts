@@ -3,6 +3,7 @@ import checkCompanyRoute from "../controllers/check.company.controller";
 import companyNumberRoute from "../controllers/company.number.controller";
 import confirmationRoute from "../controllers/confirmation.controller";
 import stillRequiredPostRoute, { getRoute as stillRequiredGetRoute } from "../controllers/still.required.controller";
+import warningRoute from "../controllers/warning.controller";
 import * as pageURLs from "../model/page.urls";
 import { Templates } from "../model/template.paths";
 
@@ -23,6 +24,8 @@ router.get(pageURLs.COMPANY_NUMBER, renderTemplate(Templates.COMPANY_NUMBER));
 router.post(pageURLs.COMPANY_NUMBER, ...companyNumberRoute);
 
 router.get(pageURLs.CHECK_COMPANY, checkCompanyRoute);
+
+router.get(pageURLs.WARNING, warningRoute);
 
 router.get(pageURLs.STILL_REQUIRED, stillRequiredGetRoute);
 router.post(pageURLs.STILL_REQUIRED, stillRequiredPostRoute);
