@@ -40,6 +40,23 @@ describe("confirmation screen stating that the company is no longer required", (
     expect(resp.text).toContain(PAGE_TITLE);
   });
 
+  it("should render the confirmation stub page", async () => {
+    mockCacheService.mockClear();
+    mockPTFSession.mockClear();
+    loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
+    mockPTFSession.mockImplementationOnce(() => getDummyCompanyProfile(true, true));
+    mockPTFSession.mockImplementationOnce(() => false);
+    const resp = await request(app)
+      .get(URL)
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+
+    expect(resp.status).toEqual(200);
+    expect(resp.text).toContain(COMPANY_NAME);
+    expect(resp.text).not.toContain(COMPANY_NUMBER);
+    expect(resp.text).toContain(EMAIL);
+    expect(resp.text).toContain(PAGE_TITLE);
+  });
+
   it("should return the error page if email is missing from session", async () => {
     mockCacheService.mockClear();
     mockPTFSession.mockClear();

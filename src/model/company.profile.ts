@@ -8,6 +8,7 @@ export interface PTFCompanyProfile {
     line_2: string;
     postCode: string;
   };
+  jurisdiction: string;
   accountsDue: string;
   accountingPeriodStartOn: string;
   accountingPeriodEndOn: string;

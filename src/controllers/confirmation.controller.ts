@@ -47,7 +47,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   }
 
   if (isStillRequired) {
-    return res.render(Templates.CONFIRMATION_STILL_REQUIRED,
+    return res.render(Templates.COMPANY_REQUIRED,
       {
         company: companyProfile,
         userEmail: email,
