@@ -68,6 +68,7 @@ export const LINE_2 = "street";
 export const POST_CODE = "CF1 123";
 export const ACCOUNTS_NEXT_DUE_DATE = "2019-05-12";
 export const CONFIRMATION_STATEMENT_NEXT_DUE_DATE = "2019-09-03";
+export const JURISDICTION = "england-wales";
 
 export const getDummyCompanyProfile = (isOverdue: boolean, isActive): PTFCompanyProfile => {
   return {
@@ -87,5 +88,6 @@ export const getDummyCompanyProfile = (isOverdue: boolean, isActive): PTFCompany
     incorporationDate: COMPANY_INC_DATE,
     isAccountsOverdue: isOverdue,
     isConfirmationStatementOverdue: isOverdue,
+    jurisdiction: JURISDICTION,
   };
 };

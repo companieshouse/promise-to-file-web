@@ -39,8 +39,11 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
 
   const token = req.chSession.accessToken() as string;
   try {
-      // TODO  LFA-1406 Add isSubmitted flag to prevent this being sent twice
+    // TODO  LFA-1406 Add isSubmitted flag to prevent this being sent twice
+    // TODO  LFA-1169: subtask Remove feature flag when stub screen removed
+    if (!isStillRequired) {
       await callPromiseToFileAPI(companyProfile.companyNumber, token, isStillRequired);
+    }
   } catch (e) {
     logger.error("Error processing application " + JSON.stringify(e));
     return next(e);
