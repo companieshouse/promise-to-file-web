@@ -57,6 +57,7 @@ export const getCompanyProfile = async (companyNumber: string, token: string): P
       (companyProfile.accounts.overdue) || (isAccountsDueDatePassed),
     isConfirmationStatementOverdue:
       (companyProfile.confirmationStatement.overdue) || (isConfirmationStatementDueDatePassed),
+    jurisdiction: companyProfile.jurisdiction,
   };
 };
 

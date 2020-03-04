@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+
+<!-- Adds a class to increase vertical spacing for pages without a back button -->
+{% set mainClasses = "govuk-main-wrapper--l" %}
+
+{% block pageTitle %}
+  Confirmation page
+{% endblock %}
+
+{% block content %}
+
+  {% set warningHTML %}
+  Failure to file confirmation statements or accounts is a criminal offence and the company director can be fined in criminal court. Information about the consequences of not filing can be
+  <a href="https://www.gov.uk/government/publications/late-filing-penalties/late-filing-penalties#late-filing-penalty-fees">found in our guidance</a>.
+  {% endset %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <h1 class="govuk-heading-xl">{{company.companyName}} is still required</h1>
+
+      <h2 class="govuk-heading-l">What you need to do</h2>
+      <h3 class="govuk-heading-m">File your documents now</h3>
+      <p>Use our
+        <a href="www.gov.uk/file-your-company-annual-accounts">online filing service</a>. You’ll need your company number and authentication code.</p>
+      {{ govukInsetText({
+    text: "Your company will get an automatic late filing penalty when your accounts are delivered to us. This increases the later you file."
+  }) }}
+
+      <h3 class="govuk-heading-m">If you cannot file your accounts</h3>
+      <p>You should contact us:</p>
+      <h4 class="govuk-heading-s">By email</h4>
+      <p class="govuk-body">enquiries@companieshouse.gov.uk</p>
+      <h4 class="govuk-heading-s">By post</h4>
+      {% if company.jurisdiction === "scotland" %}
+      <p class="govuk-body">
+        Companies House<br/>
+        4th Floor<br/>
+        Edinburgh Quay 2<br/>
+        139 Fountainbridge<br/>
+        Edinburgh<br/>
+        EH3 9FF
+      </p>
+      {% elseif company.jurisdiction === "northern-ireland" %}
+      <p class="govuk-body">
+        Companies House<br/>
+        2nd Floor<br/>
+        The Linenhall<br/>
+        32-38 Linenhall Street<br/>
+        Belfast<br/>
+        BT2 8BG
+      </p>
+      {% else %}
+      <p class="govuk-body">
+        Companies House<br/>
+        PO Box 710<br/>
+        Crown Way<br/>
+        CF14 3UZ
+      </p>
+      {% endif %}
+      <p class="govuk-body">
+        <a href="https://www.gov.uk/service-manual/user-centred-design/resources/patterns/feedback-pages.html" class="govuk-link">What did you think of this service?</a>
+        (takes 30 seconds)
+      </p>
+    </div>
+  </div>
+
+{% endblock %}
