@@ -33,6 +33,7 @@ describe("company number validation tests", () => {
     const response = await request(app)
       .post(PROMISE_TO_FILE_COMPANY_NUMBER)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({companyNumber: ""});
 
@@ -47,6 +48,7 @@ describe("company number validation tests", () => {
     const response = await request(app)
       .post(PROMISE_TO_FILE_COMPANY_NUMBER)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({companyNumber: "    "});
 
@@ -61,6 +63,7 @@ describe("company number validation tests", () => {
     const response = await request(app)
       .post(PROMISE_TO_FILE_COMPANY_NUMBER)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({companyNumber: "asdfg!!@"});
 
@@ -75,6 +78,7 @@ describe("company number validation tests", () => {
     const response = await request(app)
       .post(PROMISE_TO_FILE_COMPANY_NUMBER)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({companyNumber: "000064000"});
 
@@ -96,6 +100,7 @@ describe("company number validation tests", () => {
     const response = await request(app)
       .post(PROMISE_TO_FILE_COMPANY_NUMBER)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({companyNumber: "00012345"});
 
@@ -113,6 +118,7 @@ describe("company number validation tests", () => {
     const response = await request(app)
       .post(PROMISE_TO_FILE_COMPANY_NUMBER)
       .set("Accept", "application/json")
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
       .send({companyNumber: COMPANY_NUMBER});
 

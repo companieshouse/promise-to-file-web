@@ -20,7 +20,7 @@ const ERROR_PAGE: string = "Sorry, there is a problem with the service";
 const SCOTLAND: string = "scotland";
 const NORTHERN_IRELAND: string = "northern-ireland";
 
-describe("confirmation screen stating that the company is no longer required", () => {
+describe("Company no longer required confirmation screen tests", () => {
 
   const mockCacheService = loadSession as jest.Mock;
   const mockPTFSession =  getPromiseToFileSessionValue as jest.Mock;
@@ -32,8 +32,9 @@ describe("confirmation screen stating that the company is no longer required", (
     mockPTFSession.mockImplementationOnce(() => getDummyCompanyProfile(true, true));
     mockPTFSession.mockImplementationOnce(() => false);
     const resp = await request(app)
-        .get(URL)
-        .set("Cookie", [`${COOKIE_NAME}=123`]);
+      .get(URL)
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
 
     expect(resp.status).toEqual(200);
     expect(resp.text).toContain(COMPANY_NAME);
@@ -51,6 +52,7 @@ describe("confirmation screen stating that the company is no longer required", (
     mockPTFSession.mockImplementationOnce(() => true);
     const resp = await request(app)
       .get(URL)
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
     expect(resp.status).toEqual(200);
@@ -71,6 +73,7 @@ describe("confirmation screen stating that the company is no longer required", (
     mockPTFSession.mockImplementationOnce(() => true);
     const resp = await request(app)
       .get(URL)
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
     expect(resp.status).toEqual(200);
@@ -91,6 +94,7 @@ describe("confirmation screen stating that the company is no longer required", (
     mockPTFSession.mockImplementationOnce(() => true);
     const resp = await request(app)
       .get(URL)
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
     expect(resp.status).toEqual(200);

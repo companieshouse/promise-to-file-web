@@ -28,7 +28,14 @@ describe("Authentication middleware", () => {
   it("should redirect to start page if loading start page with trailing slash", async () => {
     const response = await request(app)
       .get("/promise-to-file/");
-    expect(response.status).toEqual(200);
+    expect(response.status).toEqual(302);
+  });
+
+  it("should redirect to start page if /promise-to-file/* called and signed in", async () => {
+    const response = await request(app)
+      .get("/promise-to-file/company-number")
+      .expect("Location", "/promise-to-file");
+    expect(response.status).toEqual(302);
   });
 
   it("should redirect to signin if /promise-to-file/* called and not signed in", async () => {
@@ -62,7 +69,7 @@ describe("Authentication middleware", () => {
     setNotSignedIn();
     const response = await request(app)
       .get("/promise-to-file/company-number")
-      .expect("Location", "/signin?return_to=/promise-to-file");
+      .expect("Location", "/promise-to-file");
     expect(response.status).toEqual(302);
   });
 });
