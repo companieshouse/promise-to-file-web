@@ -120,6 +120,7 @@ describe("Company no longer required confirmation screen tests", () => {
     mockActiveFeature.mockImplementationOnce(() => true);
     const resp = await request(app)
       .get(URL)
+      .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
     expect(resp.status).toEqual(200);
