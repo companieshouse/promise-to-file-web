@@ -1,4 +1,3 @@
-import { json } from "express";
 import * as request from "supertest";
 import app from "../../../../src/app";
 import { COOKIE_NAME } from "../../../../src/properties";
@@ -11,8 +10,8 @@ jest.mock("../../../../src/session/store/redis.store",
   () => import("../../../mocks/redis.store.mock.factory"));
 jest.mock("../../../../src/services/redis.service");
 
-const INDEX_STRING: string = "Use this service to tell us if you still require a company that has overdue filing.";
-const COMPANY_NUMBER_STRING: string = "What is the company number?";
+const INDEX_TITLE: string = "Tell us if a company is still required";
+const COMPANY_NUMBER_TITLE: string = "Tell us your company number";
 
 const mockCacheService = loadSession as jest.Mock;
 
@@ -28,7 +27,7 @@ describe("Authentication middleware", () => {
     const response = await request(app)
       .get("/promise-to-file");
     expect(response.status).toEqual(200);
-    expect(response.text).toContain(INDEX_STRING);
+    expect(response.text).toContain(INDEX_TITLE);
   });
 
   it("should load start page if loading start page with trailing slash", async () => {
@@ -37,7 +36,7 @@ describe("Authentication middleware", () => {
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(response.status).toEqual(200);
-    expect(response.text).toContain(INDEX_STRING);
+    expect(response.text).toContain(INDEX_TITLE);
   });
 
   it("should redirect to start page if loading start page with trailing slash and no referrer", async () => {
@@ -54,7 +53,7 @@ describe("Authentication middleware", () => {
       .set("Referer", "/promise-to-file/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(response.status).toEqual(200);
-    expect(response.text).toContain(COMPANY_NUMBER_STRING);
+    expect(response.text).toContain(COMPANY_NUMBER_TITLE);
   });
 
   it("should redirect to signin if /promise-to-file/* called and not signed in", async () => {
@@ -72,6 +71,7 @@ describe("Authentication middleware", () => {
       .get("/promise-to-file")
       .set("Referer", "/");
     expect(response.status).toEqual(200);
+    expect(response.text).toContain(INDEX_TITLE);
   });
 
   it("should redirect to signin if navigating from /promise-to-file page and not signed in", async () => {
@@ -89,6 +89,7 @@ describe("Authentication middleware", () => {
       .set("Referer", "/promise-to-file")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(response.status).toEqual(200);
+    expect(response.text).toContain(COMPANY_NUMBER_TITLE);
   });
 
   it("should redirect to sign in screen if /promise-to-file/* called from outside of the PTF journey and not signed in",
