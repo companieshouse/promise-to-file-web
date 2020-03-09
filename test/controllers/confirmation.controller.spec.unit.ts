@@ -1,5 +1,6 @@
 import * as request from "supertest";
 import app from "../../src/app";
+import activeFeature from "../../src/feature.flag";
 import { PROMISE_TO_FILE } from "../../src/model/page.urls";
 import { COOKIE_NAME } from "../../src/properties";
 import { loadSession } from "../../src/services/redis.service";
@@ -10,6 +11,7 @@ jest.mock("../../src/session/store/redis.store", () => import("../mocks/redis.st
 jest.mock("../../src/services/redis.service");
 jest.mock("../../src/client/apiclient");
 jest.mock("../../src/services/session.service");
+jest.mock("../../src/feature.flag");
 
 const COMPANY_NUMBER: string = "00006400";
 const COMPANY_NAME: string = "THE GIRLS DAY SCHOOL TRUST";
@@ -24,6 +26,7 @@ describe("Company no longer required confirmation screen tests", () => {
 
   const mockCacheService = loadSession as jest.Mock;
   const mockPTFSession =  getPromiseToFileSessionValue as jest.Mock;
+  const mockActiveFeature = activeFeature as jest.Mock;
 
   it("should render the confirmation no longer required page", async () => {
     mockCacheService.mockClear();
@@ -102,6 +105,28 @@ describe("Company no longer required confirmation screen tests", () => {
     expect(resp.text).not.toContain(COMPANY_NUMBER);
     expect(resp.text).toContain("What you need to do");
     expect(resp.text).toContain("BT2 8BG");
+    expect(resp.text).toContain(PAGE_TITLE);
+  });
+
+  it("should render the confirmation still required page when feature flag is true", async () => {
+
+    mockCacheService.mockClear();
+    mockPTFSession.mockClear();
+    mockActiveFeature.mockClear();
+    loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
+    const dummyProfile = getDummyCompanyProfile(true, true);
+    mockPTFSession.mockImplementationOnce(() => dummyProfile);
+    mockPTFSession.mockImplementationOnce(() => true);
+    mockActiveFeature.mockImplementationOnce(() => true);
+    const resp = await request(app)
+      .get(URL)
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+
+    expect(resp.status).toEqual(200);
+    expect(resp.text).toContain(COMPANY_NAME);
+    expect(resp.text).toContain(COMPANY_NUMBER);
+    expect(resp.text).toContain("will be kept on the register");
+    expect(resp.text).not.toContain("CF14 3UZ");
     expect(resp.text).toContain(PAGE_TITLE);
   });
 

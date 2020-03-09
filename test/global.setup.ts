@@ -15,4 +15,5 @@ export default async () => {
   process.env.OAUTH2_CLIENT_ID = "1234";
   process.env.OAUTH2_REDIRECT_URI = "http://return.url";
   process.env.INTERNAL_API_URL = "http://localhost:9333";
+  process.env.COMPANY_STILL_REQUIRED_FEATURE_FLAG = "false";
 };
