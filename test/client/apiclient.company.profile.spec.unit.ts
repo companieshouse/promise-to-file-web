@@ -9,9 +9,6 @@ jest.mock("ch-sdk-node/dist/services/company-profile/service");
 
 // Dates used when testing the setting of the accounts and confirmation statement 'overdue' flag
 const DATE_TODAY: string = "2020-01-31";
-const DATE_YESTERDAY: string = "2020-01-30";
-const DATE_IN_FUTURE: string = "2020-05-17";
-const DATE_IN_PAST: string = "2019-08-03";
 
 describe("apiclient company profile unit tests", () => {
   const mockGetCompanyProfile = (CompanyProfileService.prototype.getCompanyProfile as jest.Mock);
@@ -39,6 +36,16 @@ describe("apiclient company profile unit tests", () => {
     expect(company).toEqual(expectedProfile);
   });
 
+  it("returns an PTFCompanyProfile object with accounts and confirmation statement overdue", async () => {
+    const overdueCompanyProfileResponse = dummySDKResponse;
+    overdueCompanyProfileResponse.resource.accounts.overdue = true;
+    overdueCompanyProfileResponse.resource.confirmationStatement.overdue = true;
+    mockGetCompanyProfile.mockResolvedValueOnce(overdueCompanyProfileResponse);
+    const company = await getCompanyProfile("00006400", mockUtils.ACCESS_TOKEN);
+    expect(company.isAccountsOverdue).toEqual(true);
+    expect(company.isConfirmationStatementOverdue).toEqual(true);
+  });
+
   it("returns a 400 status code when company is not found", async () => {
     mockGetCompanyProfile.mockResolvedValueOnce(notFoundSDKResponse);
     try {
@@ -48,119 +55,6 @@ describe("apiclient company profile unit tests", () => {
     }
     expect.assertions(1);
   });
-
-  it("correctly sets the overdue accounts flag if false in company profile but due date has passed",
-      async () => {
-    // Both here and in the tests below, create a deep copy of the dummy company profile before changing
-    // values, to ensure test isolation
-    const companyWithOverriddenAccountsDueData: Resource<CompanyProfile> =
-        JSON.parse(JSON.stringify(dummySDKResponse));
-    companyWithOverriddenAccountsDueData.resource.accounts.overdue = false;
-    companyWithOverriddenAccountsDueData.resource.accounts.nextDue = DATE_IN_PAST;
-    mockGetCompanyProfile.mockResolvedValueOnce(companyWithOverriddenAccountsDueData);
-    const company = await getCompanyProfile("00006400", mockUtils.ACCESS_TOKEN);
-    expect(company.isAccountsOverdue).toEqual(true);
-  });
-
-  it("correctly sets the overdue accounts flag if false in company profile and due date is today",
-      async () => {
-    const companyWithOverriddenAccountsDueData: Resource<CompanyProfile> =
-        JSON.parse(JSON.stringify(dummySDKResponse));
-    companyWithOverriddenAccountsDueData.resource.accounts.overdue = false;
-    companyWithOverriddenAccountsDueData.resource.accounts.nextDue = DATE_TODAY;
-    mockGetCompanyProfile.mockResolvedValueOnce(companyWithOverriddenAccountsDueData);
-    const company = await getCompanyProfile("00006400", mockUtils.ACCESS_TOKEN);
-    expect(company.isAccountsOverdue).toEqual(false);
-  });
-
-  it("correctly sets the overdue accounts flag if false in company profile and due date is yesterday",
-      async () => {
-    const companyWithOverriddenAccountsDueData: Resource<CompanyProfile> =
-        JSON.parse(JSON.stringify(dummySDKResponse));
-    companyWithOverriddenAccountsDueData.resource.accounts.overdue = false;
-    companyWithOverriddenAccountsDueData.resource.accounts.nextDue = DATE_YESTERDAY;
-    mockGetCompanyProfile.mockResolvedValueOnce(companyWithOverriddenAccountsDueData);
-    const company = await getCompanyProfile("00006400", mockUtils.ACCESS_TOKEN);
-    expect(company.isAccountsOverdue).toEqual(true);
-  });
-
-  it("correctly sets the overdue accounts flag if true in company profile but due date has not passed",
-      async () => {
-    const companyWithOverriddenAccountsDueData: Resource<CompanyProfile> =
-        JSON.parse(JSON.stringify(dummySDKResponse));
-    companyWithOverriddenAccountsDueData.resource.accounts.overdue = true;
-    companyWithOverriddenAccountsDueData.resource.accounts.nextDue = DATE_IN_FUTURE;
-    mockGetCompanyProfile.mockResolvedValueOnce(companyWithOverriddenAccountsDueData);
-    const company = await getCompanyProfile("00006400", mockUtils.ACCESS_TOKEN);
-    expect(company.isAccountsOverdue).toEqual(true);
-  });
-
-  it("correctly sets the overdue accounts flag if false in company profile and due date has not passed",
-      async () => {
-    const companyWithOverriddenAccountsDueData: Resource<CompanyProfile> =
-        JSON.parse(JSON.stringify(dummySDKResponse));
-    companyWithOverriddenAccountsDueData.resource.accounts.overdue = false;
-    companyWithOverriddenAccountsDueData.resource.accounts.nextDue = DATE_IN_FUTURE;
-    mockGetCompanyProfile.mockResolvedValueOnce(companyWithOverriddenAccountsDueData);
-    const company = await getCompanyProfile("00006400", mockUtils.ACCESS_TOKEN);
-    expect(company.isAccountsOverdue).toEqual(false);
-  });
-
-  it("correctly sets the overdue confirmation statement flag if false in company profile but due date has passed",
-      async () => {
-    const companyWithOverriddenConfirmationStatementDueData: Resource<CompanyProfile> =
-        JSON.parse(JSON.stringify(dummySDKResponse));
-    companyWithOverriddenConfirmationStatementDueData.resource.confirmationStatement.overdue = false;
-    companyWithOverriddenConfirmationStatementDueData.resource.confirmationStatement.nextDue = DATE_IN_PAST;
-    mockGetCompanyProfile.mockResolvedValueOnce(companyWithOverriddenConfirmationStatementDueData);
-    const company = await getCompanyProfile("00006400", mockUtils.ACCESS_TOKEN);
-    expect(company.isConfirmationStatementOverdue).toEqual(true);
-  });
-
-  it("correctly sets the overdue confirmation statement flag if false in company profile and due date is today",
-      async () => {
-    const companyWithOverriddenConfirmationStatementDueData: Resource<CompanyProfile> =
-        JSON.parse(JSON.stringify(dummySDKResponse));
-    companyWithOverriddenConfirmationStatementDueData.resource.confirmationStatement.overdue = false;
-    companyWithOverriddenConfirmationStatementDueData.resource.confirmationStatement.nextDue = DATE_TODAY;
-    mockGetCompanyProfile.mockResolvedValueOnce(companyWithOverriddenConfirmationStatementDueData);
-    const company = await getCompanyProfile("00006400", mockUtils.ACCESS_TOKEN);
-    expect(company.isConfirmationStatementOverdue).toEqual(false);
-  });
-
-  it("correctly sets the overdue confirmation statement flag if false in company profile and due date is yesterday",
-      async () => {
-    const companyWithOverriddenConfirmationStatementDueData: Resource<CompanyProfile> =
-        JSON.parse(JSON.stringify(dummySDKResponse));
-    companyWithOverriddenConfirmationStatementDueData.resource.confirmationStatement.overdue = false;
-    companyWithOverriddenConfirmationStatementDueData.resource.confirmationStatement.nextDue = DATE_YESTERDAY;
-    mockGetCompanyProfile.mockResolvedValueOnce(companyWithOverriddenConfirmationStatementDueData);
-    const company = await getCompanyProfile("00006400", mockUtils.ACCESS_TOKEN);
-    expect(company.isConfirmationStatementOverdue).toEqual(true);
-  });
-
-  it("correctly sets the overdue confirmation statement flag if true in company profile but due date has not passed",
-      async () => {
-    const companyWithOverriddenConfirmationStatementDueData: Resource<CompanyProfile> =
-        JSON.parse(JSON.stringify(dummySDKResponse));
-    companyWithOverriddenConfirmationStatementDueData.resource.confirmationStatement.overdue = true;
-    companyWithOverriddenConfirmationStatementDueData.resource.confirmationStatement.nextDue = DATE_IN_FUTURE;
-    mockGetCompanyProfile.mockResolvedValueOnce(companyWithOverriddenConfirmationStatementDueData);
-    const company = await getCompanyProfile("00006400", mockUtils.ACCESS_TOKEN);
-    expect(company.isConfirmationStatementOverdue).toEqual(true);
-  });
-
-  it("correctly sets the overdue confirmation statement flag if false in company profile and due date has not passed",
-      async () => {
-    const companyWithOverriddenConfirmationStatementDueData: Resource<CompanyProfile> =
-        JSON.parse(JSON.stringify(dummySDKResponse));
-    companyWithOverriddenConfirmationStatementDueData.resource.confirmationStatement.overdue = false;
-    companyWithOverriddenConfirmationStatementDueData.resource.confirmationStatement.nextDue = DATE_IN_FUTURE;
-    mockGetCompanyProfile.mockResolvedValueOnce(companyWithOverriddenConfirmationStatementDueData);
-    const company = await getCompanyProfile("00006400", mockUtils.ACCESS_TOKEN);
-    expect(company.isConfirmationStatementOverdue).toEqual(false);
-  });
-
 });
 
 const dummySDKResponse: Resource<CompanyProfile> = {
@@ -186,6 +80,7 @@ const dummySDKResponse: Resource<CompanyProfile> = {
     hasBeenLiquidated: false,
     hasCharges: false,
     hasInsolvencyHistory: false,
+    jurisdiction: "england-wales",
     registeredOfficeAddress: {
       addressLineOne: "line1",
       addressLineTwo: "line2",
@@ -223,4 +118,5 @@ const expectedProfile: PTFCompanyProfile = {
   incorporationDate: "26 June 1872",
   isAccountsOverdue: false,
   isConfirmationStatementOverdue: false,
+  jurisdiction: "england-wales",
 };
