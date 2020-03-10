@@ -35,9 +35,6 @@ export const getCompanyProfile = async (companyNumber: string, token: string): P
 
   const companyProfile = sdkResponse.resource as CompanyProfile;
 
-  const isAccountsDueDatePassed: boolean = checkDueDate(companyProfile.accounts.nextDue);
-  const isConfirmationStatementDueDatePassed: boolean = checkDueDate(companyProfile.confirmationStatement.nextDue);
-
   return {
     accountingPeriodEndOn: companyProfile.accounts.nextAccounts.periodEndOn,
     accountingPeriodStartOn: companyProfile.accounts.nextAccounts.periodStartOn,
@@ -53,10 +50,8 @@ export const getCompanyProfile = async (companyNumber: string, token: string): P
     companyType: lookupCompanyType(companyProfile.type),
     confirmationStatementDue: formatDateForDisplay(companyProfile.confirmationStatement.nextDue),
     incorporationDate: formatDateForDisplay(companyProfile.dateOfCreation),
-    isAccountsOverdue:
-      (companyProfile.accounts.overdue) || (isAccountsDueDatePassed),
-    isConfirmationStatementOverdue:
-      (companyProfile.confirmationStatement.overdue) || (isConfirmationStatementDueDatePassed),
+    isAccountsOverdue: companyProfile.accounts.overdue,
+    isConfirmationStatementOverdue: companyProfile.confirmationStatement.overdue,
     jurisdiction: companyProfile.jurisdiction,
   };
 };
@@ -76,17 +71,4 @@ export const callPromiseToFileAPI = async (companyNumber: string, token: string,
   config.url = CURRENT_API_PATH;
   logger.info(`Calling promise to file current api for company ${companyNumber} with the value of ${isStillRequired}`);
   return await makeAPICall(config);
-};
-
-/**
- * Checks if the date supplied as a string is before today and returns true or false.
- *
- * @param dueDateAsString The date to check
- */
-const checkDueDate = (dueDateAsString: string): boolean => {
-  const currentDate: Date = new Date(Date.now());
-  currentDate.setHours(0, 0, 0);
-  const dueDate: Date = new Date(dueDateAsString);
-  dueDate.setHours(23, 59, 59);
-  return dueDate < currentDate;
 };
