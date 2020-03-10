@@ -22,7 +22,7 @@ beforeEach(() => {
 
 describe("Authentication middleware", () => {
 
-  it("should load start page with no referrer and not signed in", async () => {
+  it("should load start page with no referer and not signed in", async () => {
     setNotSignedIn();
     const response = await request(app)
       .get("/promise-to-file");
@@ -39,7 +39,7 @@ describe("Authentication middleware", () => {
     expect(response.text).toContain(INDEX_TITLE);
   });
 
-  it("should redirect to start page if loading start page with trailing slash and no referrer", async () => {
+  it("should redirect to start page if loading start page with trailing slash and no referer", async () => {
     const response = await request(app)
       .get("/promise-to-file/")
       .set("Cookie", [`${COOKIE_NAME}=123`])
@@ -47,7 +47,7 @@ describe("Authentication middleware", () => {
     expect(response.status).toEqual(302);
   });
 
-  it("should not redirect to start page if user has referrer and is signed in", async () => {
+  it("should not redirect to start page if user has referer and is signed in", async () => {
     const response = await request(app)
       .get("/promise-to-file/company-number")
       .set("Referer", "/promise-to-file/")
