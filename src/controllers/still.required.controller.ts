@@ -3,7 +3,7 @@ import { check, validationResult } from "express-validator/check";
 import { PTFCompanyProfile } from "../model/company.profile";
 import { COMPANY_REQUIRED_NOT_SELECTED } from "../model/error.messages";
 import { createGovUkErrorData, GovUkErrorData } from "../model/govuk.error.data";
-import { PROMISE_TO_FILE_CONFIRMATION } from "../model/page.urls";
+import { COMPANY_REQUIRED_CONFIRMATION } from "../model/page.urls";
 import { Templates } from "../model/template.paths";
 import { ValidationError } from "../model/validation.error";
 import { getPromiseToFileSessionValue, updatePromiseToFileSessionValue } from "../services/session.service";
@@ -50,7 +50,7 @@ const postRoute = async (req: Request, res: Response, next: NextFunction): Promi
     return renderPageWithError(res, errorText, companyProfile.companyName);
   } else {
     await addDecisionToSession(req.body.stillRequired, req.chSession);
-    const url = PROMISE_TO_FILE_CONFIRMATION.replace(":companyNumber", companyProfile.companyNumber);
+    const url = COMPANY_REQUIRED_CONFIRMATION.replace(":companyNumber", companyProfile.companyNumber);
     return res.redirect(url);
   }
 };

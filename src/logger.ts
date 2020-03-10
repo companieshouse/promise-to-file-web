@@ -1,7 +1,7 @@
 import { configure, getLogger } from "log4js";
 import { LOG_LEVEL } from "./properties";
 
-const logger = getLogger("promise-to-file-web");
+const logger = getLogger("company-required-web");
 logger.level = LOG_LEVEL;
 
 configure({
