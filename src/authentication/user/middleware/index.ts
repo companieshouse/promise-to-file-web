@@ -5,9 +5,9 @@ import * as pageURLs from "../../../model/page.urls";
 export default (req: Request, res: Response, next: NextFunction) => {
   const referringPageURL = req.header("Referer") as string;
 
-  logger.debug("Check if user has referrer");
+  logger.debug("Check if user has referer");
   if (referringPageURL === undefined) {
-    logger.debug("User has no referrer - redirecting to index");
+    logger.debug("User has no referer - redirecting to index");
     return res.redirect(pageURLs.PROMISE_TO_FILE);
   }
 
