@@ -10,6 +10,9 @@ jest.mock("../../../../src/session/store/redis.store",
   () => import("../../../mocks/redis.store.mock.factory"));
 jest.mock("../../../../src/services/redis.service");
 
+const INDEX_TITLE: string = "Tell us if a company is still required";
+const COMPANY_NUMBER_TITLE: string = "Tell us your company number";
+
 const mockCacheService = loadSession as jest.Mock;
 
 beforeEach(() => {
@@ -19,25 +22,56 @@ beforeEach(() => {
 
 describe("Authentication middleware", () => {
 
-  it("should not redirect to signin if loading start page", async () => {
+  it("should load start page with no referer and not signed in", async () => {
+    setNotSignedIn();
     const response = await request(app)
       .get("/promise-to-file");
     expect(response.status).toEqual(200);
+    expect(response.text).toContain(INDEX_TITLE);
   });
 
-  it("should redirect to start page if loading start page with trailing slash", async () => {
+  it("should load start page if loading start page with trailing slash", async () => {
     const response = await request(app)
-      .get("/promise-to-file/");
+      .get("/promise-to-file/")
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(response.status).toEqual(200);
+    expect(response.text).toContain(INDEX_TITLE);
+  });
+
+  it("should redirect to start page if loading start page with trailing slash and no referer", async () => {
+    const response = await request(app)
+      .get("/promise-to-file/")
+      .set("Cookie", [`${COOKIE_NAME}=123`])
+      .expect("Location", "/promise-to-file");
+    expect(response.status).toEqual(302);
+  });
+
+  it("should not redirect to start page if user has referer and is signed in", async () => {
+    const response = await request(app)
+      .get("/promise-to-file/company-number")
+      .set("Referer", "/promise-to-file/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+    expect(response.status).toEqual(200);
+    expect(response.text).toContain(COMPANY_NUMBER_TITLE);
   });
 
   it("should redirect to signin if /promise-to-file/* called and not signed in", async () => {
     setNotSignedIn();
     const response = await request(app)
       .get("/promise-to-file/company-number")
-      .set("Referer", "/promise-to-file/company-number")
+      .set("Referer", "/promise-to-file/")
       .expect("Location", "/signin?return_to=/promise-to-file");
     expect(response.status).toEqual(302);
+  });
+
+  it("should not redirect to signin if loading start page and not signed in", async () => {
+    setNotSignedIn();
+    const response = await request(app)
+      .get("/promise-to-file")
+      .set("Referer", "/");
+    expect(response.status).toEqual(200);
+    expect(response.text).toContain(INDEX_TITLE);
   });
 
   it("should redirect to signin if navigating from /promise-to-file page and not signed in", async () => {
@@ -52,16 +86,18 @@ describe("Authentication middleware", () => {
   it("should not redirect to signin if /promise-to-file/* called while signed in", async () => {
     const response = await request(app)
       .get("/promise-to-file/company-number")
-      .set("Referer", "/")
+      .set("Referer", "/promise-to-file")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
     expect(response.status).toEqual(200);
+    expect(response.text).toContain(COMPANY_NUMBER_TITLE);
   });
 
-  it("should redirect to start screen if /promise-to-file/* called from outside of the PTF journey and not signed in",
+  it("should redirect to sign in screen if /promise-to-file/* called from outside of the PTF journey and not signed in",
       async () => {
     setNotSignedIn();
     const response = await request(app)
       .get("/promise-to-file/company-number")
+      .set("Referer", "/")
       .expect("Location", "/signin?return_to=/promise-to-file");
     expect(response.status).toEqual(302);
   });
