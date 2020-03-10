@@ -36,6 +36,16 @@ describe("apiclient company profile unit tests", () => {
     expect(company).toEqual(expectedProfile);
   });
 
+  it("returns an PTFCompanyProfile object with accounts and confirmation statement overdue", async () => {
+    const overdueCompanyProfileResponse = dummySDKResponse;
+    overdueCompanyProfileResponse.resource.accounts.overdue = true;
+    overdueCompanyProfileResponse.resource.confirmationStatement.overdue = true;
+    mockGetCompanyProfile.mockResolvedValueOnce(overdueCompanyProfileResponse);
+    const company = await getCompanyProfile("00006400", mockUtils.ACCESS_TOKEN);
+    expect(company.isAccountsOverdue).toEqual(true);
+    expect(company.isConfirmationStatementOverdue).toEqual(true);
+  });
+
   it("returns a 400 status code when company is not found", async () => {
     mockGetCompanyProfile.mockResolvedValueOnce(notFoundSDKResponse);
     try {
@@ -70,6 +80,7 @@ const dummySDKResponse: Resource<CompanyProfile> = {
     hasBeenLiquidated: false,
     hasCharges: false,
     hasInsolvencyHistory: false,
+    jurisdiction: "england-wales",
     registeredOfficeAddress: {
       addressLineOne: "line1",
       addressLineTwo: "line2",
@@ -107,4 +118,5 @@ const expectedProfile: PTFCompanyProfile = {
   incorporationDate: "26 June 1872",
   isAccountsOverdue: false,
   isConfirmationStatementOverdue: false,
+  jurisdiction: "england-wales",
 };
