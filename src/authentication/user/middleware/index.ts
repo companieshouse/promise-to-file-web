@@ -8,7 +8,7 @@ export default (req: Request, res: Response, next: NextFunction) => {
   logger.debug("Check if user has referer");
   if (referringPageURL === undefined) {
     logger.debug("User has no referer - redirecting to index");
-    return res.redirect(pageURLs.PROMISE_TO_FILE);
+    return res.redirect(pageURLs.COMPANY_REQUIRED);
   }
 
   logger.debug("Check if user is signed in");
@@ -16,10 +16,10 @@ export default (req: Request, res: Response, next: NextFunction) => {
 
     logger.debug("User not signed in");
 
-    let returnToUrl: string = pageURLs.PROMISE_TO_FILE;
+    let returnToUrl: string = pageURLs.COMPANY_REQUIRED;
 
     // if user is coming from start page
-    if (referringPageURL.endsWith(pageURLs.PROMISE_TO_FILE)) {
+    if (referringPageURL.endsWith(pageURLs.COMPANY_REQUIRED)) {
       returnToUrl = req.originalUrl;
     }
 

@@ -26,7 +26,7 @@ describe("still required validation and session tests", () => {
     mockGetPromiseToFileSessionValue.mockImplementation(() => getDummyCompanyProfile(true, true));
 
     const response = await request(app)
-      .post("/promise-to-file/company/00006400/still-required")
+      .post("/company-required/company/00006400/still-required")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
@@ -37,7 +37,7 @@ describe("still required validation and session tests", () => {
 
   it("should update session when yes is selected", async () => {
     const response = await request(app)
-        .post("/promise-to-file/company/00006400/still-required")
+        .post("/company-required/company/00006400/still-required")
         .set("Referer", "/")
         .set("Cookie", [`${COOKIE_NAME}=123`])
         .send({stillRequired: "yes"});
@@ -49,7 +49,7 @@ describe("still required validation and session tests", () => {
 
   it("should update session when yEs is selected", async () => {
     const response = await request(app)
-        .post("/promise-to-file/company/00006400/still-required")
+        .post("/company-required/company/00006400/still-required")
         .set("Referer", "/")
         .set("Cookie", [`${COOKIE_NAME}=123`])
         .send({stillRequired: "yEs"});
@@ -62,7 +62,7 @@ describe("still required validation and session tests", () => {
   it("should update session when no is selected", async () => {
 
     const response = await request(app)
-        .post("/promise-to-file/company/00006400/still-required")
+        .post("/company-required/company/00006400/still-required")
         .set("Referer", "/")
         .set("Cookie", [`${COOKIE_NAME}=123`])
         .send({stillRequired: "no"});
@@ -75,7 +75,7 @@ describe("still required validation and session tests", () => {
   it("should update session when nO is selected", async () => {
 
     const response = await request(app)
-        .post("/promise-to-file/company/00006400/still-required")
+        .post("/company-required/company/00006400/still-required")
         .set("Referer", "/")
         .set("Cookie", [`${COOKIE_NAME}=123`])
         .send({stillRequired: "nO"});

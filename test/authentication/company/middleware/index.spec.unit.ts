@@ -20,7 +20,7 @@ describe("Web Security Middleware tests", () => {
 
   it("should redirect to account service if user signed in", async () => {
     const response = await request(app)
-      .get("/promise-to-file/company/00006400/still-required")
+      .get("/company-required/company/00006400/still-required")
       .set("Referer", "/")
       .set("Cookie", `${COOKIE_NAME}=123456789`)
       .expect("Location", authRegex);
@@ -30,7 +30,7 @@ describe("Web Security Middleware tests", () => {
   it("should redirect to auth if user already authenticated for wrong company", async () => {
     loadCompanyAuthenticatedSession(mockCacheService, "00006401");
     const response = await request(app)
-      .get("/promise-to-file/company/00006400/still-required")
+      .get("/company-required/company/00006400/still-required")
       .set("Referer", "/")
       .set("Cookie", `${COOKIE_NAME}=123456789`)
       .expect("Location", authRegex);
@@ -39,7 +39,7 @@ describe("Web Security Middleware tests", () => {
 
   it("should respond with 500 if invalid company number in path", async () => {
     const response = await request(app)
-      .get("/promise-to-file/company/NOTACOMPANYNUMBER/still-required")
+      .get("/company-required/company/NOTACOMPANYNUMBER/still-required")
       .set("Referer", "/")
       .set("Cookie", `${COOKIE_NAME}=123456789`);
     expect(response.status).toEqual(500);

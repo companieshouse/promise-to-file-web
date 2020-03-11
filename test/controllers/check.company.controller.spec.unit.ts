@@ -1,6 +1,6 @@
 import * as request from "supertest";
 import app from "../../src/app";
-import { PROMISE_TO_FILE_CHECK_COMPANY } from "../../src/model/page.urls";
+import { COMPANY_REQUIRED_CHECK_COMPANY } from "../../src/model/page.urls";
 import { COOKIE_NAME } from "../../src/properties";
 import { loadSession } from "../../src/services/redis.service";
 import { getPromiseToFileSessionValue } from "../../src/services/session.service";
@@ -28,7 +28,7 @@ describe("check company tests", () => {
     mockGetPromiseToFileSessionValue.mockReset();
     mockGetPromiseToFileSessionValue.mockImplementation(() => getDummyCompanyProfile(true, true));
 
-    const response = await request(app).get(PROMISE_TO_FILE_CHECK_COMPANY)
+    const response = await request(app).get(COMPANY_REQUIRED_CHECK_COMPANY)
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 

@@ -19,7 +19,7 @@ describe("Basic URL Tests", () => {
 
   it("should find start page", async () => {
     const response = await request(app)
-      .get("/promise-to-file")
+      .get("/company-required")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
     expect(response.status).toEqual(200);
@@ -36,7 +36,7 @@ describe("Basic URL Tests", () => {
 
   it("should find the company number page", async () => {
     const response = await request(app)
-      .get("/promise-to-file/company-number")
+      .get("/company-required/company-number")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
@@ -46,7 +46,7 @@ describe("Basic URL Tests", () => {
 
   it("should find the check company page", async () => {
     const response = await request(app)
-      .get("/promise-to-file/check-company")
+      .get("/company-required/check-company")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
@@ -61,7 +61,7 @@ describe("Basic URL Tests", () => {
     mockGetPromiseToFileSessionValue.mockImplementation(() => getDummyCompanyProfile(true, true));
 
     const response = await request(app)
-      .get("/promise-to-file/company/00006400/warning")
+      .get("/company-required/company/00006400/warning")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
@@ -76,7 +76,7 @@ describe("Basic URL Tests", () => {
     mockGetPromiseToFileSessionValue.mockImplementation(() => getDummyCompanyProfile(true, true));
 
     const response = await request(app)
-      .get("/promise-to-file/company/00006400/still-required")
+      .get("/company-required/company/00006400/still-required")
       .set("Referer", "/")
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 

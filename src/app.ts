@@ -40,8 +40,8 @@ app.use(cookieParser());
 app.use(sessionMiddleware);
 app.use(ptfSessionLoader);
 
-app.use(`${pageURLs.PROMISE_TO_FILE}/*`, authenticate);
-app.use(`${pageURLs.PROMISE_TO_FILE}${pageURLs.COMPANY_AUTH_PROTECTED_ROUTE}*`, companyAuthenticate);
+app.use(`${pageURLs.COMPANY_REQUIRED}/*`, authenticate);
+app.use(`${pageURLs.COMPANY_REQUIRED}${pageURLs.COMPANY_AUTH_PROTECTED_ROUTE}*`, companyAuthenticate);
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -51,7 +51,7 @@ app.use(httpLogger);
 
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use(pageURLs.PROMISE_TO_FILE, appRouter);
+app.use(pageURLs.COMPANY_REQUIRED, appRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

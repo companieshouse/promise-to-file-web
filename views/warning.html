@@ -7,7 +7,7 @@ Attention
 {% block backLink %}
   {{ govukBackLink({
     text: "Back",
-    href: "/promise-to-file/check-company",
+    href: "/company-required/check-company",
     attributes: {
       "data-event-id": "back-button"
     }
@@ -32,7 +32,7 @@ Attention
             </ul>
             <p class="govuk-body-l">If you tell us a company is still required and don't file within 28 days, we may prosecute the company directors.</p>
 
-            <form method="get" action="/promise-to-file/company/{{companyNumber}}/still-required">
+            <form method="get" action="/company-required/company/{{companyNumber}}/still-required">
             {{ govukButton({
               text: "Continue",
               classes: "govuk-link govuk-!-margin-top-5 govuk-link--interrupt",
