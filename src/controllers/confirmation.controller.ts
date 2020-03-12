@@ -1,5 +1,7 @@
+import { AxiosResponse } from "axios";
 import { NextFunction, Request, Response } from "express";
 import { callPromiseToFileAPI } from "../client/apiclient";
+import { formatDateForDisplay } from "../client/date.formatter";
 import activeFeature from "../feature.flag";
 import logger from "../logger";
 import { PTFCompanyProfile } from "../model/company.profile";
@@ -39,33 +41,42 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
 
   const isStillRequired: boolean = getPromiseToFileSessionValue(req.chSession, IS_STILL_REQUIRED);
 
+  // Just show the 'stub' screen if the company is still required but the 'yes' journey isn't yet activated
+  if (isStillRequired && !activeFeature(COMPANY_STILL_REQUIRED_FEATURE_FLAG)) {
+    return res.render(Templates.COMPANY_REQUIRED,
+      {
+        company: companyProfile,
+        userEmail: email,
+      });
+  }
+
   const token = req.chSession.accessToken() as string;
+  let apiResponseData: any;
   try {
     // TODO  LFA-1406 Add isSubmitted flag to prevent this being sent twice
 
-    // TODO  LFA-1320: Remove this check when the 'still required' email is implemented
-    if (!isStillRequired) {
-      await callPromiseToFileAPI(companyProfile.companyNumber, token, isStillRequired);
-    }
+    const axiosResponse: AxiosResponse = await callPromiseToFileAPI(companyProfile.companyNumber,
+        token, isStillRequired);
+
+    apiResponseData = axiosResponse.data;
+
+    logger.debug(`Response data returned from the PTF api call : ${JSON.stringify(apiResponseData)}`);
   } catch (e) {
     logger.error("Error processing application " + JSON.stringify(e));
     return next(e);
   }
 
   if (isStillRequired) {
-    if (activeFeature(COMPANY_STILL_REQUIRED_FEATURE_FLAG)) {
-      return res.render(Templates.CONFIRMATION_STILL_REQUIRED,
-        {
-          company: companyProfile,
-          userEmail: email,
-        });
-    } else {
-      return res.render(Templates.COMPANY_REQUIRED,
-        {
-          company: companyProfile,
-          userEmail: email,
-        });
-    }
+    const newFilingDeadline = apiResponseData.new_filing_deadline;
+
+    logger.debug(`New filing deadline : ${newFilingDeadline}`);
+
+    return res.render(Templates.CONFIRMATION_STILL_REQUIRED,
+      {
+        company: companyProfile,
+        newDeadline: formatDateForDisplay(newFilingDeadline),
+        userEmail: email,
+      });
   } else {
     return res.render(Templates.CONFIRMATION_NOT_REQUIRED,
       {
