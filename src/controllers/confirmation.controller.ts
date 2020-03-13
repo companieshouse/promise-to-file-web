@@ -67,14 +67,18 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   }
 
   if (isStillRequired) {
-    const newFilingDeadline = apiResponseData.new_filing_deadline;
+    const filingDueOn = apiResponseData.filing_due_on;
 
-    logger.debug(`New filing deadline : ${newFilingDeadline}`);
+    logger.debug(`New filing deadline : ${filingDueOn}`);
+
+    if (!filingDueOn) {
+      return next(new Error("No new filing due date returned by the PTF API"));
+    }
 
     return res.render(Templates.CONFIRMATION_STILL_REQUIRED,
       {
         company: companyProfile,
-        newDeadline: formatDateForDisplay(newFilingDeadline),
+        newDeadline: formatDateForDisplay(filingDueOn),
         userEmail: email,
       });
   } else {

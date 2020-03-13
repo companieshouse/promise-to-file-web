@@ -143,7 +143,7 @@ describe("Company no longer required confirmation screen tests", () => {
     mockCallProcessorApi.prototype.constructor.mockImplementationOnce(() => Promise.resolve((
       {
         data: {
-          new_filing_deadline: "2028-03-10",
+          filing_due_on: "2028-03-10",
         },
       } )));
 
@@ -180,6 +180,78 @@ describe("Company no longer required confirmation screen tests", () => {
     expect(resp.text).not.toContain(COMPANY_NAME);
     expect(resp.text).not.toContain(COMPANY_NUMBER);
     expect(resp.text).not.toContain(PAGE_TITLE);
+    expect(resp.text).toContain(ERROR_PAGE);
+  });
+
+  it("should render the error page when API returns 'undefined' for a new filing deadline date", async () => {
+
+    mockCacheService.mockClear();
+    mockPTFSession.mockClear();
+    mockActiveFeature.mockClear();
+    mockCallProcessorApi.mockClear();
+    loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
+    const dummyProfile = getDummyCompanyProfile(true, true);
+    mockPTFSession.mockImplementationOnce(() => dummyProfile);
+    mockPTFSession.mockImplementationOnce(() => true);
+    mockActiveFeature.mockImplementationOnce(() => true);
+
+    mockCallProcessorApi.prototype.constructor.mockImplementationOnce(() => Promise.resolve((
+      {
+        data: {
+          filing_due_on: undefined,
+        },
+      } )));
+
+    const resp = await request(app)
+      .get(URL)
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+
+    expect(mockCallProcessorApi).toBeCalled();
+
+    expect(resp.status).toEqual(500);
+    expect(resp.text).not.toContain(EMAIL);
+    expect(resp.text).not.toContain(COMPANY_NAME);
+    expect(resp.text).not.toContain(COMPANY_NUMBER);
+    expect(resp.text).not.toContain(PAGE_TITLE);
+    expect(resp.text).not.toContain("will be kept on the register");
+    expect(resp.text).not.toContain("filed by");
+    expect(resp.text).toContain(ERROR_PAGE);
+  });
+
+  it("should render the error page when API returns 'null' for a new filing deadline date", async () => {
+
+    mockCacheService.mockClear();
+    mockPTFSession.mockClear();
+    mockActiveFeature.mockClear();
+    mockCallProcessorApi.mockClear();
+    loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
+    const dummyProfile = getDummyCompanyProfile(true, true);
+    mockPTFSession.mockImplementationOnce(() => dummyProfile);
+    mockPTFSession.mockImplementationOnce(() => true);
+    mockActiveFeature.mockImplementationOnce(() => true);
+
+    mockCallProcessorApi.prototype.constructor.mockImplementationOnce(() => Promise.resolve((
+      {
+        data: {
+          filing_due_on: null,
+        },
+      } )));
+
+    const resp = await request(app)
+      .get(URL)
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+
+    expect(mockCallProcessorApi).toBeCalled();
+
+    expect(resp.status).toEqual(500);
+    expect(resp.text).not.toContain(EMAIL);
+    expect(resp.text).not.toContain(COMPANY_NAME);
+    expect(resp.text).not.toContain(COMPANY_NUMBER);
+    expect(resp.text).not.toContain(PAGE_TITLE);
+    expect(resp.text).not.toContain("will be kept on the register");
+    expect(resp.text).not.toContain("filed by");
     expect(resp.text).toContain(ERROR_PAGE);
   });
 
