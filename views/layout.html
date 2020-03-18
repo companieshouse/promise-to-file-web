@@ -34,6 +34,11 @@
   <script src="/html5-shiv/html5shiv.js"></script>
   <![endif]-->
 
+  <script src="https://code.jquery.com/jquery-3.4.1.js"
+          integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+          crossorigin="anonymous">
+  </script>
+
   {% block download %}
   {% endblock %}
 {% endblock %}
@@ -91,7 +96,7 @@
   <script>window.GOVUKFrontend.initAll()</script>
   <script type="application/javascript">
     (function() {
-      bindPiwikListener('promise-to-file', '{{PIWIK_URL}}', {{PIWIK_SITE_ID}});
+      bindPiwikListener('company-required', '{{PIWIK_URL}}', {{PIWIK_SITE_ID}});
     }());
   </script>
   <noscript>

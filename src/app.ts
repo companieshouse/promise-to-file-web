@@ -26,6 +26,7 @@ const env = nunjucks.configure([
   express: app,
 });
 
+logger.debug("Setting up environment variables");
 env.addGlobal("CDN_URL", process.env.CDN_HOST);
 
 env.addGlobal("ERROR_SUMMARY_TITLE", ERROR_SUMMARY_TITLE);
@@ -34,6 +35,7 @@ env.addGlobal("PIWIK_SITE_ID", PIWIK_SITE_ID);
 
 app.enable("trust proxy");
 
+logger.debug("Setting up middleware");
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -71,5 +73,7 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.render("error");
 });
+
+logger.info("Company Required service started");
 
 export default app;

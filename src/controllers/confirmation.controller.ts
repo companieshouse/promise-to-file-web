@@ -43,6 +43,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
 
   // Just show the 'stub' screen if the company is still required but the 'yes' journey isn't yet activated
   if (isStillRequired && !activeFeature(COMPANY_STILL_REQUIRED_FEATURE_FLAG)) {
+    logger.debug("Company still required feature flag not active. Rendering stub screen");
     return res.render(Templates.COMPANY_REQUIRED,
       {
         company: companyProfile,
