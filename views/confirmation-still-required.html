@@ -43,12 +43,19 @@ Confirmation page
         </p>
 
         <h2 class="govuk-heading-m">What happens next</h2>
-        <p>{{ company.companyName }}
-            will be kept on the register but it must file its accounts. The original filing deadline has not been changed or extended,
-            so the company will receive a
+        <p>
+            {{ company.companyName }} will be kept on the register. This means we will no longer close the company,
+            but it must file its accounts to stay on the register.
+        </p>
+        <p>
+            The company will receive a
             <a href="https://www.gov.uk/annual-accounts/penalties-for-late-filing">late filing penalty</a>
-            that increases over time until its accounts are filed.</p>
-        <p>If the accounts are not filed by {{ newDeadline}} we may prosecute the company directors.</p>
+            that increases over time until its accounts are filed.
+            The original filing deadline has not been changed or extended.
+        </p>
+        <p>
+            If {{ company.companyName }} has not filed by {{ newDeadline }}, we may prosecute the company directors.
+        </p>
         {{ govukWarningText({
         text: "Not filing for a company is a criminal offence. The directors of the company risk prosecution and company assets may be seized. ",
         iconFallbackText: "Warning"
