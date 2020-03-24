@@ -7,8 +7,8 @@ import logger from "../logger";
 import { PTFCompanyProfile } from "../model/company.profile";
 import { Templates } from "../model/template.paths";
 import { COMPANY_STILL_REQUIRED_FEATURE_FLAG } from "../properties";
-import { getPromiseToFileSessionValue } from "../services/session.service";
-import { COMPANY_PROFILE, IS_STILL_REQUIRED, USER_PROFILE } from "../session/keys";
+import { getPromiseToFileSessionValue, updatePromiseToFileSessionValue } from "../services/session.service";
+import { ALREADY_SUBMITTED, COMPANY_PROFILE, IS_STILL_REQUIRED, NEW_DEADLINE, USER_PROFILE } from "../session/keys";
 import { IUserProfile } from "../session/types";
 
 const createMissingError = (item: string): Error => {
@@ -51,25 +51,33 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
       });
   }
 
-  const token = req.chSession.accessToken() as string;
-  let apiResponseData: any;
-  try {
-    // TODO  LFA-1406 Add isSubmitted flag to prevent this being sent twice
+  const isSubmitted: boolean = getPromiseToFileSessionValue(req.chSession, ALREADY_SUBMITTED);
+  if (!isSubmitted) {
+    const token = req.chSession.accessToken() as string;
+    let apiResponseData: any;
+    try {
+        // TODO  LFA-1406 Add isSubmitted flag to prevent this being sent twice
 
-    const axiosResponse: AxiosResponse = await callPromiseToFileAPI(companyProfile.companyNumber,
-        token, isStillRequired);
+        const axiosResponse: AxiosResponse = await callPromiseToFileAPI(companyProfile.companyNumber,
+            token, isStillRequired);
 
-    apiResponseData = axiosResponse.data;
+        apiResponseData = axiosResponse.data;
+        await updatePromiseToFileSessionValue(req.chSession, NEW_DEADLINE, apiResponseData.filing_due_on);
+        await updatePromiseToFileSessionValue(req.chSession, ALREADY_SUBMITTED, true);
 
-    logger.debug(`Response data returned from the PTF api call : ${JSON.stringify(apiResponseData)}`);
-  } catch (e) {
-    logger.error("Error processing application " + JSON.stringify(e));
-    return next(e);
+        logger.debug(`Response data returned from the PTF api call : ${JSON.stringify(apiResponseData)}`);
+    } catch (e) {
+        logger.error("Error processing application " + JSON.stringify(e));
+        await updatePromiseToFileSessionValue(req.chSession, ALREADY_SUBMITTED, false);
+        return next(e);
+    }
+  } else {
+      logger.error("Form already submitted, not processing again");
   }
 
   if (isStillRequired) {
-    const filingDueOn = apiResponseData.filing_due_on;
-
+    const filingDueOn =  getPromiseToFileSessionValue(req.chSession, NEW_DEADLINE);
+    logger.debug("\n\n>>>>>>>>>>>>>>>>>>>> NEW DEADLINE " + filingDueOn + "\n\n");
     logger.debug(`New filing deadline : ${filingDueOn}`);
 
     if (!filingDueOn) {
