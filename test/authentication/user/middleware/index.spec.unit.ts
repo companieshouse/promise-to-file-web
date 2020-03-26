@@ -92,7 +92,8 @@ describe("Authentication middleware", () => {
     expect(response.text).toContain(COMPANY_NUMBER_TITLE);
   });
 
-  it("should redirect to sign in screen if /company-required/* called from outside of the PTF journey and not signed in",
+  it("should redirect to sign in screen if /company-required/* " +
+      "called from outside of the PTF journey and not signed in",
       async () => {
     setNotSignedIn();
     const response = await request(app)
