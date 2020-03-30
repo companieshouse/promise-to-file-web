@@ -56,7 +56,6 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
     const token = req.chSession.accessToken() as string;
     let apiResponseData: any;
     try {
-        // TODO  LFA-1406 Add isSubmitted flag to prevent this being sent twice
 
         const axiosResponse: AxiosResponse = await callPromiseToFileAPI(companyProfile.companyNumber,
             token, isStillRequired);
@@ -77,7 +76,6 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
 
   if (isStillRequired) {
     const filingDueOn =  getPromiseToFileSessionValue(req.chSession, NEW_DEADLINE);
-    logger.debug("\n\n>>>>>>>>>>>>>>>>>>>> NEW DEADLINE " + filingDueOn + "\n\n");
     logger.debug(`New filing deadline : ${filingDueOn}`);
 
     if (!filingDueOn) {

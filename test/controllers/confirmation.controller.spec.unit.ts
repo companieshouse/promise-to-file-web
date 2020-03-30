@@ -128,7 +128,8 @@ describe("Company no longer required confirmation screen tests", () => {
     expect(resp.text).toContain(PAGE_TITLE);
   });
 
-  it("should render the confirmation still required page when feature flag is true", async () => {
+  it("should render the confirmation still required page when feature flag is true and submitted is false",
+      async () => {
 
     mockCacheService.mockClear();
     mockPTFSession.mockClear();
@@ -139,13 +140,15 @@ describe("Company no longer required confirmation screen tests", () => {
     mockPTFSession.mockImplementationOnce(() => dummyProfile);
     mockPTFSession.mockImplementationOnce(() => true);
     mockActiveFeature.mockImplementationOnce(() => true);
+    mockPTFSession.mockImplementationOnce(() => false);
+    mockPTFSession.mockImplementationOnce(() => "2028-03-10");
 
     mockCallProcessorApi.prototype.constructor.mockImplementationOnce(() => Promise.resolve((
-      {
-        data: {
-          filing_due_on: "2028-03-10",
-        },
-      } )));
+        {
+          data: {
+            filing_due_on: "2028-03-10",
+          },
+        } )));
 
     const resp = await request(app)
       .get(URL)
@@ -153,6 +156,35 @@ describe("Company no longer required confirmation screen tests", () => {
       .set("Cookie", [`${COOKIE_NAME}=123`]);
 
     expect(mockCallProcessorApi).toBeCalled();
+
+    expect(resp.status).toEqual(200);
+    expect(resp.text).toContain(COMPANY_NAME);
+    expect(resp.text).toContain(COMPANY_NUMBER);
+    expect(resp.text).toContain("will be kept on the register");
+    expect(resp.text).not.toContain("CF14 3UZ");
+    expect(resp.text).toContain(PAGE_TITLE);
+    expect(resp.text).toContain("filed by 10 March 2028");
+  });
+
+  it("should not call processor api when already submitted flag is true", async () => {
+    mockCacheService.mockClear();
+    mockPTFSession.mockClear();
+    mockActiveFeature.mockClear();
+    mockCallProcessorApi.mockClear();
+    loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
+    const dummyProfile = getDummyCompanyProfile(true, true);
+    mockPTFSession.mockImplementationOnce(() => dummyProfile);
+    mockPTFSession.mockImplementationOnce(() => true);
+    mockActiveFeature.mockImplementationOnce(() => true);
+    mockPTFSession.mockImplementationOnce(() => true);
+    mockPTFSession.mockImplementationOnce(() => "2028-03-10");
+
+    const resp = await request(app)
+        .get(URL)
+        .set("Referer", "/")
+        .set("Cookie", [`${COOKIE_NAME}=123`]);
+
+    expect(mockCallProcessorApi).toBeCalledTimes(0);
 
     expect(resp.status).toEqual(200);
     expect(resp.text).toContain(COMPANY_NAME);
@@ -186,7 +218,7 @@ describe("Company no longer required confirmation screen tests", () => {
   it("should render the error page when API returns 'undefined' for a new filing deadline date", async () => {
 
     mockCacheService.mockClear();
-    mockPTFSession.mockClear();
+    mockPTFSession.mockReset();
     mockActiveFeature.mockClear();
     mockCallProcessorApi.mockClear();
     loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
@@ -194,6 +226,7 @@ describe("Company no longer required confirmation screen tests", () => {
     mockPTFSession.mockImplementationOnce(() => dummyProfile);
     mockPTFSession.mockImplementationOnce(() => true);
     mockActiveFeature.mockImplementationOnce(() => true);
+    mockPTFSession.mockImplementationOnce(() => false);
 
     mockCallProcessorApi.prototype.constructor.mockImplementationOnce(() => Promise.resolve((
       {
@@ -222,7 +255,7 @@ describe("Company no longer required confirmation screen tests", () => {
   it("should render the error page when API returns 'null' for a new filing deadline date", async () => {
 
     mockCacheService.mockClear();
-    mockPTFSession.mockClear();
+    mockPTFSession.mockReset();
     mockActiveFeature.mockClear();
     mockCallProcessorApi.mockClear();
     loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
@@ -230,6 +263,7 @@ describe("Company no longer required confirmation screen tests", () => {
     mockPTFSession.mockImplementationOnce(() => dummyProfile);
     mockPTFSession.mockImplementationOnce(() => true);
     mockActiveFeature.mockImplementationOnce(() => true);
+    mockPTFSession.mockImplementationOnce(() => false);
 
     mockCallProcessorApi.prototype.constructor.mockImplementationOnce(() => Promise.resolve((
       {
@@ -257,11 +291,12 @@ describe("Company no longer required confirmation screen tests", () => {
 
   it("should return the error page if company profile is missing from session", async () => {
     mockCacheService.mockClear();
-    mockPTFSession.mockClear();
+    mockPTFSession.mockReset();
     mockCallProcessorApi.mockClear();
     loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
     mockPTFSession.mockImplementationOnce(() => null);
     mockPTFSession.mockImplementationOnce(() => false);
+
     const resp = await request(app)
         .get(URL)
         .set("Referer", "/")
