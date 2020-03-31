@@ -57,25 +57,25 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
     let apiResponseData: any;
     try {
 
-        const axiosResponse: AxiosResponse = await callPromiseToFileAPI(companyProfile.companyNumber,
-            token, isStillRequired);
+      const axiosResponse: AxiosResponse = await callPromiseToFileAPI(companyProfile.companyNumber,
+        token, isStillRequired);
 
-        apiResponseData = axiosResponse.data;
-        await updatePromiseToFileSessionValue(req.chSession, NEW_DEADLINE, apiResponseData.filing_due_on);
-        await updatePromiseToFileSessionValue(req.chSession, ALREADY_SUBMITTED, true);
+      apiResponseData = axiosResponse.data;
+      await updatePromiseToFileSessionValue(req.chSession, NEW_DEADLINE, apiResponseData.filing_due_on);
+      await updatePromiseToFileSessionValue(req.chSession, ALREADY_SUBMITTED, true);
 
-        logger.debug(`Response data returned from the PTF api call : ${JSON.stringify(apiResponseData)}`);
+      logger.debug(`Response data returned from the PTF api call : ${JSON.stringify(apiResponseData)}`);
     } catch (e) {
         logger.error("Error processing application " + JSON.stringify(e));
         await updatePromiseToFileSessionValue(req.chSession, ALREADY_SUBMITTED, false);
         return next(e);
     }
   } else {
-      logger.error("Form already submitted, not processing again");
+    logger.error("Form already submitted, not processing again");
   }
 
   if (isStillRequired) {
-    const filingDueOn =  getPromiseToFileSessionValue(req.chSession, NEW_DEADLINE);
+    const filingDueOn = getPromiseToFileSessionValue(req.chSession, NEW_DEADLINE);
     logger.debug(`New filing deadline : ${filingDueOn}`);
 
     if (!filingDueOn) {
