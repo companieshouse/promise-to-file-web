@@ -30,6 +30,8 @@ router.get(pageURLs.WARNING, warningRoute);
 router.get(pageURLs.STILL_REQUIRED, stillRequiredGetRoute);
 router.post(pageURLs.STILL_REQUIRED, stillRequiredPostRoute);
 
+router.get(pageURLs.NOT_ELIGIBLE, renderTemplate(Templates.NOT_ELIGIBLE));
+
 router.get(pageURLs.CONFIRMATION, ...confirmationRoute);
 
 export const appRouter = router;

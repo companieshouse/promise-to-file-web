@@ -16,6 +16,7 @@ export const COMPANY_AUTH_PROTECTED_ROUTE: string = SEPARATOR + "company/:compan
  */
 export const WARNING: string = COMPANY_AUTH_PROTECTED_ROUTE + Templates.WARNING;
 export const STILL_REQUIRED: string = COMPANY_AUTH_PROTECTED_ROUTE + Templates.STILL_REQUIRED;
+export const NOT_ELIGIBLE: string = COMPANY_AUTH_PROTECTED_ROUTE + "not-eligible";
 export const CONFIRMATION: string = COMPANY_AUTH_PROTECTED_ROUTE + "confirmation";
 
 /**

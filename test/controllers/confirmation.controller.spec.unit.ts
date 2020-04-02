@@ -18,6 +18,7 @@ const COMPANY_NUMBER: string = "00006400";
 const COMPANY_NAME: string = "THE GIRLS DAY SCHOOL TRUST";
 const EMAIL: string = "test@demo.ch.gov.uk";
 const PAGE_TITLE: string = "Confirmation page";
+const NOT_ELIGIBLE_PAGE_TITLE: string = "You cannot use this service";
 const URL: string = COMPANY_REQUIRED + "/company/" + COMPANY_NUMBER + "/confirmation";
 const ERROR_PAGE: string = "Sorry, there is a problem with the service";
 const SCOTLAND: string = "scotland";
@@ -162,6 +163,42 @@ describe("Company no longer required confirmation screen tests", () => {
     expect(resp.text).toContain(PAGE_TITLE);
     expect(resp.text).toContain("filed by 10 March 2028");
   });
+
+  // it("should render the not eligible page (persistently late) when reason code is PL_MARKER_SET", async () => {
+  //
+  //   mockCacheService.mockClear();
+  //   mockPTFSession.mockClear();
+  //   mockActiveFeature.mockClear();
+  //   mockCallProcessorApi.mockRestore();
+  //   loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
+  //   const dummyProfile = getDummyCompanyProfile(true, true);
+  //   mockPTFSession.mockImplementationOnce(() => dummyProfile);
+  //   mockPTFSession.mockImplementationOnce(() => true);
+  //   mockActiveFeature.mockImplementationOnce(() => true);
+  //
+  //   mockCallProcessorApi.prototype.constructor.mockImplementation(() => Promise.resolve((
+  //     {
+  //       data: {
+  //         filing_due_on: "2028-03-10",
+  //         reason_code: "PL_MARKER_SET",
+  //       },
+  //       status: 400,
+  //     } )));
+  //
+  //   const resp = await request(app)
+  //     .get(URL)
+  //     .set("Referer", "/")
+  //     .set("Cookie", [`${COOKIE_NAME}=123`]);
+  //
+  //   expect(mockCallProcessorApi).toBeCalled();
+  //
+  //   expect(resp.status).toEqual(400);
+  //   expect(resp.text).toContain("The company THE GIRLS DAY SCHOOL TRUST has filed documents late in the past.");
+  //   expect(resp.text).not.toContain("The accounts and confirmation statement for THE GIRLS DAY SCHOOL TRUST have been filed");
+  //   expect(resp.text).not.toContain("We've already been told that THE GIRLS DAY SCHOOL TRUST is still required.");
+  //   expect(resp.text).not.toContain("The company THE GIRLS DAY SCHOOL TRUST has no appointed directors.");
+  //   expect(resp.text).toContain(NOT_ELIGIBLE_PAGE_TITLE);
+  // });
 
   it("should return the error page if email is missing from session", async () => {
     mockCacheService.mockClear();
