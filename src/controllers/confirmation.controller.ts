@@ -63,8 +63,6 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
 
     apiResponseData = axiosResponse.data;
     apiResponseStatus = axiosResponse.status;
-    // tslint:disable-next-line:no-console
-    console.log(apiResponseData.reason_code + "=====================================");
     logger.debug(`Response data returned from the PTF api call : ${JSON.stringify(apiResponseData)}`);
   } catch (e) {
     logger.error("Error processing application " + JSON.stringify(e));
@@ -76,8 +74,6 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
 
     if (apiResponseStatus === 400) {
       const cannotUseReason: string = eligibilityReasonCode[apiResponseData.reason_code];
-      // tslint:disable-next-line:no-console
-      console.log(cannotUseReason + "++++++++++++++++++++++++++++++++++++++++");
       if (cannotUseReason !== eligibilityReasonCode.COMPANY_IS_ELIGIBLE) {
         return res.render(Templates.NOT_ELIGIBLE,
           {
