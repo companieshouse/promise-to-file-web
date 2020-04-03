@@ -1,7 +1,7 @@
 export enum eligibilityReasonCode {
   COMPANY_IS_ELIGIBLE = "company is eligible",
-  NO_OPEN_COMPLIANCE_CASE = "no open compliance case",
-  PL_MARKER_SET = "history of late filings",
-  PTF_ALREADY_PRESENT = "existing promise to file",
+  NOT_IN_PROSECUTION = "no open compliance case",
+  PERSISTENTLY_LATE = "history of late filings",
+  EXISTING_PTF = "existing promise to file",
   NO_DIRECTORS = "no appointed directors",
 }

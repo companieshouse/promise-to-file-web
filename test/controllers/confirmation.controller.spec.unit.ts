@@ -164,7 +164,7 @@ describe("Company no longer required confirmation screen tests", () => {
     expect(resp.text).toContain("filed by 10 March 2028");
   });
 
-  it("should render the not eligible page (no open compliance case) when reason code is NO_OPEN_COMPLIANCE_CASE",
+  it("should render the not eligible page (no open compliance case) when reason code is NOT_IN_PROSECUTION",
     async () => {
 
     mockCacheService.mockClear();
@@ -180,8 +180,7 @@ describe("Company no longer required confirmation screen tests", () => {
     mockCallProcessorApi.prototype.constructor.mockImplementation(() => Promise.resolve((
       {
         data: {
-          filing_due_on: "null",
-          reason_code: "NO_OPEN_COMPLIANCE_CASE",
+          reason_code: "NOT_IN_PROSECUTION",
         },
         status: 400,
       } )));
@@ -202,7 +201,7 @@ describe("Company no longer required confirmation screen tests", () => {
     expect(resp.text).toContain(NOT_ELIGIBLE_PAGE_TITLE);
   });
 
-  it("should render the not eligible page (persistently late) when reason code is PL_MARKER_SET", async () => {
+  it("should render the not eligible page (persistently late) when reason code is PERSISTENTLY_LATE", async () => {
 
     mockCacheService.mockClear();
     mockPTFSession.mockClear();
@@ -217,8 +216,7 @@ describe("Company no longer required confirmation screen tests", () => {
     mockCallProcessorApi.prototype.constructor.mockImplementation(() => Promise.resolve((
       {
         data: {
-          filing_due_on: "null",
-          reason_code: "PL_MARKER_SET",
+          reason_code: "PERSISTENTLY_LATE",
         },
         status: 400,
       } )));
@@ -238,7 +236,7 @@ describe("Company no longer required confirmation screen tests", () => {
     expect(resp.text).toContain(NOT_ELIGIBLE_PAGE_TITLE);
   });
 
-  it("should render the not eligible page (existing promise to file) when reason code is PTF_ALREADY_PRESENT",
+  it("should render the not eligible page (existing promise to file) when reason code is EXISTING_PTF",
     async () => {
 
       mockCacheService.mockClear();
@@ -254,8 +252,7 @@ describe("Company no longer required confirmation screen tests", () => {
       mockCallProcessorApi.prototype.constructor.mockImplementation(() => Promise.resolve((
         {
           data: {
-            filing_due_on: "null",
-            reason_code: "PTF_ALREADY_PRESENT",
+            reason_code: "EXISTING_PTF",
           },
           status: 400,
         } )));
@@ -291,7 +288,6 @@ describe("Company no longer required confirmation screen tests", () => {
       mockCallProcessorApi.prototype.constructor.mockImplementation(() => Promise.resolve((
         {
           data: {
-            filing_due_on: "null",
             reason_code: "NO_DIRECTORS",
           },
           status: 400,

@@ -74,6 +74,10 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
 
     if (apiResponseStatus === 400) {
       const cannotUseReason: string = eligibilityReasonCode[apiResponseData.reason_code];
+      if (!cannotUseReason) {
+        logger.error("No reason_code in api response" + apiResponseData);
+        return next(new Error("No reason_code in api response"));
+      }
       if (cannotUseReason !== eligibilityReasonCode.COMPANY_IS_ELIGIBLE) {
         return res.render(Templates.NOT_ELIGIBLE,
           {
@@ -87,6 +91,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
     if (!filingDueOn) {
       return next(new Error("No new filing due date returned by the PTF API"));
     }
+
     return res.render(Templates.CONFIRMATION_STILL_REQUIRED,
       {
         company: companyProfile,
