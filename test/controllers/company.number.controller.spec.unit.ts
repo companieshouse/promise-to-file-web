@@ -129,4 +129,35 @@ describe("company number validation tests", () => {
     expect(updatePromiseToFileSessionValue).toHaveBeenCalledWith(expect.any(Session),
       COMPANY_PROFILE, getDummyCompanyProfile(true, true));
   });
+
+  it("should not throw invalid error for company with two letter prefix", async () => {
+    const response = await request(app)
+        .post(COMPANY_REQUIRED_COMPANY_NUMBER)
+        .set("Accept", "application/json")
+        .set("Referer", "/")
+        .set("Cookie", [`${COOKIE_NAME}=123`])
+        .send({companyNumber: "AB012345"});
+
+    expect(response.status).toEqual(302);
+    expect(response).not.toBeUndefined();
+    expect(response.text).not.toContain(NO_COMPANY_NUMBER_SUPPLIED);
+    expect(response.text).not.toContain(INVALID_COMPANY_NUMBER);
+    expect(response.text).not.toContain(COMPANY_NUMBER_TOO_LONG);
+  });
+
+  it("should not throw invalid error for company with one letter prefix", async () => {
+    const response = await request(app)
+        .post(COMPANY_REQUIRED_COMPANY_NUMBER)
+        .set("Accept", "application/json")
+        .set("Referer", "/")
+        .set("Cookie", [`${COOKIE_NAME}=123`])
+        .send({companyNumber: "A0123456"});
+
+    expect(response.status).toEqual(302);
+    expect(response).not.toBeUndefined();
+    expect(response.text).not.toContain(NO_COMPANY_NUMBER_SUPPLIED);
+    expect(response.text).not.toContain(INVALID_COMPANY_NUMBER);
+    expect(response.text).not.toContain(COMPANY_NUMBER_TOO_LONG);
+  });
+
 });
