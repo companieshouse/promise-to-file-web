@@ -18,6 +18,7 @@ const COMPANY_NUMBER: string = "00006400";
 const COMPANY_NAME: string = "THE GIRLS DAY SCHOOL TRUST";
 const EMAIL: string = "test@demo.ch.gov.uk";
 const PAGE_TITLE: string = "Confirmation page";
+const NOT_ELIGIBLE_PAGE_TITLE: string = "You cannot use this service";
 const URL: string = COMPANY_REQUIRED + "/company/" + COMPANY_NUMBER + "/confirmation";
 const ERROR_PAGE: string = "Sorry, there is a problem with the service";
 const SCOTLAND: string = "scotland";
@@ -162,6 +163,150 @@ describe("Company no longer required confirmation screen tests", () => {
     expect(resp.text).toContain(PAGE_TITLE);
     expect(resp.text).toContain("filed by 10 March 2028");
   });
+
+  it("should render the not eligible page (no open compliance case) when reason code is NOT_IN_PROSECUTION",
+    async () => {
+
+    mockCacheService.mockClear();
+    mockPTFSession.mockClear();
+    mockActiveFeature.mockClear();
+    mockCallProcessorApi.mockRestore();
+    loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
+    const dummyProfile = getDummyCompanyProfile(true, true);
+    mockPTFSession.mockImplementationOnce(() => dummyProfile);
+    mockPTFSession.mockImplementationOnce(() => true);
+    mockActiveFeature.mockImplementationOnce(() => true);
+
+    mockCallProcessorApi.prototype.constructor.mockImplementation(() => Promise.resolve((
+      {
+        data: {
+          reason_code: "NOT_IN_PROSECUTION",
+        },
+        status: 400,
+      } )));
+
+    const resp = await request(app)
+      .get(URL)
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+
+    expect(mockCallProcessorApi).toBeCalled();
+
+    expect(resp.status).toEqual(200);
+    expect(resp.text).toContain(
+      "The accounts and confirmation statement for THE GIRLS DAY SCHOOL TRUST have been filed");
+    expect(resp.text).not.toContain("The company THE GIRLS DAY SCHOOL TRUST has filed documents late in the past.");
+    expect(resp.text).not.toContain("We've already been told that THE GIRLS DAY SCHOOL TRUST is still required.");
+    expect(resp.text).not.toContain("The company THE GIRLS DAY SCHOOL TRUST has no appointed directors.");
+    expect(resp.text).toContain(NOT_ELIGIBLE_PAGE_TITLE);
+  });
+
+  it("should render the not eligible page (persistently late) when reason code is PERSISTENTLY_LATE", async () => {
+
+    mockCacheService.mockClear();
+    mockPTFSession.mockClear();
+    mockActiveFeature.mockClear();
+    mockCallProcessorApi.mockRestore();
+    loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
+    const dummyProfile = getDummyCompanyProfile(true, true);
+    mockPTFSession.mockImplementationOnce(() => dummyProfile);
+    mockPTFSession.mockImplementationOnce(() => true);
+    mockActiveFeature.mockImplementationOnce(() => true);
+
+    mockCallProcessorApi.prototype.constructor.mockImplementation(() => Promise.resolve((
+      {
+        data: {
+          reason_code: "PERSISTENTLY_LATE",
+        },
+        status: 400,
+      } )));
+
+    const resp = await request(app)
+      .get(URL)
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+
+    expect(mockCallProcessorApi).toBeCalled();
+
+    expect(resp.status).toEqual(200);
+    expect(resp.text).not.toContain("The accounts and confirmation statement for THE GIRLS DAY SCHOOL TRUST have been filed");
+    expect(resp.text).toContain("The company THE GIRLS DAY SCHOOL TRUST has filed documents late in the past.");
+    expect(resp.text).not.toContain("We've already been told that THE GIRLS DAY SCHOOL TRUST is still required.");
+    expect(resp.text).not.toContain("The company THE GIRLS DAY SCHOOL TRUST has no appointed directors.");
+    expect(resp.text).toContain(NOT_ELIGIBLE_PAGE_TITLE);
+  });
+
+  it("should render the not eligible page (existing promise to file) when reason code is EXISTING_PTF",
+    async () => {
+
+      mockCacheService.mockClear();
+      mockPTFSession.mockClear();
+      mockActiveFeature.mockClear();
+      mockCallProcessorApi.mockRestore();
+      loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
+      const dummyProfile = getDummyCompanyProfile(true, true);
+      mockPTFSession.mockImplementationOnce(() => dummyProfile);
+      mockPTFSession.mockImplementationOnce(() => true);
+      mockActiveFeature.mockImplementationOnce(() => true);
+
+      mockCallProcessorApi.prototype.constructor.mockImplementation(() => Promise.resolve((
+        {
+          data: {
+            reason_code: "EXISTING_PTF",
+          },
+          status: 400,
+        } )));
+
+      const resp = await request(app)
+        .get(URL)
+        .set("Referer", "/")
+        .set("Cookie", [`${COOKIE_NAME}=123`]);
+
+      expect(mockCallProcessorApi).toBeCalled();
+
+      expect(resp.status).toEqual(200);
+      expect(resp.text).not.toContain("The accounts and confirmation statement for THE GIRLS DAY SCHOOL TRUST have been filed");
+      expect(resp.text).not.toContain("The company THE GIRLS DAY SCHOOL TRUST has filed documents late in the past.");
+      expect(resp.text).toContain("We've already been told that THE GIRLS DAY SCHOOL TRUST is still required.");
+      expect(resp.text).not.toContain("The company THE GIRLS DAY SCHOOL TRUST has no appointed directors.");
+      expect(resp.text).toContain(NOT_ELIGIBLE_PAGE_TITLE);
+    });
+
+  it("should render the not eligible page (no appointed directors) when reason code is NO_DIRECTORS",
+    async () => {
+
+      mockCacheService.mockClear();
+      mockPTFSession.mockClear();
+      mockActiveFeature.mockClear();
+      mockCallProcessorApi.mockRestore();
+      loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
+      const dummyProfile = getDummyCompanyProfile(true, true);
+      mockPTFSession.mockImplementationOnce(() => dummyProfile);
+      mockPTFSession.mockImplementationOnce(() => true);
+      mockActiveFeature.mockImplementationOnce(() => true);
+
+      mockCallProcessorApi.prototype.constructor.mockImplementation(() => Promise.resolve((
+        {
+          data: {
+            reason_code: "NO_DIRECTORS",
+          },
+          status: 400,
+        } )));
+
+      const resp = await request(app)
+        .get(URL)
+        .set("Referer", "/")
+        .set("Cookie", [`${COOKIE_NAME}=123`]);
+
+      expect(mockCallProcessorApi).toBeCalled();
+
+      expect(resp.status).toEqual(200);
+      expect(resp.text).not.toContain("The accounts and confirmation statement for THE GIRLS DAY SCHOOL TRUST have been filed");
+      expect(resp.text).not.toContain("The company THE GIRLS DAY SCHOOL TRUST has filed documents late in the past.");
+      expect(resp.text).not.toContain("We've already been told that THE GIRLS DAY SCHOOL TRUST is still required.");
+      expect(resp.text).toContain("The company THE GIRLS DAY SCHOOL TRUST has no appointed directors.");
+      expect(resp.text).toContain(NOT_ELIGIBLE_PAGE_TITLE);
+    });
 
   it("should return the error page if email is missing from session", async () => {
     mockCacheService.mockClear();

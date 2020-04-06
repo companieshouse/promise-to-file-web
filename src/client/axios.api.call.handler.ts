@@ -15,6 +15,9 @@ export const getBaseAxiosRequestConfig = (token: string): AxiosRequestConfig => 
             Authorization: "Bearer " + token,
         },
         proxy: false,
+        validateStatus: (status) => {
+          return ((status >= 200 && status < 300) || status === 400);
+        },
     };
 };
 
