@@ -160,4 +160,49 @@ describe("company number validation tests", () => {
     expect(response.text).not.toContain(COMPANY_NUMBER_TOO_LONG);
   });
 
+  it("should pad company details for a valid abbreviated company number", async () => {
+    mockCompanyProfile.mockResolvedValue(getDummyCompanyProfile(true, true));
+
+    const response = await request(app)
+        .post(COMPANY_REQUIRED_COMPANY_NUMBER)
+        .set("Accept", "application/json")
+        .set("Referer", "/")
+        .set("Cookie", [`${COOKIE_NAME}=123`])
+        .send({companyNumber: "6400"});
+
+    expect(response.header.location).toEqual(COMPANY_REQUIRED_CHECK_COMPANY);
+    expect(response.status).toEqual(302);
+    expect(mockCompanyProfile).toHaveBeenCalledWith(COMPANY_NUMBER, ACCESS_TOKEN);
+  });
+
+  it("should pad company details for a valid abbreviated company number - single letter prefix", async () => {
+    mockCompanyProfile.mockResolvedValue(getDummyCompanyProfile(true, true));
+
+    const response = await request(app)
+        .post(COMPANY_REQUIRED_COMPANY_NUMBER)
+        .set("Accept", "application/json")
+        .set("Referer", "/")
+        .set("Cookie", [`${COOKIE_NAME}=123`])
+        .send({companyNumber: "A123"});
+
+    expect(response.header.location).toEqual(COMPANY_REQUIRED_CHECK_COMPANY);
+    expect(response.status).toEqual(302);
+    expect(mockCompanyProfile).toHaveBeenCalledWith("A0000123", ACCESS_TOKEN);
+  });
+
+  it("should pad company details for a valid abbreviated company number - double letter prefix", async () => {
+    mockCompanyProfile.mockResolvedValue(getDummyCompanyProfile(true, true));
+
+    const response = await request(app)
+        .post(COMPANY_REQUIRED_COMPANY_NUMBER)
+        .set("Accept", "application/json")
+        .set("Referer", "/")
+        .set("Cookie", [`${COOKIE_NAME}=123`])
+        .send({companyNumber: "AA123"});
+
+    expect(response.header.location).toEqual(COMPANY_REQUIRED_CHECK_COMPANY);
+    expect(response.status).toEqual(302);
+    expect(mockCompanyProfile).toHaveBeenCalledWith("AA000123", ACCESS_TOKEN);
+  });
+
 });

@@ -36,7 +36,6 @@ const formatCompanyNumber = (companyNumber: string, leadPoint: number, padStart:
   const leadingLetters = companyNumber.substring(0, leadPoint);
   let trailingChars = companyNumber.substring(leadPoint, companyNumber.length);
   trailingChars = trailingChars.padStart(padStart, "0");
-  logger.debug("`n >>>>>>>>>>> TRAILING CHARS: " + trailingChars);
   return leadingLetters + trailingChars;
 };
 
