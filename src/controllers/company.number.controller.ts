@@ -22,9 +22,9 @@ const preValidators = [
 const padCompanyNumber = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   let companyNumber: string = req.body.companyNumber;
   if (/^([a-zA-Z]{2}?)/gm.test(companyNumber)) {
-    companyNumber = formatCompanyNumber(companyNumber, 2, 6);
+    companyNumber = formatCompanyNumber(companyNumber, 2);
   } else if (/^([a-zA-Z]{1}?)/gm.test(companyNumber)) {
-    companyNumber = formatCompanyNumber(companyNumber, 1, 7);
+    companyNumber = formatCompanyNumber(companyNumber, 1);
   } else {
     companyNumber = companyNumber.padStart(8, "0");
   }
@@ -32,10 +32,10 @@ const padCompanyNumber = async (req: Request, res: Response, next: NextFunction)
   return next();
 };
 
-const formatCompanyNumber = (companyNumber: string, leadPoint: number, padStart: number): string  => {
+const formatCompanyNumber = (companyNumber: string, leadPoint: number): string  => {
   const leadingLetters = companyNumber.substring(0, leadPoint);
   let trailingChars = companyNumber.substring(leadPoint, companyNumber.length);
-  trailingChars = trailingChars.padStart(padStart, "0");
+  trailingChars = trailingChars.padStart((8 - leadPoint), "0");
   return leadingLetters + trailingChars;
 };
 
