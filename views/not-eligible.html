@@ -9,6 +9,37 @@ You cannot use this service
 
 {% block content %}
 
+{% set detailsTextHTML %}
+  <h2 class="govuk-heading-m">By email</h2>
+  <p class="govuk-body">enquiries@companieshouse.gov.uk</p>
+  <h2 class="govuk-heading-m">By post</h2>
+  <h3 class="govuk-heading-s">England and Wales</h3>
+  <p class="govuk-body">
+    Companies House<br/>
+    Crown Way<br/>
+    Cardiff<br/>
+    CF14 3UZ
+  </p>
+  <h3 class="govuk-heading-s">Scotland</h3>
+  <p class="govuk-body">
+    Companies House<br/>
+    Fourth Floor<br/>
+    Edinburgh Quay 2<br/>
+    139 Fountainbridge<br/>
+    Edinburgh<br/>
+    EH3 9FF
+  </p>
+  <h3 class="govuk-heading-s">Northern Ireland</h3>
+  <p class="govuk-body">
+    Companies House<br/>
+    2nd Floor<br/>
+    The Linenhall<br/>
+    32-38 Linenhall Street<br/>
+    Belfast<br/>
+    BT2 8BG<br/>
+  </p>
+{% endset %}
+
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
 
@@ -21,8 +52,9 @@ You cannot use this service
 
       {% if cannotUseReason === 'existing promise to file' %}
         <p>We've already been told that {{companyName}} is still required.</p>
-        <p class="govuk-body">The company must now <a href="https://www.gov.uk/running-a-limited-company">file its overdue accounts or confirmation statement</a>.</p>
-        <p>If the company's accounts are overdue, it will receive a late filing penalty that increases until it files. If the company's confirmation statement is overdue, it will not receive a penalty.</p>
+        <p class="govuk-body">The company must now <a href="https://www.gov.uk/file-your-company-annual-accounts">file its accounts</a> and/or <a href="https://www.gov.uk/file-your-confirmation-statement-with-companies-house">confirmation statement</a> depending on what is overdue.<br/>
+        If its accounts are overdue, the company will receive a late filing penalty that increases over time until it files.<br/>
+        If its confirmation statement is overdue, the company will not receive a penalty.</p>
       {% elseif cannotUseReason === 'no appointed directors' %}
         <p>The company {{companyName}} has no appointed directors. Companies must have at least one director.</p>
         <p>You can <a href="https://www.gov.uk/government/publications/appoint-a-director-ap01">appoint a director</a> online.</p>
@@ -30,35 +62,11 @@ You cannot use this service
         <p>The company {{companyName}} has filed documents late in the past. You will need to contact us to tell us your company is still required.</p>
       {% endif %}
 
-      <h2 class="govuk-heading-m">Contact us</h2>
-        <h3 class="govuk-heading-s">By email</h3>
-          <p class="govuk-body">enquiries@companieshouse.gov.uk</p>
-        <h3 class="govuk-heading-m">By post</h3>
-          <h4 class="govuk-heading-s">England and Wales</h4>
-          <p class="govuk-body">
-            Companies House<br/>
-            Crown Way<br/>
-            Cardiff<br/>
-            CF14 3UZ
-          </p>
-          <h4 class="govuk-heading-s">Scotland</h4>
-            <p class="govuk-body">
-              Companies House<br/>
-              Fourth Floor<br/>
-              Edinburgh Quay 2<br/>
-              139 Fountainbridge<br/>
-              Edinburgh<br/>
-              EH3 9FF
-            </p>
-          <h4 class="govuk-heading-s">Northern Ireland</h4>
-            <p class="govuk-body">
-              Companies House<br/>
-              2nd Floor<br/>
-              The Linenhall<br/>
-              32-38 Linenhall Street<br/>
-              Belfast<br/>
-              BT2 8BG<br/>
-            </p>
+    {{ govukDetails({
+      summaryText: "Contact us if you need to give more information or you want to talk to someone about reasonable adjustments.",
+      html: detailsTextHTML,
+      open: true
+    }) }}
 
       <p class="govuk-body">
         <a href="https://www.gov.uk/service-manual/user-centred-design/resources/patterns/feedback-pages.html" class="govuk-link">What did you think of this service?</a>
