@@ -59,7 +59,7 @@ You cannot use this service
         <p>The company {{companyName}} has no appointed directors. Companies must have at least one director.</p>
         <p>You can <a href="https://www.gov.uk/government/publications/appoint-a-director-ap01">appoint a director</a> online.</p>
       {% elseif cannotUseReason === 'history of late filings' %}
-        <p>The company {{companyName}} has filed documents late in the past. You will need to contact us to tell us your company is still required.</p>
+        <p>The company has filed documents late in the past. You will need to contact us to tell us your company is still required.</p>
       {% endif %}
 
     {{ govukDetails({
