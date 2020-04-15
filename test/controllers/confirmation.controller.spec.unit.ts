@@ -230,7 +230,7 @@ describe("Company no longer required confirmation screen tests", () => {
 
     expect(resp.status).toEqual(200);
     expect(resp.text).not.toContain("The accounts and confirmation statement for THE GIRLS DAY SCHOOL TRUST have been filed");
-    expect(resp.text).toContain("The company THE GIRLS DAY SCHOOL TRUST has filed documents late in the past.");
+    expect(resp.text).toContain("The company has filed documents late in the past.");
     expect(resp.text).not.toContain("We've already been told that THE GIRLS DAY SCHOOL TRUST is still required.");
     expect(resp.text).not.toContain("The company THE GIRLS DAY SCHOOL TRUST has no appointed directors.");
     expect(resp.text).toContain(NOT_ELIGIBLE_PAGE_TITLE);
@@ -266,7 +266,7 @@ describe("Company no longer required confirmation screen tests", () => {
 
       expect(resp.status).toEqual(200);
       expect(resp.text).not.toContain("The accounts and confirmation statement for THE GIRLS DAY SCHOOL TRUST have been filed");
-      expect(resp.text).not.toContain("The company THE GIRLS DAY SCHOOL TRUST has filed documents late in the past.");
+      expect(resp.text).not.toContain("The company has filed documents late in the past.");
       expect(resp.text).toContain("We've already been told that THE GIRLS DAY SCHOOL TRUST is still required.");
       expect(resp.text).not.toContain("The company THE GIRLS DAY SCHOOL TRUST has no appointed directors.");
       expect(resp.text).toContain(NOT_ELIGIBLE_PAGE_TITLE);
@@ -302,7 +302,7 @@ describe("Company no longer required confirmation screen tests", () => {
 
       expect(resp.status).toEqual(200);
       expect(resp.text).not.toContain("The accounts and confirmation statement for THE GIRLS DAY SCHOOL TRUST have been filed");
-      expect(resp.text).not.toContain("The company THE GIRLS DAY SCHOOL TRUST has filed documents late in the past.");
+      expect(resp.text).not.toContain("The company has filed documents late in the past.");
       expect(resp.text).not.toContain("We've already been told that THE GIRLS DAY SCHOOL TRUST is still required.");
       expect(resp.text).toContain("The company THE GIRLS DAY SCHOOL TRUST has no appointed directors.");
       expect(resp.text).toContain(NOT_ELIGIBLE_PAGE_TITLE);
