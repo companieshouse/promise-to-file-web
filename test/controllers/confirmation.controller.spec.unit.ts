@@ -158,10 +158,44 @@ describe("Company no longer required confirmation screen tests", () => {
     expect(resp.status).toEqual(200);
     expect(resp.text).toContain(COMPANY_NAME);
     expect(resp.text).toContain(COMPANY_NUMBER);
+    expect(resp.text).toContain("must file its accounts and confirmation statement to stay");
     expect(resp.text).toContain("will be kept on the register");
     expect(resp.text).not.toContain("CF14 3UZ");
     expect(resp.text).toContain(PAGE_TITLE);
     expect(resp.text).toContain("filed by 10 March 2028");
+  });
+
+  it("should report the correct overdue filings if only accounts are overdue", async () => {
+
+    mockCacheService.mockClear();
+    mockPTFSession.mockClear();
+    mockActiveFeature.mockClear();
+    mockCallProcessorApi.mockClear();
+    loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
+    const dummyProfile = getDummyCompanyProfile(true, true);
+
+    dummyProfile.isConfirmationStatementOverdue = false;
+
+    mockPTFSession.mockImplementationOnce(() => dummyProfile);
+    mockPTFSession.mockImplementationOnce(() => true);
+    mockActiveFeature.mockImplementationOnce(() => true);
+
+    mockCallProcessorApi.prototype.constructor.mockImplementationOnce(() => Promise.resolve((
+      {
+        data: {
+          filing_due_on: "2028-03-10",
+        },
+      } )));
+
+    const resp = await request(app)
+      .get(URL)
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+
+    expect(mockCallProcessorApi).toBeCalled();
+
+    expect(resp.status).toEqual(200);
+    expect(resp.text).toContain("must file its accounts to stay");
   });
 
   it("should render the not eligible page (no open compliance case) when reason code is NOT_IN_PROSECUTION",

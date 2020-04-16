@@ -92,10 +92,21 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
       return next(new Error("No new filing due date returned by the PTF API"));
     }
 
+    let overdueFiling: string;
+    if (companyProfile.isAccountsOverdue && !companyProfile.isConfirmationStatementOverdue) {
+      overdueFiling = "accounts";
+    } else if (companyProfile.isAccountsOverdue && companyProfile.isConfirmationStatementOverdue) {
+      overdueFiling = "accounts and confirmation statement";
+    } else {
+      // TODO Handle scenario when only confirmation statement is overdue LFA-1479
+      overdueFiling = "UNDEFINED";
+    }
+
     return res.render(Templates.CONFIRMATION_STILL_REQUIRED,
       {
         company: companyProfile,
         newDeadline: formatDateForDisplay(filingDueOn),
+        overdueFiling,
         userEmail: email,
       });
   } else {
