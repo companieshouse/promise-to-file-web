@@ -198,6 +198,39 @@ describe("Company no longer required confirmation screen tests", () => {
     expect(resp.text).toContain("must file its accounts to stay");
   });
 
+  it("should report the correct overdue filings if only confirmation statement is overdue", async () => {
+
+    mockCacheService.mockClear();
+    mockPTFSession.mockClear();
+    mockActiveFeature.mockClear();
+    mockCallProcessorApi.mockClear();
+    loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
+    const dummyProfile = getDummyCompanyProfile(true, true);
+
+    dummyProfile.isAccountsOverdue = false;
+
+    mockPTFSession.mockImplementationOnce(() => dummyProfile);
+    mockPTFSession.mockImplementationOnce(() => true);
+    mockActiveFeature.mockImplementationOnce(() => true);
+
+    mockCallProcessorApi.prototype.constructor.mockImplementationOnce(() => Promise.resolve((
+      {
+        data: {
+          filing_due_on: "2028-03-10",
+        },
+      } )));
+
+    const resp = await request(app)
+      .get(URL)
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+
+    expect(mockCallProcessorApi).toBeCalled();
+
+    expect(resp.status).toEqual(200);
+    expect(resp.text).toContain("must file its confirmation statement to stay");
+  });
+
   it("should render the not eligible page (no open compliance case) when reason code is NOT_IN_PROSECUTION",
     async () => {
 
@@ -341,6 +374,43 @@ describe("Company no longer required confirmation screen tests", () => {
       expect(resp.text).toContain("The company THE GIRLS DAY SCHOOL TRUST has no appointed directors.");
       expect(resp.text).toContain(NOT_ELIGIBLE_PAGE_TITLE);
     });
+
+  it("should render the error page when company still required but neither accounts or confirmation statement are overdue", async () => {
+
+    mockCacheService.mockClear();
+    mockPTFSession.mockClear();
+    mockActiveFeature.mockClear();
+    mockCallProcessorApi.mockClear();
+    loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
+    const dummyProfile = getDummyCompanyProfile(false, true);
+
+    mockPTFSession.mockImplementationOnce(() => dummyProfile);
+    mockPTFSession.mockImplementationOnce(() => true);
+    mockActiveFeature.mockImplementationOnce(() => true);
+
+    mockCallProcessorApi.prototype.constructor.mockImplementationOnce(() => Promise.resolve((
+      {
+        data: {
+          filing_due_on: "2028-03-10",
+        },
+      } )));
+
+    const resp = await request(app)
+      .get(URL)
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+
+    expect(mockCallProcessorApi).toBeCalled();
+
+    expect(resp.status).toEqual(500);
+    expect(resp.text).not.toContain(EMAIL);
+    expect(resp.text).not.toContain(COMPANY_NAME);
+    expect(resp.text).not.toContain(COMPANY_NUMBER);
+    expect(resp.text).not.toContain(PAGE_TITLE);
+    expect(resp.text).not.toContain("must file its");
+    expect(resp.text).not.toContain("filed by");
+    expect(resp.text).toContain(ERROR_PAGE);
+  });
 
   it("should return the error page if email is missing from session", async () => {
     mockCacheService.mockClear();
