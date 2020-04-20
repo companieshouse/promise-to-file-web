@@ -115,14 +115,14 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   }
 };
 
-const getOverdueFiling = (companyProfile: PTFCompanyProfile): string => {
+const getOverdueFiling = ({isAccountsOverdue, isConfirmationStatementOverdue}): string => {
   let overdueFiling: string = "";
 
-  if (companyProfile.isAccountsOverdue && !companyProfile.isConfirmationStatementOverdue) {
+  if (isAccountsOverdue && !isConfirmationStatementOverdue) {
     overdueFiling = "accounts";
-  } else if (!companyProfile.isAccountsOverdue && companyProfile.isConfirmationStatementOverdue) {
+  } else if (!isAccountsOverdue && isConfirmationStatementOverdue) {
     overdueFiling = "confirmation statement";
-  } else if (companyProfile.isAccountsOverdue && companyProfile.isConfirmationStatementOverdue) {
+  } else if (isAccountsOverdue && isConfirmationStatementOverdue) {
     overdueFiling = "accounts and confirmation statement";
   }
 
