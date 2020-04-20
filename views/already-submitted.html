@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block pageTitle %}
+Sorry, there is a problem with the service - GOV.UK
+{% endblock %}
+
+
+{% block backLink %}
+{{ govukBackLink({
+text: "Back",
+href: "/company-required",
+attributes: {
+"data-event-id": "back-button"
+}
+}) }}
+{% endblock %}
+
+{% block content %}
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl">
+            You have already submitted a response and cannot resubmit.
+        </h1>
+    </div>
+</div>
+{% endblock %}

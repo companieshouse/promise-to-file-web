@@ -24,7 +24,7 @@ export const getRoute = async (req: Request, res: Response, next: NextFunction):
 
   const isSubmitted: boolean = getPromiseToFileSessionValue(req.chSession, ALREADY_SUBMITTED);
   if (isSubmitted) {
-    return next(new Error("You've already submitted a response and cannot re-submit this page."));
+    return res.render(Templates.ALREADY_SUBMITTED);
   }
 
   const companyName: string = getPromiseToFileSessionValue(req.chSession, COMPANY_PROFILE).companyName;
