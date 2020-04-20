@@ -10,6 +10,7 @@ jest.mock("../../src/services/redis.service");
 jest.mock("../../src/services/session.service");
 
 const mockCacheService = loadSession as jest.Mock;
+const mockGetPromiseToFileSessionValue = getPromiseToFileSessionValue as jest.Mock;
 
 beforeEach(() => {
   loadMockSession(mockCacheService);
@@ -56,7 +57,6 @@ describe("Basic URL Tests", () => {
 
   it("should find the warning page", async () => {
     loadCompanyAuthenticatedSession(mockCacheService, "00006400");
-    const mockGetPromiseToFileSessionValue = getPromiseToFileSessionValue as jest.Mock;
     mockGetPromiseToFileSessionValue.mockReset();
     mockGetPromiseToFileSessionValue.mockImplementation(() => getDummyCompanyProfile(true, true));
 
@@ -71,8 +71,8 @@ describe("Basic URL Tests", () => {
 
   it("should find the still required page", async () => {
     loadCompanyAuthenticatedSession(mockCacheService, "00006400");
-    const mockGetPromiseToFileSessionValue = getPromiseToFileSessionValue as jest.Mock;
     mockGetPromiseToFileSessionValue.mockReset();
+    mockGetPromiseToFileSessionValue .mockImplementationOnce(() => false);
     mockGetPromiseToFileSessionValue.mockImplementation(() => getDummyCompanyProfile(true, true));
 
     const response = await request(app)
@@ -83,4 +83,18 @@ describe("Basic URL Tests", () => {
     expect(response.status).toEqual(200);
     expect(response.text).toMatch(/Tell us if THE GIRLS DAY SCHOOL TRUST is required/);
   });
+
+  it("should not find the still required page when submitted", async () => {
+    loadCompanyAuthenticatedSession(mockCacheService, "00006400");
+    mockGetPromiseToFileSessionValue.mockReset();
+    mockGetPromiseToFileSessionValue .mockImplementationOnce(() => true);
+
+    const response = await request(app)
+        .get("/company-required/company/00006400/still-required")
+        .set("Referer", "/")
+        .set("Cookie", [`${COOKIE_NAME}=123`]);
+
+    expect(response.status).toEqual(500);
+  });
+
 });

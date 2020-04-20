@@ -7,7 +7,7 @@ import { COMPANY_REQUIRED_CONFIRMATION } from "../model/page.urls";
 import { Templates } from "../model/template.paths";
 import { ValidationError } from "../model/validation.error";
 import { getPromiseToFileSessionValue, updatePromiseToFileSessionValue } from "../services/session.service";
-import { COMPANY_PROFILE, IS_STILL_REQUIRED } from "../session/keys";
+import { ALREADY_SUBMITTED, COMPANY_PROFILE, IS_STILL_REQUIRED } from "../session/keys";
 import Session from "../session/session";
 
 const validators = [
@@ -21,6 +21,11 @@ const validators = [
  * @param next
  */
 export const getRoute = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+
+  const isSubmitted: boolean = getPromiseToFileSessionValue(req.chSession, ALREADY_SUBMITTED);
+  if (isSubmitted) {
+    return next(new Error("You've already submitted a response and cannot re-submit this page."));
+  }
 
   const companyName: string = getPromiseToFileSessionValue(req.chSession, COMPANY_PROFILE).companyName;
 
