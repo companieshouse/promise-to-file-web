@@ -94,7 +94,7 @@ describe("Basic URL Tests", () => {
         .set("Referer", "/")
         .set("Cookie", [`${COOKIE_NAME}=123`]);
 
-    expect(response.status).toEqual(500);
+    expect(response.status).toEqual(200);
   });
 
 });
