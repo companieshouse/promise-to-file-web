@@ -38,8 +38,8 @@ Confirmation page
         </p>
         {% endif %}
 
-        <p class="govuk-body">
-            <a href="print-confirmation" class="govuk-link">View printer-friendly version</a>
+        <p class="govuk-body hide-print-content print-link no-print" style="display: block;" aria-hidden="true" hidden="hidden">
+            <a href="javascript:if(window.print)window.print()" class="govuk-link">View printer-friendly version</a>
         </p>
 
         <h2 class="govuk-heading-m">What happens next</h2>
