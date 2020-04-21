@@ -22,9 +22,12 @@ const validators = [
  */
 export const getRoute = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 
-  const companyName: string = getPromiseToFileSessionValue(req.chSession, COMPANY_PROFILE).companyName;
+  const company: PTFCompanyProfile = getPromiseToFileSessionValue(req.chSession, COMPANY_PROFILE);
+  const companyName: string = company.companyName;
+  const backLinkUrl: string = `/company-required/company/${company.companyNumber}/warning`;
 
   return res.render(Templates.STILL_REQUIRED, {
+    backLinkUrl,
     companyName,
     templateName: Templates.STILL_REQUIRED,
   });
