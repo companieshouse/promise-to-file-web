@@ -3,7 +3,7 @@ import { check, validationResult } from "express-validator/check";
 import { PTFCompanyProfile } from "../model/company.profile";
 import { COMPANY_REQUIRED_NOT_SELECTED } from "../model/error.messages";
 import { createGovUkErrorData, GovUkErrorData } from "../model/govuk.error.data";
-import { COMPANY_REQUIRED_CONFIRMATION, COMPANY_REQUIRED_REPEAT_APPLICATION } from "../model/page.urls";
+import { COMPANY_REQUIRED_CONFIRMATION, COMPANY_REQUIRED_REPEAT_APPLICATION, COMPANY_REQUIRED_WARNING } from "../model/page.urls";
 import { Templates } from "../model/template.paths";
 import { ValidationError } from "../model/validation.error";
 import { getPromiseToFileSessionValue, updatePromiseToFileSessionValue } from "../services/session.service";
@@ -30,8 +30,10 @@ export const getRoute = async (req: Request, res: Response, next: NextFunction):
     return res.redirect(url);
   }
 
+  const backLinkUrl: string = COMPANY_REQUIRED_WARNING.replace(":companyNumber", companyProfile.companyNumber);
   const companyName: string = companyProfile.companyName;
   return res.render(Templates.STILL_REQUIRED, {
+    backLinkUrl,
     companyName,
     templateName: Templates.STILL_REQUIRED,
   });

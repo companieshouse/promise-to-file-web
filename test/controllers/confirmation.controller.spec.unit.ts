@@ -231,7 +231,7 @@ describe("Company no longer required confirmation screen tests", () => {
     expect(resp.text).toContain("must file its confirmation statement to stay");
   });
 
-  it("should render the not eligible page (no open compliance case) when reason code is NOT_IN_PROSECUTION",
+  it("should render the not eligible page (no open compliance case) when reason code is NO_OPEN_COMPLIANCE_CASE",
     async () => {
 
     mockCacheService.mockClear();
@@ -247,7 +247,7 @@ describe("Company no longer required confirmation screen tests", () => {
     mockCallProcessorApi.prototype.constructor.mockImplementation(() => Promise.resolve((
       {
         data: {
-          reason_code: "NOT_IN_PROSECUTION",
+          reason_code: "NO_OPEN_COMPLIANCE_CASE",
         },
         status: 400,
       } )));
