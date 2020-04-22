@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+
+<!-- Adds a class to increase vertical spacing for pages without a back button -->
+{% set mainClasses = "govuk-main-wrapper--l" %}
+
+{% block pageTitle %}
+You cannot use this service
+{% endblock %}
+
+{% block content %}
+
+{% set detailsTextHTML %}
+<h2 class="govuk-heading-m">By email</h2>
+<p class="govuk-body">enquiries@companieshouse.gov.uk</p>
+<h2 class="govuk-heading-m">By post</h2>
+<h3 class="govuk-heading-s">England and Wales</h3>
+<p class="govuk-body">
+    Companies House<br/>
+    PO Box 710<br/>
+    Crown Way<br/>
+    CF14 3UZ
+</p>
+<h3 class="govuk-heading-s">Scotland</h3>
+<p class="govuk-body">
+    Companies House<br/>
+    Fourth Floor<br/>
+    Edinburgh Quay 2<br/>
+    139 Fountainbridge<br/>
+    Edinburgh<br/>
+    EH3 9FF
+</p>
+<h3 class="govuk-heading-s">Northern Ireland</h3>
+<p class="govuk-body">
+    Companies House<br/>
+    2nd Floor<br/>
+    The Linenhall<br/>
+    32-38 Linenhall Street<br/>
+    Belfast<br/>
+    BT2 8BG<br/>
+</p>
+{% endset %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <h1 class="govuk-heading-xl">You cannot use this service</h1>
+
+        <p>We've already been told that {{companyName}} is still required.</p>
+
+        <p class="govuk-body">The company must now <a href="https://www.gov.uk/running-a-limited-company">file its overdue accounts or confirmation statement</a>.</p>
+        <ul class="govuk-list govuk-list--bullet">
+        </ul>
+
+        <P>If the company's accounts are overdue, it will receive a late filing penalty that increases until it files. If the company's confirmation statement is overdue, it will not receive a penalty.</p>
+        {{ govukDetails({
+        summaryText: "Contact us if you need to give more information or you want to talk to someone about reasonable adjustments.",
+        html: detailsTextHTML
+        }) }}
+
+        <p class="govuk-body">
+            <a href="https://www.gov.uk/service-manual/user-centred-design/resources/patterns/feedback-pages.html" class="govuk-link">What did you think of this service?</a>
+            (takes 30 seconds)
+        </p>
+    </div>
+</div>
+
+{% endblock %}

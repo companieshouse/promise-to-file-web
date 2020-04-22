@@ -72,8 +72,8 @@ describe("Basic URL Tests", () => {
   it("should find the still required page", async () => {
     loadCompanyAuthenticatedSession(mockCacheService, "00006400");
     mockGetPromiseToFileSessionValue.mockReset();
-    mockGetPromiseToFileSessionValue .mockImplementationOnce(() => false);
-    mockGetPromiseToFileSessionValue.mockImplementation(() => getDummyCompanyProfile(true, true));
+    mockGetPromiseToFileSessionValue.mockImplementationOnce(() => getDummyCompanyProfile(true, true));
+    mockGetPromiseToFileSessionValue.mockImplementationOnce(() => false);
 
     const response = await request(app)
       .get("/company-required/company/00006400/still-required")
@@ -87,14 +87,15 @@ describe("Basic URL Tests", () => {
   it("should not find the still required page when submitted", async () => {
     loadCompanyAuthenticatedSession(mockCacheService, "00006400");
     mockGetPromiseToFileSessionValue.mockReset();
-    mockGetPromiseToFileSessionValue .mockImplementationOnce(() => true);
+    mockGetPromiseToFileSessionValue.mockImplementationOnce(() => getDummyCompanyProfile(true, true));
+    mockGetPromiseToFileSessionValue.mockImplementationOnce(() => true);
 
     const response = await request(app)
         .get("/company-required/company/00006400/still-required")
         .set("Referer", "/")
         .set("Cookie", [`${COOKIE_NAME}=123`]);
 
-    expect(response.status).toEqual(200);
+    expect(response.status).toEqual(302);
   });
 
 });
