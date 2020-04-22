@@ -12,7 +12,7 @@ jest.mock("../../src/services/session.service");
 const mockCacheService = loadSession as jest.Mock;
 const mockGetPromiseToFileSessionValue = getPromiseToFileSessionValue as jest.Mock;
 
-describe("repeat application page rendering",  () => {
+describe("repeat application page rendering", () => {
 
     it("should render page with correct text refering to company", async () => {
         loadMockSession(mockCacheService);

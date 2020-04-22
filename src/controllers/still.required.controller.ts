@@ -25,8 +25,8 @@ export const getRoute = async (req: Request, res: Response, next: NextFunction):
   const companyProfile: PTFCompanyProfile = getPromiseToFileSessionValue(req.chSession, COMPANY_PROFILE);
 
   const isSubmitted: boolean = getPromiseToFileSessionValue(req.chSession, ALREADY_SUBMITTED);
-  const url = COMPANY_REQUIRED_REPEAT_APPLICATION.replace(":companyNumber", companyProfile.companyNumber);
   if (isSubmitted) {
+    const url = COMPANY_REQUIRED_REPEAT_APPLICATION.replace(":companyNumber", companyProfile.companyNumber);
     return res.redirect(url);
   }
 
