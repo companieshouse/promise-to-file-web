@@ -3,7 +3,7 @@ import { check, validationResult } from "express-validator/check";
 import { PTFCompanyProfile } from "../model/company.profile";
 import { COMPANY_REQUIRED_NOT_SELECTED } from "../model/error.messages";
 import { createGovUkErrorData, GovUkErrorData } from "../model/govuk.error.data";
-import { COMPANY_REQUIRED_CONFIRMATION } from "../model/page.urls";
+import { COMPANY_REQUIRED_CONFIRMATION, COMPANY_REQUIRED_WARNING } from "../model/page.urls";
 import { Templates } from "../model/template.paths";
 import { ValidationError } from "../model/validation.error";
 import { getPromiseToFileSessionValue, updatePromiseToFileSessionValue } from "../services/session.service";
@@ -22,9 +22,9 @@ const validators = [
  */
 export const getRoute = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 
-  const company: PTFCompanyProfile = getPromiseToFileSessionValue(req.chSession, COMPANY_PROFILE);
-  const companyName: string = company.companyName;
-  const backLinkUrl: string = `/company-required/company/${company.companyNumber}/warning`;
+  const companyProfile: PTFCompanyProfile = getPromiseToFileSessionValue(req.chSession, COMPANY_PROFILE);
+  const companyName: string = companyProfile.companyName;
+  const backLinkUrl: string = COMPANY_REQUIRED_WARNING.replace(":companyNumber", companyProfile.companyNumber);
 
   return res.render(Templates.STILL_REQUIRED, {
     backLinkUrl,
