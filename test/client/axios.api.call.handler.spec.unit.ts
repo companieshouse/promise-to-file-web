@@ -40,7 +40,6 @@ describe("axios call handler", () => {
     const token: string = "abc123";
     const config: AxiosRequestConfig = getBaseAxiosRequestConfig(token);
 
-    expect(config.headers).toEqual({ Accept: "application/json", Authorization: "Bearer abc123" });
     expect(config.validateStatus(100)).toBeFalsy();
     expect(config.validateStatus(200)).toBeTruthy();
     expect(config.validateStatus(201)).toBeTruthy();
@@ -79,7 +78,7 @@ describe("axios call handler", () => {
     await expect(makeAPICall(config)).rejects.toMatchObject(expectedError);
   });
 
-  it("should handle axios errors with no respnse object", async () => {
+  it("should handle axios errors with no response object", async () => {
     const config: AxiosRequestConfig = {};
 
     const errorMessage = "There is an error";
