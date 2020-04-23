@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { PTFCompanyProfile } from "../model/company.profile";
 import { Templates } from "../model/template.paths";
 import { getPromiseToFileSessionValue, updatePromiseToFileSessionValue } from "../services/session.service";
-import { STILL_REQUIRED_ALREADY_SUBMITTED, COMPANY_PROFILE } from "../session/keys";
+import { COMPANY_PROFILE, STILL_REQUIRED_ALREADY_SUBMITTED } from "../session/keys";
 
 /**
  * GET controller for check company details screen

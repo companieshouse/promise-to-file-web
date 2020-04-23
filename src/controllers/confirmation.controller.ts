@@ -9,7 +9,7 @@ import { eligibilityReasonCode } from "../model/eligibilityReasonCode";
 import { Templates } from "../model/template.paths";
 import { COMPANY_STILL_REQUIRED_FEATURE_FLAG } from "../properties";
 import { getPromiseToFileSessionValue, updatePromiseToFileSessionValue } from "../services/session.service";
-import { STILL_REQUIRED_ALREADY_SUBMITTED, COMPANY_PROFILE, IS_STILL_REQUIRED, USER_PROFILE } from "../session/keys";
+import { COMPANY_PROFILE, IS_STILL_REQUIRED, STILL_REQUIRED_ALREADY_SUBMITTED, USER_PROFILE } from "../session/keys";
 import { IUserProfile } from "../session/types";
 
 const createMissingError = (item: string): Error => {

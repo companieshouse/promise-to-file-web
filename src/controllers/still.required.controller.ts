@@ -7,7 +7,7 @@ import { COMPANY_REQUIRED_CONFIRMATION, COMPANY_REQUIRED_REPEAT_APPLICATION, COM
 import { Templates } from "../model/template.paths";
 import { ValidationError } from "../model/validation.error";
 import { getPromiseToFileSessionValue, updatePromiseToFileSessionValue } from "../services/session.service";
-import { STILL_REQUIRED_ALREADY_SUBMITTED, COMPANY_PROFILE, IS_STILL_REQUIRED } from "../session/keys";
+import { COMPANY_PROFILE, IS_STILL_REQUIRED, STILL_REQUIRED_ALREADY_SUBMITTED } from "../session/keys";
 import Session from "../session/session";
 
 const validators = [

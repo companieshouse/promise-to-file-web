@@ -6,8 +6,8 @@ import { COMPANY_REQUIRED } from "../../src/model/page.urls";
 import { COOKIE_NAME } from "../../src/properties";
 import { loadSession } from "../../src/services/redis.service";
 import { getPromiseToFileSessionValue, updatePromiseToFileSessionValue } from "../../src/services/session.service";
+import { STILL_REQUIRED_ALREADY_SUBMITTED } from "../../src/session/keys";
 import { getDummyCompanyProfile, loadCompanyAuthenticatedSession } from "../mock.utils";
-import {STILL_REQUIRED_ALREADY_SUBMITTED} from "../../src/session/keys";
 
 jest.mock("../../src/session/store/redis.store", () => import("../mocks/redis.store.mock.factory"));
 jest.mock("../../src/services/redis.service");
