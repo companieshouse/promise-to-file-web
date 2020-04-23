@@ -9,7 +9,7 @@ import { eligibilityReasonCode } from "../model/eligibilityReasonCode";
 import { Templates } from "../model/template.paths";
 import { COMPANY_STILL_REQUIRED_FEATURE_FLAG } from "../properties";
 import { getPromiseToFileSessionValue, updatePromiseToFileSessionValue } from "../services/session.service";
-import { ALREADY_SUBMITTED, COMPANY_PROFILE, IS_STILL_REQUIRED, USER_PROFILE } from "../session/keys";
+import { STILL_REQUIRED_ALREADY_SUBMITTED, COMPANY_PROFILE, IS_STILL_REQUIRED, USER_PROFILE } from "../session/keys";
 import { IUserProfile } from "../session/types";
 
 const createMissingError = (item: string): Error => {
@@ -97,7 +97,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
       return next(new Error("Company still required but neither accounts or confirmation statement are overdue"));
     }
 
-    await updatePromiseToFileSessionValue(req.chSession, ALREADY_SUBMITTED, true);
+    await updatePromiseToFileSessionValue(req.chSession, STILL_REQUIRED_ALREADY_SUBMITTED, true);
     return res.render(Templates.CONFIRMATION_STILL_REQUIRED,
       {
         company: companyProfile,
@@ -106,7 +106,6 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
         userEmail: email,
       });
   } else {
-    await updatePromiseToFileSessionValue(req.chSession, ALREADY_SUBMITTED, true);
     return res.render(Templates.CONFIRMATION_NOT_REQUIRED,
       {
         company: companyProfile,

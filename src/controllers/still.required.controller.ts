@@ -7,7 +7,7 @@ import { COMPANY_REQUIRED_CONFIRMATION, COMPANY_REQUIRED_REPEAT_APPLICATION, COM
 import { Templates } from "../model/template.paths";
 import { ValidationError } from "../model/validation.error";
 import { getPromiseToFileSessionValue, updatePromiseToFileSessionValue } from "../services/session.service";
-import { ALREADY_SUBMITTED, COMPANY_PROFILE, IS_STILL_REQUIRED } from "../session/keys";
+import { STILL_REQUIRED_ALREADY_SUBMITTED, COMPANY_PROFILE, IS_STILL_REQUIRED } from "../session/keys";
 import Session from "../session/session";
 
 const validators = [
@@ -24,7 +24,7 @@ export const getRoute = async (req: Request, res: Response, next: NextFunction):
 
   const companyProfile: PTFCompanyProfile = getPromiseToFileSessionValue(req.chSession, COMPANY_PROFILE);
 
-  const isSubmitted: boolean = getPromiseToFileSessionValue(req.chSession, ALREADY_SUBMITTED);
+  const isSubmitted: boolean = getPromiseToFileSessionValue(req.chSession, STILL_REQUIRED_ALREADY_SUBMITTED);
   if (isSubmitted) {
     const url = COMPANY_REQUIRED_REPEAT_APPLICATION.replace(":companyNumber", companyProfile.companyNumber);
     return res.redirect(url);

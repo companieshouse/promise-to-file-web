@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { PTFCompanyProfile } from "../model/company.profile";
 import { Templates } from "../model/template.paths";
 import { getPromiseToFileSessionValue, updatePromiseToFileSessionValue } from "../services/session.service";
-import { ALREADY_SUBMITTED, COMPANY_PROFILE } from "../session/keys";
+import { STILL_REQUIRED_ALREADY_SUBMITTED, COMPANY_PROFILE } from "../session/keys";
 
 /**
  * GET controller for check company details screen
@@ -13,7 +13,7 @@ import { ALREADY_SUBMITTED, COMPANY_PROFILE } from "../session/keys";
 export const route = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 
   const company: PTFCompanyProfile = getPromiseToFileSessionValue(req.chSession, COMPANY_PROFILE);
-  await updatePromiseToFileSessionValue(req.chSession, ALREADY_SUBMITTED, false);
+  await updatePromiseToFileSessionValue(req.chSession, STILL_REQUIRED_ALREADY_SUBMITTED, false);
   return res.render(Templates.CHECK_COMPANY, {
     company,
     templateName: Templates.CHECK_COMPANY,
