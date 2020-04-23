@@ -82,8 +82,6 @@ describe("axios call handler", () => {
     const config: AxiosRequestConfig = {};
 
     const errorMessage = "There is an error";
-    const dataError = "Test error";
-    const statusCode = 500;
 
     const axiosError = {
       message: errorMessage,
