@@ -8,4 +8,5 @@ export enum Templates {
   NOT_ELIGIBLE = "not-eligible",
   CONFIRMATION_STILL_REQUIRED = "confirmation-still-required",
   CONFIRMATION_NOT_REQUIRED = "confirmation-not-required",
+  REPEAT_APPLICATION = "repeat-application",
 }

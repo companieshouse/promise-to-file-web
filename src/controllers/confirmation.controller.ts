@@ -8,8 +8,8 @@ import { PTFCompanyProfile } from "../model/company.profile";
 import { eligibilityReasonCode } from "../model/eligibilityReasonCode";
 import { Templates } from "../model/template.paths";
 import { COMPANY_STILL_REQUIRED_FEATURE_FLAG } from "../properties";
-import { getPromiseToFileSessionValue } from "../services/session.service";
-import { COMPANY_PROFILE, IS_STILL_REQUIRED, USER_PROFILE } from "../session/keys";
+import { getPromiseToFileSessionValue, updatePromiseToFileSessionValue } from "../services/session.service";
+import { COMPANY_PROFILE, IS_STILL_REQUIRED, STILL_REQUIRED_ALREADY_SUBMITTED, USER_PROFILE } from "../session/keys";
 import { IUserProfile } from "../session/types";
 
 const createMissingError = (item: string): Error => {
@@ -56,7 +56,6 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   let apiResponseData: any;
   let apiResponseStatus: any;
   try {
-    // TODO  LFA-1406 Add isSubmitted flag to prevent this being sent twice
 
     const axiosResponse: AxiosResponse = await callPromiseToFileAPI(companyProfile.companyNumber,
         token, isStillRequired);
@@ -98,6 +97,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
       return next(new Error("Company still required but neither accounts or confirmation statement are overdue"));
     }
 
+    await updatePromiseToFileSessionValue(req.chSession, STILL_REQUIRED_ALREADY_SUBMITTED, true);
     return res.render(Templates.CONFIRMATION_STILL_REQUIRED,
       {
         company: companyProfile,

@@ -2,6 +2,7 @@ import { NextFunction, Request, Response, Router } from "express";
 import checkCompanyRoute from "../controllers/check.company.controller";
 import companyNumberRoute from "../controllers/company.number.controller";
 import confirmationRoute from "../controllers/confirmation.controller";
+import repeatApplicationRoute from "../controllers/repeat.application.controller";
 import stillRequiredPostRoute, { getRoute as stillRequiredGetRoute } from "../controllers/still.required.controller";
 import warningRoute from "../controllers/warning.controller";
 import * as pageURLs from "../model/page.urls";
@@ -31,5 +32,7 @@ router.get(pageURLs.STILL_REQUIRED, stillRequiredGetRoute);
 router.post(pageURLs.STILL_REQUIRED, stillRequiredPostRoute);
 
 router.get(pageURLs.CONFIRMATION, ...confirmationRoute);
+
+router.get(pageURLs.REPEAT_APPLICATION, repeatApplicationRoute);
 
 export const appRouter = router;

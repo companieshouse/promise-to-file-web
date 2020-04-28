@@ -24,3 +24,4 @@ export const PTF_SESSION: string = "ptf_session";
 export const COMPANY_NUMBER: string = "company_number";
 export const COMPANY_PROFILE: string = "company_profile";
 export const IS_STILL_REQUIRED: string = "is_still_required";
+export const STILL_REQUIRED_ALREADY_SUBMITTED: string = "repeat_application";

@@ -5,7 +5,8 @@ import activeFeature from "../../src/feature.flag";
 import { COMPANY_REQUIRED } from "../../src/model/page.urls";
 import { COOKIE_NAME } from "../../src/properties";
 import { loadSession } from "../../src/services/redis.service";
-import { getPromiseToFileSessionValue } from "../../src/services/session.service";
+import { getPromiseToFileSessionValue, updatePromiseToFileSessionValue } from "../../src/services/session.service";
+import { STILL_REQUIRED_ALREADY_SUBMITTED } from "../../src/session/keys";
 import { getDummyCompanyProfile, loadCompanyAuthenticatedSession } from "../mock.utils";
 
 jest.mock("../../src/session/store/redis.store", () => import("../mocks/redis.store.mock.factory"));
@@ -56,6 +57,8 @@ describe("Company no longer required confirmation screen tests", () => {
     expect(resp.text).not.toContain(COMPANY_NUMBER);
     expect(resp.text).toContain(EMAIL);
     expect(resp.text).toContain(PAGE_TITLE);
+    expect(updatePromiseToFileSessionValue).not.toHaveBeenCalledWith(
+        expect.anything(), STILL_REQUIRED_ALREADY_SUBMITTED, true);
   });
 
   it("should render the confirmation stub page (england-wales)", async () => {
@@ -163,6 +166,8 @@ describe("Company no longer required confirmation screen tests", () => {
     expect(resp.text).not.toContain("CF14 3UZ");
     expect(resp.text).toContain(PAGE_TITLE);
     expect(resp.text).toContain("filed by 10 March 2028");
+    expect(updatePromiseToFileSessionValue).toHaveBeenCalledWith(
+        expect.anything(), STILL_REQUIRED_ALREADY_SUBMITTED, true);
   });
 
   it("should report the correct overdue filings if only accounts are overdue", async () => {

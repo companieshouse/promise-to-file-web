@@ -72,7 +72,7 @@ describe("still required validation and session tests", () => {
     toHaveBeenCalledWith(buildDummySession("123", "00006400"), IS_STILL_REQUIRED, false);
   });
 
-  it("should update session when nO is selected", async () => {
+  it("should update session when no is selected", async () => {
 
     const response = await request(app)
         .post("/company-required/company/00006400/still-required")
