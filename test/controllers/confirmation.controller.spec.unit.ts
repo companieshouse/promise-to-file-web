@@ -28,15 +28,14 @@ describe("Company no longer required confirmation screen tests", () => {
 
   const mockCacheService = loadSession as jest.Mock;
   const mockPTFSession =  getPromiseToFileSessionValue as jest.Mock;
-  const mockActiveFeature = activeFeature as jest.Mock;
   const mockCallProcessorApi = callPromiseToFileAPI as jest.Mock;
 
-  it("should render the confirmation no longer required page", async () => {
+  it("should render the confirmation no longer required page (AA overdue)", async () => {
     mockCacheService.mockClear();
     mockPTFSession.mockClear();
     mockCallProcessorApi.mockClear();
     loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
-    mockPTFSession.mockImplementationOnce(() => getDummyCompanyProfile(true, true));
+    mockPTFSession.mockImplementationOnce(() => getDummyCompanyProfile(true, false, true));
     mockPTFSession.mockImplementationOnce(() => false);
 
     mockCallProcessorApi.prototype.constructor.mockImplementationOnce(() => Promise.resolve((
@@ -53,17 +52,90 @@ describe("Company no longer required confirmation screen tests", () => {
 
     expect(resp.status).toEqual(200);
     expect(resp.text).toContain(COMPANY_NAME);
-    expect(resp.text).not.toContain(COMPANY_NUMBER);
+    expect(resp.text).toContain(COMPANY_NUMBER);
     expect(resp.text).toContain(EMAIL);
+    expect(resp.text).toContain("is no longer required");
+    expect(resp.text).toContain("we will no longer pursue the overdue accounts.");
+    expect(resp.text).not.toContain("we will no longer pursue the overdue confirmation statement.");
+    expect(resp.text).not.toContain("we will no longer pursue the overdue accounts and confirmation statement.");
     expect(resp.text).toContain(PAGE_TITLE);
   });
+
+  it("should render the confirmation no longer required page (CS overdue)", async () => {
+    mockCacheService.mockClear();
+    mockPTFSession.mockClear();
+    mockCallProcessorApi.mockClear();
+    loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
+    mockPTFSession.mockImplementationOnce(() => getDummyCompanyProfile(false, true, true));
+    mockPTFSession.mockImplementationOnce(() => false);
+
+    mockCallProcessorApi.prototype.constructor.mockImplementationOnce(() => Promise.resolve((
+      {
+        data: {},
+      } )));
+
+    const resp = await request(app)
+      .get(URL)
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+
+    expect(mockCallProcessorApi).toBeCalled();
+
+    expect(resp.status).toEqual(200);
+    expect(resp.text).toContain(COMPANY_NAME);
+    expect(resp.text).toContain(COMPANY_NUMBER);
+    expect(resp.text).toContain(EMAIL);
+    expect(resp.text).toContain("is no longer required");
+    expect(resp.text).not.toContain("we will no longer pursue the overdue accounts.");
+    expect(resp.text).toContain("we will no longer pursue the overdue confirmation statement.");
+    expect(resp.text).not.toContain("we will no longer pursue the overdue accounts and confirmation statement.");
+    expect(resp.text).toContain(PAGE_TITLE);
+  });
+
+  it("should render the confirmation no longer required page (AA and CS overdue)", async () => {
+    mockCacheService.mockClear();
+    mockPTFSession.mockClear();
+    mockCallProcessorApi.mockClear();
+    loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
+    mockPTFSession.mockImplementationOnce(() => getDummyCompanyProfile(true, true, true));
+    mockPTFSession.mockImplementationOnce(() => false);
+
+    mockCallProcessorApi.prototype.constructor.mockImplementationOnce(() => Promise.resolve((
+      {
+        data: {},
+      } )));
+
+    const resp = await request(app)
+      .get(URL)
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+
+    expect(mockCallProcessorApi).toBeCalled();
+
+    expect(resp.status).toEqual(200);
+    expect(resp.text).toContain(COMPANY_NAME);
+    expect(resp.text).toContain(COMPANY_NUMBER);
+    expect(resp.text).toContain(EMAIL);
+    expect(resp.text).toContain("is no longer required");
+    expect(resp.text).not.toContain("we will no longer pursue the overdue accounts.");
+    expect(resp.text).not.toContain("we will no longer pursue the overdue confirmation statement.");
+    expect(resp.text).toContain("we will no longer pursue the overdue accounts and confirmation statement.");
+    expect(resp.text).toContain(PAGE_TITLE);
+  });
+});
+
+describe("Confirmation stub screen tests", () => {
+
+  const mockCacheService = loadSession as jest.Mock;
+  const mockPTFSession =  getPromiseToFileSessionValue as jest.Mock;
+  const mockCallProcessorApi = callPromiseToFileAPI as jest.Mock;
 
   it("should render the confirmation stub page (england-wales)", async () => {
     mockCacheService.mockClear();
     mockPTFSession.mockClear();
     mockCallProcessorApi.mockClear();
     loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
-    const dummyProfile = getDummyCompanyProfile(true, true);
+    const dummyProfile = getDummyCompanyProfile(true, true, true);
     mockPTFSession.mockImplementationOnce(() => dummyProfile);
     mockPTFSession.mockImplementationOnce(() => true);
     const resp = await request(app)
@@ -86,7 +158,7 @@ describe("Company no longer required confirmation screen tests", () => {
     mockPTFSession.mockClear();
     mockCallProcessorApi.mockClear();
     loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
-    const dummyProfile = getDummyCompanyProfile(true, true);
+    const dummyProfile = getDummyCompanyProfile(true, true, true);
     dummyProfile.jurisdiction = SCOTLAND;
     mockPTFSession.mockImplementationOnce(() => dummyProfile);
     mockPTFSession.mockImplementationOnce(() => true);
@@ -110,7 +182,7 @@ describe("Company no longer required confirmation screen tests", () => {
     mockPTFSession.mockClear();
     mockCallProcessorApi.mockClear();
     loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
-    const dummyProfile = getDummyCompanyProfile(true, true);
+    const dummyProfile = getDummyCompanyProfile(true, true, true);
     dummyProfile.jurisdiction = NORTHERN_IRELAND;
     mockPTFSession.mockImplementationOnce(() => dummyProfile);
     mockPTFSession.mockImplementationOnce(() => true);
@@ -128,6 +200,14 @@ describe("Company no longer required confirmation screen tests", () => {
     expect(resp.text).toContain("BT2 8BG");
     expect(resp.text).toContain(PAGE_TITLE);
   });
+});
+
+describe("Company still required confirmation screen tests", () => {
+
+  const mockCacheService = loadSession as jest.Mock;
+  const mockPTFSession =  getPromiseToFileSessionValue as jest.Mock;
+  const mockActiveFeature = activeFeature as jest.Mock;
+  const mockCallProcessorApi = callPromiseToFileAPI as jest.Mock;
 
   it("should render the confirmation still required page when feature flag is true", async () => {
 
@@ -136,7 +216,7 @@ describe("Company no longer required confirmation screen tests", () => {
     mockActiveFeature.mockClear();
     mockCallProcessorApi.mockClear();
     loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
-    const dummyProfile = getDummyCompanyProfile(true, true);
+    const dummyProfile = getDummyCompanyProfile(true, true, true);
     mockPTFSession.mockImplementationOnce(() => dummyProfile);
     mockPTFSession.mockImplementationOnce(() => true);
     mockActiveFeature.mockImplementationOnce(() => true);
@@ -172,7 +252,7 @@ describe("Company no longer required confirmation screen tests", () => {
     mockActiveFeature.mockClear();
     mockCallProcessorApi.mockClear();
     loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
-    const dummyProfile = getDummyCompanyProfile(true, true);
+    const dummyProfile = getDummyCompanyProfile(true, true, true);
 
     dummyProfile.isConfirmationStatementOverdue = false;
 
@@ -205,7 +285,7 @@ describe("Company no longer required confirmation screen tests", () => {
     mockActiveFeature.mockClear();
     mockCallProcessorApi.mockClear();
     loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
-    const dummyProfile = getDummyCompanyProfile(true, true);
+    const dummyProfile = getDummyCompanyProfile(true, true, true);
 
     dummyProfile.isAccountsOverdue = false;
 
@@ -239,7 +319,7 @@ describe("Company no longer required confirmation screen tests", () => {
     mockActiveFeature.mockClear();
     mockCallProcessorApi.mockRestore();
     loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
-    const dummyProfile = getDummyCompanyProfile(true, true);
+    const dummyProfile = getDummyCompanyProfile(true, true, true);
     mockPTFSession.mockImplementationOnce(() => dummyProfile);
     mockPTFSession.mockImplementationOnce(() => true);
     mockActiveFeature.mockImplementationOnce(() => true);
@@ -275,7 +355,7 @@ describe("Company no longer required confirmation screen tests", () => {
     mockActiveFeature.mockClear();
     mockCallProcessorApi.mockRestore();
     loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
-    const dummyProfile = getDummyCompanyProfile(true, true);
+    const dummyProfile = getDummyCompanyProfile(true, true, true);
     mockPTFSession.mockImplementationOnce(() => dummyProfile);
     mockPTFSession.mockImplementationOnce(() => true);
     mockActiveFeature.mockImplementationOnce(() => true);
@@ -311,7 +391,7 @@ describe("Company no longer required confirmation screen tests", () => {
       mockActiveFeature.mockClear();
       mockCallProcessorApi.mockRestore();
       loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
-      const dummyProfile = getDummyCompanyProfile(true, true);
+      const dummyProfile = getDummyCompanyProfile(true, true, true);
       mockPTFSession.mockImplementationOnce(() => dummyProfile);
       mockPTFSession.mockImplementationOnce(() => true);
       mockActiveFeature.mockImplementationOnce(() => true);
@@ -347,7 +427,7 @@ describe("Company no longer required confirmation screen tests", () => {
       mockActiveFeature.mockClear();
       mockCallProcessorApi.mockRestore();
       loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
-      const dummyProfile = getDummyCompanyProfile(true, true);
+      const dummyProfile = getDummyCompanyProfile(true, true, true);
       mockPTFSession.mockImplementationOnce(() => dummyProfile);
       mockPTFSession.mockImplementationOnce(() => true);
       mockActiveFeature.mockImplementationOnce(() => true);
@@ -382,7 +462,7 @@ describe("Company no longer required confirmation screen tests", () => {
     mockActiveFeature.mockClear();
     mockCallProcessorApi.mockClear();
     loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
-    const dummyProfile = getDummyCompanyProfile(false, true);
+    const dummyProfile = getDummyCompanyProfile(false, false, true);
 
     mockPTFSession.mockImplementationOnce(() => dummyProfile);
     mockPTFSession.mockImplementationOnce(() => true);
@@ -439,7 +519,7 @@ describe("Company no longer required confirmation screen tests", () => {
     mockActiveFeature.mockClear();
     mockCallProcessorApi.mockClear();
     loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
-    const dummyProfile = getDummyCompanyProfile(true, true);
+    const dummyProfile = getDummyCompanyProfile(true, true, true);
     mockPTFSession.mockImplementationOnce(() => dummyProfile);
     mockPTFSession.mockImplementationOnce(() => true);
     mockActiveFeature.mockImplementationOnce(() => true);
@@ -475,7 +555,7 @@ describe("Company no longer required confirmation screen tests", () => {
     mockActiveFeature.mockClear();
     mockCallProcessorApi.mockClear();
     loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
-    const dummyProfile = getDummyCompanyProfile(true, true);
+    const dummyProfile = getDummyCompanyProfile(true, true, true);
     mockPTFSession.mockImplementationOnce(() => dummyProfile);
     mockPTFSession.mockImplementationOnce(() => true);
     mockActiveFeature.mockImplementationOnce(() => true);

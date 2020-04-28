@@ -12,8 +12,12 @@
     <div class="govuk-grid-column-two-thirds">
         <div class="govuk-panel govuk-panel--confirmation">
             <h1 class="govuk-panel__title">You've told us
-                {{company.companyName}}
+                {{ company.companyName }}
                 is no longer required</h1>
+            <div class="govuk-panel__body">
+                Your reference number is the company number<br>
+                <strong>{{ company.companyNumber }}</strong>
+            </div>
         </div>
         <p class="govuk-body-l">
             We've sent a confirmation email to
@@ -24,16 +28,17 @@
         <h2 class="govuk-heading-m">What happens next</h2>
         <p>You should
             <a href="http://resources.companieshouse.gov.uk/close-a-company/index.html">close the company</a>
-            so that it is removed from the register. You do not need to file the
-            {{ overdueFiling }}
-            before closing the company.</p>
+            so that it is removed from the register. When you have closed the company, we will no longer pursue the overdue {{ overdueFiling }}.
         </p>
 
-        <p>
-            {{company.companyName}}
-            will receive a
-            <a href="https://www.gov.uk/annual-accounts/penalties-for-late-filing">late filing penalty</a>
-            that increases over time until the company is closed.</p>
+        <p>If you do not close the company and do not file your overdue {{ overdueFiling }}, we may prosecute the company directors.</p>
+
+        {% if (overdueFiling === 'accounts') or (overdueFiling === 'accounts and confirmation statement') %}
+        <p>If {{ company.companyName }} files its accounts, it will receive a
+            <a href="https://www.gov.uk/annual-accounts/penalties-for-late-filing" class="govuk-link">late filing penalty</a>
+            that increases over time until the company is closed.
+        </p>
+        {% endif %}
 
         <p class="govuk-body">
             <a href="https://www.research.net/r/ptf-confirmation" class="govuk-link">What did you think of this service?</a>
