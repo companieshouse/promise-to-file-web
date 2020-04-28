@@ -26,7 +26,7 @@ describe("check company tests", () => {
     const mockGetPromiseToFileSessionValue = getPromiseToFileSessionValue as jest.Mock;
 
     mockGetPromiseToFileSessionValue.mockReset();
-    mockGetPromiseToFileSessionValue.mockImplementation(() => getDummyCompanyProfile(true, true));
+    mockGetPromiseToFileSessionValue.mockImplementation(() => getDummyCompanyProfile(true, true, true));
 
     const response = await request(app).get(COMPANY_REQUIRED_CHECK_COMPANY)
       .set("Referer", "/")

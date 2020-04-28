@@ -69,6 +69,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
     return next(e);
   }
 
+  const overdueFiling: string = getOverdueFiling(companyProfile);
   if (isStillRequired) {
     const filingDueOn = apiResponseData.filing_due_on;
 
@@ -92,12 +93,6 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
       return next(new Error("No new filing due date returned by the PTF API"));
     }
 
-    const overdueFiling: string = getOverdueFiling(companyProfile);
-
-    if (!overdueFiling) {
-      return next(new Error("Company still required but neither accounts or confirmation statement are overdue"));
-    }
-
     return res.render(Templates.CONFIRMATION_STILL_REQUIRED,
       {
         company: companyProfile,
@@ -109,7 +104,8 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
     return res.render(Templates.CONFIRMATION_NOT_REQUIRED,
       {
         company: companyProfile,
-        overdueFiling: (companyProfile.isAccountsOverdue) ? "accounts" : "confirmation statement",
+        overdueFiling,
+        showLFPWarning: companyProfile.isAccountsOverdue,
         userEmail: email,
       });
   }
@@ -124,6 +120,9 @@ const getOverdueFiling = ({isAccountsOverdue, isConfirmationStatementOverdue}): 
     overdueFiling = "confirmation statement";
   } else if (isAccountsOverdue && isConfirmationStatementOverdue) {
     overdueFiling = "accounts and confirmation statement";
+  } else if (!isAccountsOverdue && !isConfirmationStatementOverdue) {
+    // TODO handle this output with appropriate render when story is created.
+    overdueFiling = "nothing overdue";
   }
 
   return overdueFiling;

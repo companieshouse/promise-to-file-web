@@ -113,7 +113,7 @@ describe("company number validation tests", () => {
   });
 
   it("should redirect to the check company details screen when company is found", async () => {
-    mockCompanyProfile.mockResolvedValue(getDummyCompanyProfile(true, true));
+    mockCompanyProfile.mockResolvedValue(getDummyCompanyProfile(true, true, true));
 
     const response = await request(app)
       .post(COMPANY_REQUIRED_COMPANY_NUMBER)
@@ -127,7 +127,7 @@ describe("company number validation tests", () => {
     expect(mockCompanyProfile).toHaveBeenCalledWith(COMPANY_NUMBER, ACCESS_TOKEN);
     expect(updatePromiseToFileSessionValue).toHaveBeenCalledTimes(1);
     expect(updatePromiseToFileSessionValue).toHaveBeenCalledWith(expect.any(Session),
-      COMPANY_PROFILE, getDummyCompanyProfile(true, true));
+      COMPANY_PROFILE, getDummyCompanyProfile(true, true, true));
   });
 
   it("should not throw invalid error for company with two letter prefix", async () => {
@@ -161,7 +161,7 @@ describe("company number validation tests", () => {
   });
 
   it("should pad company details for a valid abbreviated company number", async () => {
-    mockCompanyProfile.mockResolvedValue(getDummyCompanyProfile(true, true));
+    mockCompanyProfile.mockResolvedValue(getDummyCompanyProfile(true, true, true));
 
     const response = await request(app)
         .post(COMPANY_REQUIRED_COMPANY_NUMBER)
@@ -176,7 +176,7 @@ describe("company number validation tests", () => {
   });
 
   it("should pad company details for a valid abbreviated company number - single letter prefix", async () => {
-    mockCompanyProfile.mockResolvedValue(getDummyCompanyProfile(true, true));
+    mockCompanyProfile.mockResolvedValue(getDummyCompanyProfile(true, true, true));
 
     const response = await request(app)
         .post(COMPANY_REQUIRED_COMPANY_NUMBER)
@@ -191,7 +191,7 @@ describe("company number validation tests", () => {
   });
 
   it("should pad company details for a valid abbreviated company number - double letter prefix", async () => {
-    mockCompanyProfile.mockResolvedValue(getDummyCompanyProfile(true, true));
+    mockCompanyProfile.mockResolvedValue(getDummyCompanyProfile(true, true, true));
 
     const response = await request(app)
         .post(COMPANY_REQUIRED_COMPANY_NUMBER)
