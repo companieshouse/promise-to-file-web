@@ -121,7 +121,8 @@ const getOverdueFiling = ({isAccountsOverdue, isConfirmationStatementOverdue}): 
   } else if (isAccountsOverdue && isConfirmationStatementOverdue) {
     overdueFiling = "accounts and confirmation statement";
   } else if (!isAccountsOverdue && !isConfirmationStatementOverdue) {
-    overdueFiling = "no open compliance case";
+    // TODO handle this output with appropriate render when story is created.
+    overdueFiling = "nothing overdue";
   }
 
   return overdueFiling;
