@@ -33,7 +33,7 @@
 
         <p>If you do not close the company and do not file your overdue {{ overdueFiling }}, we may prosecute the company directors.</p>
 
-        {% if (overdueFiling === 'accounts') or (overdueFiling === 'accounts and confirmation statement') %}
+        {% if showLFPWarning %}
         <p>If {{ company.companyName }} files its accounts, it will receive a
             <a href="https://www.gov.uk/annual-accounts/penalties-for-late-filing" class="govuk-link">late filing penalty</a>
             that increases over time until the company is closed.
