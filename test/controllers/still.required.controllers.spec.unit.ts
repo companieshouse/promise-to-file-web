@@ -23,7 +23,7 @@ describe("still required validation and session tests", () => {
     loadMockSession(mockCacheService);
     loadCompanyAuthenticatedSession(mockCacheService, "00006400");
     mockGetPromiseToFileSessionValue.mockReset();
-    mockGetPromiseToFileSessionValue.mockImplementation(() => getDummyCompanyProfile(true, true));
+    mockGetPromiseToFileSessionValue.mockImplementation(() => getDummyCompanyProfile(true, true, true));
 
     const response = await request(app)
       .post("/company-required/company/00006400/still-required")

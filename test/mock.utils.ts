@@ -70,7 +70,7 @@ export const ACCOUNTS_NEXT_DUE_DATE = "2019-05-12";
 export const CONFIRMATION_STATEMENT_NEXT_DUE_DATE = "2019-09-03";
 export const JURISDICTION = "england-wales";
 
-export const getDummyCompanyProfile = (isOverdue: boolean, isActive): PTFCompanyProfile => {
+export const getDummyCompanyProfile = (isAAOverdue: boolean, isCSOverdue: boolean, isActive): PTFCompanyProfile => {
   return {
     accountingPeriodEndOn: ACCOUNTS_NEXT_DUE_DATE,
     accountingPeriodStartOn: ACCOUNTS_NEXT_DUE_DATE,
@@ -86,8 +86,8 @@ export const getDummyCompanyProfile = (isOverdue: boolean, isActive): PTFCompany
     companyType: COMPANY_TYPE,
     confirmationStatementDue: CONFIRMATION_STATEMENT_NEXT_DUE_DATE,
     incorporationDate: COMPANY_INC_DATE,
-    isAccountsOverdue: isOverdue,
-    isConfirmationStatementOverdue: isOverdue,
+    isAccountsOverdue: isAAOverdue,
+    isConfirmationStatementOverdue: isCSOverdue,
     jurisdiction: JURISDICTION,
   };
 };
