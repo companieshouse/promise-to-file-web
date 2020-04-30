@@ -19,6 +19,7 @@ const NO_COMPANY_NUMBER_SUPPLIED = "No company number supplied";
 const INVALID_COMPANY_NUMBER = "Invalid company number";
 const COMPANY_NUMBER_TOO_LONG = "Company number too long";
 const COMPANY_NOT_FOUND: string = "Company number not found";
+const ERROR_PAGE: string = "Sorry, there is a problem with the service";
 
 describe("company number validation tests", () => {
 
@@ -111,6 +112,31 @@ describe("company number validation tests", () => {
     expect(response.text).not.toContain(COMPANY_NUMBER_TOO_LONG);
     expect(response.text).toContain(COMPANY_NOT_FOUND);
   });
+
+  it("should return the error page when company search fails", async () => {
+    mockCompanyProfile.mockImplementation(() => {
+      throw {
+        message: "Unexpected error",
+        status: 500,
+      };
+    });
+
+    const response = await request(app)
+      .post(COMPANY_REQUIRED_COMPANY_NUMBER)
+      .set("Accept", "application/json")
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`])
+      .send({companyNumber: "00012345"});
+
+    expect(response.status).toEqual(500);
+    expect(response).not.toBeUndefined();
+    expect(response.text).not.toContain(NO_COMPANY_NUMBER_SUPPLIED);
+    expect(response.text).not.toContain(INVALID_COMPANY_NUMBER);
+    expect(response.text).not.toContain(COMPANY_NUMBER_TOO_LONG);
+    expect(response.text).not.toContain(COMPANY_NOT_FOUND);
+    expect(response.text).toContain(ERROR_PAGE);
+  });
+
 
   it("should redirect to the check company details screen when company is found", async () => {
     mockCompanyProfile.mockResolvedValue(getDummyCompanyProfile(true, true, true));
