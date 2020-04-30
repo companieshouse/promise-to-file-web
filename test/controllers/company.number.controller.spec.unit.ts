@@ -137,7 +137,6 @@ describe("company number validation tests", () => {
     expect(response.text).toContain(ERROR_PAGE);
   });
 
-
   it("should redirect to the check company details screen when company is found", async () => {
     mockCompanyProfile.mockResolvedValue(getDummyCompanyProfile(true, true, true));
 
