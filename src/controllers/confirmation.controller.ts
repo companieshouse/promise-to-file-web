@@ -84,6 +84,8 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
           {
             cannotUseReason,
             companyName: companyProfile.companyName,
+            overdueFiling,
+            showLFPWarning: companyProfile.isAccountsOverdue,
           });
       }
     }

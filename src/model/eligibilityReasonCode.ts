@@ -4,4 +4,5 @@ export enum eligibilityReasonCode {
   PERSISTENTLY_LATE = "history of late filings",
   EXISTING_PTF = "existing promise to file",
   NO_DIRECTORS = "no appointed directors",
+  COMPANY_ALREADY_IN_PROSECUTION = "company already in prosecution",
 }
