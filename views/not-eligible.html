@@ -46,8 +46,8 @@ You cannot use this service
     <h1 class="govuk-heading-xl">You cannot use this service</h1>
 
     {% if cannotUseReason === 'no open compliance case' %}
-      <p>The accounts and confirmation statement for {{companyName}} have been filed and are up to date.</p>
-      <p>You do not need to let us know that the company is still required. This service is for companies with overdue filings.</p>
+      <p>The accounts and confirmation statement for {{companyName}} have been filed and are up to date. This service is for companies with overdue filings.</p>
+      <p>You do not need to let us know that the company is still required.</p>
     {% elseif cannotUseReason === 'company already in prosecution' %}
       <p>The company {{companyName}} is already late filing their {{overdueFiling}}. The company must now
       <a href="https://www.gov.uk/running-a-limited-company">file its overdue

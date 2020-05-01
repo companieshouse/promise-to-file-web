@@ -2,6 +2,7 @@ import * as request from "supertest";
 import app from "../../src/app";
 import { callPromiseToFileAPI } from "../../src/client/apiclient";
 import activeFeature from "../../src/feature.flag";
+import logger from "../../src/logger";
 import { COMPANY_REQUIRED } from "../../src/model/page.urls";
 import { COOKIE_NAME } from "../../src/properties";
 import { loadSession } from "../../src/services/redis.service";
@@ -13,6 +14,7 @@ jest.mock("../../src/services/redis.service");
 jest.mock("../../src/client/apiclient");
 jest.mock("../../src/services/session.service");
 jest.mock("../../src/feature.flag");
+jest.mock("../../src/logger");
 
 const COMPANY_NUMBER: string = "00006400";
 const COMPANY_NAME: string = "THE GIRLS DAY SCHOOL TRUST";
@@ -28,6 +30,7 @@ const mockCacheService = loadSession as jest.Mock;
 const mockPTFSession =  getPromiseToFileSessionValue as jest.Mock;
 const mockActiveFeature = activeFeature as jest.Mock;
 const mockCallProcessorApi = callPromiseToFileAPI as jest.Mock;
+const mockLoggerError = logger.error as jest.Mock;
 
 describe("Company no longer required confirmation screen tests", () => {
 
@@ -490,10 +493,18 @@ describe("Company still required confirmation screen tests", () => {
   });
 
   it("should return the error page if email is missing from session", async () => {
+    mockLoggerError.mockClear();
     mockCacheService.mockClear();
     mockPTFSession.mockClear();
     mockCallProcessorApi.mockClear();
+    mockActiveFeature.mockClear();
     loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER);
+
+    const dummyProfile = getDummyCompanyProfile(true, true, true);
+    mockPTFSession.mockImplementationOnce(() => dummyProfile);
+    mockPTFSession.mockImplementationOnce(() => true);
+    mockActiveFeature.mockImplementationOnce(() => true);
+
     const resp = await request(app)
         .get(URL)
         .set("Referer", "/")
@@ -507,10 +518,13 @@ describe("Company still required confirmation screen tests", () => {
     expect(resp.text).not.toContain(COMPANY_NUMBER);
     expect(resp.text).not.toContain(PAGE_TITLE);
     expect(resp.text).toContain(ERROR_PAGE);
+
+    expect(mockLoggerError).toBeCalledWith(expect.stringContaining("User Email"));
   });
 
   it("should render the error page when API returns 'undefined' for a new filing deadline date", async () => {
 
+    mockLoggerError.mockReset();
     mockCacheService.mockClear();
     mockPTFSession.mockClear();
     mockActiveFeature.mockClear();
@@ -543,10 +557,13 @@ describe("Company still required confirmation screen tests", () => {
     expect(resp.text).not.toContain("will be kept on the register");
     expect(resp.text).not.toContain("filed by");
     expect(resp.text).toContain(ERROR_PAGE);
+
+    expect(mockLoggerError).toBeCalledWith(expect.stringContaining("No new filing due date returned by the PTF API"));
   });
 
   it("should render the error page when API returns 'null' for a new filing deadline date", async () => {
 
+    mockLoggerError.mockReset();
     mockCacheService.mockClear();
     mockPTFSession.mockClear();
     mockActiveFeature.mockClear();
@@ -579,12 +596,17 @@ describe("Company still required confirmation screen tests", () => {
     expect(resp.text).not.toContain("will be kept on the register");
     expect(resp.text).not.toContain("filed by");
     expect(resp.text).toContain(ERROR_PAGE);
+
+    expect(mockLoggerError).toBeCalledWith(expect.stringContaining("No new filing due date returned by the PTF API"));
   });
 
   it("should return the error page if company profile is missing from session", async () => {
-    mockCacheService.mockClear();
-    mockPTFSession.mockClear();
-    mockCallProcessorApi.mockClear();
+
+    mockLoggerError.mockReset();
+    mockCacheService.mockReset();
+    mockPTFSession.mockReset();
+    mockActiveFeature.mockReset();
+    mockCallProcessorApi.mockReset();
     loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
     mockPTFSession.mockImplementationOnce(() => null);
     mockPTFSession.mockImplementationOnce(() => false);
@@ -601,5 +623,74 @@ describe("Company still required confirmation screen tests", () => {
     expect(resp.text).not.toContain(COMPANY_NUMBER);
     expect(resp.text).not.toContain(PAGE_TITLE);
     expect(resp.text).toContain(ERROR_PAGE);
+
+    expect(mockLoggerError).toBeCalledWith(expect.stringContaining("Company profile"));
+  });
+
+  it("should return the error page if no reason code is returned by API", async () => {
+
+    mockLoggerError.mockReset();
+    mockCacheService.mockReset();
+    mockPTFSession.mockReset();
+    mockActiveFeature.mockReset();
+    mockCallProcessorApi.mockRestore();
+    loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
+    const dummyProfile = getDummyCompanyProfile(true, true, true);
+    mockPTFSession.mockImplementationOnce(() => dummyProfile);
+    mockPTFSession.mockImplementationOnce(() => true);
+    mockActiveFeature.mockImplementationOnce(() => true);
+
+    mockCallProcessorApi.prototype.constructor.mockImplementation(() => Promise.resolve((
+      {
+        data: {},
+        status: 400,
+      } )));
+
+    const resp = await request(app)
+      .get(URL)
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+
+    expect(mockCallProcessorApi).toBeCalled();
+
+    expect(resp.status).toEqual(500);
+    expect(resp.text).not.toContain("THE GIRLS DAY SCHOOL TRUST");
+    expect(resp.text).toContain(ERROR_PAGE);
+
+    expect(mockLoggerError).toBeCalledWith(expect.stringContaining("No reason_code in api response"));
+  });
+
+  it("should return the error page if an error is returned by API", async () => {
+
+    mockLoggerError.mockReset();
+    mockCacheService.mockReset();
+    mockPTFSession.mockReset();
+    mockActiveFeature.mockReset();
+    mockCallProcessorApi.mockRestore();
+    loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
+    const dummyProfile = getDummyCompanyProfile(true, true, true);
+    mockPTFSession.mockImplementationOnce(() => dummyProfile);
+    mockPTFSession.mockImplementationOnce(() => true);
+    mockActiveFeature.mockImplementationOnce(() => true);
+
+    mockCallProcessorApi.prototype.constructor.mockImplementation(() => {
+      throw {
+        message: "Simulated error",
+        status: 500,
+      };
+    });
+
+    const resp = await request(app)
+      .get(URL)
+      .set("Referer", "/")
+      .set("Cookie", [`${COOKIE_NAME}=123`]);
+
+    expect(mockCallProcessorApi).toBeCalled();
+
+    expect(resp.status).toEqual(500);
+    expect(resp.text).not.toContain("THE GIRLS DAY SCHOOL TRUST");
+    expect(resp.text).toContain(ERROR_PAGE);
+
+    expect(mockLoggerError).toBeCalledWith(expect.stringContaining("Simulated error"));
   });
 });
