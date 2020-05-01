@@ -50,11 +50,13 @@ You cannot use this service
       <p>You do not need to let us know that the company is still required.</p>
     {% elseif cannotUseReason === 'company already in prosecution' %}
       <p>The company {{companyName}} is already late filing their {{overdueFiling}}. The company must now
-      <a href="https://www.gov.uk/running-a-limited-company">file its overdue
-        {{overdueFiling}}</a>.</p>
+        <a href="https://www.gov.uk/running-a-limited-company">file its overdue
+        {{overdueFiling}}</a>.
+      </p>
       <p>We will send a letter to the directors of the company soon to warn them that the company could be prosecuted if the
         {{overdueFiling}}
-        are not filed.</p>
+        are not filed.
+      </p>
       {% if showLFPWarning %}
         <p>The company will receive an automatic
           <a href="https://www.gov.uk/annual-accounts/penalties-for-late-filing">late filing penalty</a>
