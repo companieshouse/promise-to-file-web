@@ -646,6 +646,6 @@ describe("Company still required confirmation screen tests", () => {
 const setMockFeatureFlags = () => {
   mockActiveFeature.mockReset();
   mockActiveFeature
-    .mockReturnValueOnce(false)
-    .mockReturnValueOnce(true);
+    .mockReturnValueOnce(false) // SHOW_SERVICE_UNAVAILABLE_PAGE
+    .mockReturnValueOnce(true); // COMPANY_STILL_REQUIRED_FEATURE_FLAG
 };
