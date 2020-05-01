@@ -79,13 +79,12 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
         logger.error("No reason_code in api response" + apiResponseData);
         return next(new Error("No reason_code in api response"));
       }
-      if (cannotUseReason !== eligibilityReasonCode.COMPANY_IS_ELIGIBLE) {
-        return res.render(Templates.NOT_ELIGIBLE,
-          {
-            cannotUseReason,
-            companyName: companyProfile.companyName,
-          });
-      }
+
+      return res.render(Templates.NOT_ELIGIBLE,
+        {
+          cannotUseReason,
+          companyName: companyProfile.companyName,
+        });
     }
     logger.debug(`New filing deadline : ${filingDueOn}`);
 
@@ -120,8 +119,9 @@ const getOverdueFiling = ({isAccountsOverdue, isConfirmationStatementOverdue}): 
     overdueFiling = "confirmation statement";
   } else if (isAccountsOverdue && isConfirmationStatementOverdue) {
     overdueFiling = "accounts and confirmation statement";
-  } else if (!isAccountsOverdue && !isConfirmationStatementOverdue) {
-    // TODO handle this output with appropriate render when story is created.
+  } else {
+    // TODO Neither the accounts or the confirmation statement are overdue - handle this
+    //      output with appropriate render when story is created.
     overdueFiling = "nothing overdue";
   }
 
