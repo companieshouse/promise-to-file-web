@@ -72,7 +72,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   const companyNumber: string = req.body.companyNumber;
 
   try {
-    logger.info("Retrieving company profile for company number ${companyNumber}");
+    logger.info(`Retrieving company profile for company number ${companyNumber}`);
     const token: string = req.chSession.accessToken() as string;
     const company: PTFCompanyProfile = await getCompanyProfile(companyNumber, token);
 
@@ -80,7 +80,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
 
     return res.redirect(COMPANY_REQUIRED_CHECK_COMPANY);
   } catch (e) {
-    logger.error("Error fetching company profile for company number ${companyNumber}", e);
+    logger.error(`Error fetching company profile for company number ${companyNumber}`, e);
     if (e.status === 404) {
       buildError(res, COMPANY_NOT_FOUND);
     } else {
