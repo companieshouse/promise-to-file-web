@@ -45,6 +45,15 @@ describe("Availability tests", () => {
     expect(response.text).toContain(UNAVAILABLE_TEXT);
   });
 
+  it("should show the service unavailable page for non start page with referer", async () => {
+    process.env.SHOW_SERVICE_UNAVAILABLE_PAGE = "on";
+
+    const response = await request(app)
+      .get("/company-required/company/00006400/still-required")
+      .set("Referer", "/company-required/company/00006400/warning");
+    expect(response.text).toContain(UNAVAILABLE_TEXT);
+  });
+
   it("should NOT show the service unavailable page", async () => {
     process.env.SHOW_SERVICE_UNAVAILABLE_PAGE = "off";
 

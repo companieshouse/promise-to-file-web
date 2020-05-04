@@ -40,7 +40,7 @@ logger.debug("Setting up middleware");
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 // check if we should show the service unavailable page
-app.use(`${pageURLs.COMPANY_REQUIRED}`, checkServiceAvailability);
+app.use(checkServiceAvailability);
 app.use(cookieParser());
 app.use(sessionMiddleware);
 app.use(ptfSessionLoader);
