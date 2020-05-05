@@ -5,6 +5,7 @@ import * as nunjucks from "nunjucks";
 import * as path from "path";
 import companyAuthenticate from "./authentication/company/middleware/index";
 import authenticate from "./authentication/user/middleware/index";
+import { checkServiceAvailability } from "./availability/middleware/service.availability";
 import httpLogger from "./http.logger";
 import logger from "./logger";
 import { ERROR_SUMMARY_TITLE } from "./model/error.messages";
@@ -38,6 +39,8 @@ app.enable("trust proxy");
 logger.debug("Setting up middleware");
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+// check if we should show the service unavailable page
+app.use(checkServiceAvailability);
 app.use(cookieParser());
 app.use(sessionMiddleware);
 app.use(ptfSessionLoader);
