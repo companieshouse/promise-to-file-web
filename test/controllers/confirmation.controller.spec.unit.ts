@@ -208,13 +208,12 @@ describe("Company still required confirmation screen tests", () => {
 
     mockCacheService.mockClear();
     mockPTFSession.mockClear();
-    mockActiveFeature.mockClear();
     mockCallProcessorApi.mockClear();
     loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
     const dummyProfile = getDummyCompanyProfile(true, true, true);
     mockPTFSession.mockImplementationOnce(() => dummyProfile);
     mockPTFSession.mockImplementationOnce(() => true);
-    mockActiveFeature.mockImplementationOnce(() => true);
+    setMockFeatureFlags();
 
     mockCallProcessorApi.prototype.constructor.mockImplementationOnce(() => Promise.resolve((
       {
@@ -244,7 +243,6 @@ describe("Company still required confirmation screen tests", () => {
 
     mockCacheService.mockClear();
     mockPTFSession.mockClear();
-    mockActiveFeature.mockClear();
     mockCallProcessorApi.mockClear();
     loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
     const dummyProfile = getDummyCompanyProfile(true, true, true);
@@ -253,7 +251,7 @@ describe("Company still required confirmation screen tests", () => {
 
     mockPTFSession.mockImplementationOnce(() => dummyProfile);
     mockPTFSession.mockImplementationOnce(() => true);
-    mockActiveFeature.mockImplementationOnce(() => true);
+    setMockFeatureFlags();
 
     mockCallProcessorApi.prototype.constructor.mockImplementationOnce(() => Promise.resolve((
       {
@@ -277,7 +275,6 @@ describe("Company still required confirmation screen tests", () => {
 
     mockCacheService.mockClear();
     mockPTFSession.mockClear();
-    mockActiveFeature.mockClear();
     mockCallProcessorApi.mockClear();
     loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
     const dummyProfile = getDummyCompanyProfile(true, true, true);
@@ -286,7 +283,7 @@ describe("Company still required confirmation screen tests", () => {
 
     mockPTFSession.mockImplementationOnce(() => dummyProfile);
     mockPTFSession.mockImplementationOnce(() => true);
-    mockActiveFeature.mockImplementationOnce(() => true);
+    setMockFeatureFlags();
 
     mockCallProcessorApi.prototype.constructor.mockImplementationOnce(() => Promise.resolve((
       {
@@ -311,13 +308,12 @@ describe("Company still required confirmation screen tests", () => {
 
     mockCacheService.mockClear();
     mockPTFSession.mockClear();
-    mockActiveFeature.mockClear();
     mockCallProcessorApi.mockRestore();
     loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
     const dummyProfile = getDummyCompanyProfile(true, true, true);
     mockPTFSession.mockImplementationOnce(() => dummyProfile);
     mockPTFSession.mockImplementationOnce(() => true);
-    mockActiveFeature.mockImplementationOnce(() => true);
+    setMockFeatureFlags();
 
     mockCallProcessorApi.prototype.constructor.mockImplementation(() => Promise.resolve((
       {
@@ -348,13 +344,12 @@ describe("Company still required confirmation screen tests", () => {
 
     mockCacheService.mockClear();
     mockPTFSession.mockClear();
-    mockActiveFeature.mockClear();
     mockCallProcessorApi.mockRestore();
     loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
     const dummyProfile = getDummyCompanyProfile(true, true, true);
     mockPTFSession.mockImplementationOnce(() => dummyProfile);
     mockPTFSession.mockImplementationOnce(() => true);
-    mockActiveFeature.mockImplementationOnce(() => true);
+    setMockFeatureFlags();
 
     mockCallProcessorApi.prototype.constructor.mockImplementation(() => Promise.resolve((
       {
@@ -385,13 +380,12 @@ describe("Company still required confirmation screen tests", () => {
 
       mockCacheService.mockClear();
       mockPTFSession.mockClear();
-      mockActiveFeature.mockClear();
       mockCallProcessorApi.mockRestore();
       loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
       const dummyProfile = getDummyCompanyProfile(true, true, true);
       mockPTFSession.mockImplementationOnce(() => dummyProfile);
       mockPTFSession.mockImplementationOnce(() => true);
-      mockActiveFeature.mockImplementationOnce(() => true);
+      setMockFeatureFlags();
 
       mockCallProcessorApi.prototype.constructor.mockImplementation(() => Promise.resolve((
         {
@@ -422,13 +416,12 @@ describe("Company still required confirmation screen tests", () => {
 
       mockCacheService.mockClear();
       mockPTFSession.mockClear();
-      mockActiveFeature.mockClear();
       mockCallProcessorApi.mockRestore();
       loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
       const dummyProfile = getDummyCompanyProfile(true, true, true);
       mockPTFSession.mockImplementationOnce(() => dummyProfile);
       mockPTFSession.mockImplementationOnce(() => true);
-      mockActiveFeature.mockImplementationOnce(() => true);
+      setMockFeatureFlags();
 
       mockCallProcessorApi.prototype.constructor.mockImplementation(() => Promise.resolve((
         {
@@ -537,13 +530,12 @@ describe("Company still required confirmation screen tests", () => {
     mockCacheService.mockClear();
     mockPTFSession.mockClear();
     mockCallProcessorApi.mockClear();
-    mockActiveFeature.mockClear();
     loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER);
 
     const dummyProfile = getDummyCompanyProfile(true, true, true);
     mockPTFSession.mockImplementationOnce(() => dummyProfile);
     mockPTFSession.mockImplementationOnce(() => true);
-    mockActiveFeature.mockImplementationOnce(() => true);
+    setMockFeatureFlags();
 
     const resp = await request(app)
         .get(URL)
@@ -567,13 +559,12 @@ describe("Company still required confirmation screen tests", () => {
     mockLoggerError.mockReset();
     mockCacheService.mockClear();
     mockPTFSession.mockClear();
-    mockActiveFeature.mockClear();
     mockCallProcessorApi.mockClear();
     loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
     const dummyProfile = getDummyCompanyProfile(true, true, true);
     mockPTFSession.mockImplementationOnce(() => dummyProfile);
     mockPTFSession.mockImplementationOnce(() => true);
-    mockActiveFeature.mockImplementationOnce(() => true);
+    setMockFeatureFlags();
 
     mockCallProcessorApi.prototype.constructor.mockImplementationOnce(() => Promise.resolve((
       {
@@ -606,13 +597,12 @@ describe("Company still required confirmation screen tests", () => {
     mockLoggerError.mockReset();
     mockCacheService.mockClear();
     mockPTFSession.mockClear();
-    mockActiveFeature.mockClear();
     mockCallProcessorApi.mockClear();
     loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
     const dummyProfile = getDummyCompanyProfile(true, true, true);
     mockPTFSession.mockImplementationOnce(() => dummyProfile);
     mockPTFSession.mockImplementationOnce(() => true);
-    mockActiveFeature.mockImplementationOnce(() => true);
+    setMockFeatureFlags();
 
     mockCallProcessorApi.prototype.constructor.mockImplementationOnce(() => Promise.resolve((
       {
@@ -650,6 +640,9 @@ describe("Company still required confirmation screen tests", () => {
     loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
     mockPTFSession.mockImplementationOnce(() => null);
     mockPTFSession.mockImplementationOnce(() => false);
+
+    mockActiveFeature.mockReturnValueOnce(false);
+
     const resp = await request(app)
         .get(URL)
         .set("Referer", "/")
@@ -672,13 +665,12 @@ describe("Company still required confirmation screen tests", () => {
     mockLoggerError.mockReset();
     mockCacheService.mockReset();
     mockPTFSession.mockReset();
-    mockActiveFeature.mockReset();
     mockCallProcessorApi.mockRestore();
     loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
     const dummyProfile = getDummyCompanyProfile(true, true, true);
     mockPTFSession.mockImplementationOnce(() => dummyProfile);
     mockPTFSession.mockImplementationOnce(() => true);
-    mockActiveFeature.mockImplementationOnce(() => true);
+    setMockFeatureFlags();
 
     mockCallProcessorApi.prototype.constructor.mockImplementation(() => Promise.resolve((
       {
@@ -701,17 +693,15 @@ describe("Company still required confirmation screen tests", () => {
   });
 
   it("should return the error page if an error is returned by API", async () => {
-
     mockLoggerError.mockReset();
     mockCacheService.mockReset();
     mockPTFSession.mockReset();
-    mockActiveFeature.mockReset();
     mockCallProcessorApi.mockRestore();
     loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
     const dummyProfile = getDummyCompanyProfile(true, true, true);
     mockPTFSession.mockImplementationOnce(() => dummyProfile);
     mockPTFSession.mockImplementationOnce(() => true);
-    mockActiveFeature.mockImplementationOnce(() => true);
+    setMockFeatureFlags();
 
     mockCallProcessorApi.prototype.constructor.mockImplementation(() => {
       throw {
@@ -734,3 +724,10 @@ describe("Company still required confirmation screen tests", () => {
     expect(mockLoggerError).toBeCalledWith(expect.stringContaining("Simulated error"));
   });
 });
+
+const setMockFeatureFlags = () => {
+  mockActiveFeature.mockReset();
+  mockActiveFeature
+    .mockReturnValueOnce(false) // SHOW_SERVICE_UNAVAILABLE_PAGE
+    .mockReturnValueOnce(true); // COMPANY_STILL_REQUIRED_FEATURE_FLAG
+};
