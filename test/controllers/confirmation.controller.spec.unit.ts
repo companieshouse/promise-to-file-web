@@ -336,6 +336,7 @@ describe("Company still required confirmation screen tests", () => {
     expect(resp.text).not.toContain("The company THE GIRLS DAY SCHOOL TRUST has filed documents late in the past.");
     expect(resp.text).not.toContain("We've already been told that THE GIRLS DAY SCHOOL TRUST is still required.");
     expect(resp.text).not.toContain("The company THE GIRLS DAY SCHOOL TRUST has no appointed directors.");
+    expect(resp.text).not.toContain("The company THE GIRLS DAY SCHOOL TRUST is already late filing their accounts");
     expect(resp.text).toContain(NOT_ELIGIBLE_PAGE_TITLE);
   });
 
@@ -370,6 +371,7 @@ describe("Company still required confirmation screen tests", () => {
     expect(resp.text).toContain("The company THE GIRLS DAY SCHOOL TRUST has filed documents late in the past.");
     expect(resp.text).not.toContain("We've already been told that THE GIRLS DAY SCHOOL TRUST is still required.");
     expect(resp.text).not.toContain("The company THE GIRLS DAY SCHOOL TRUST has no appointed directors.");
+    expect(resp.text).not.toContain("The company THE GIRLS DAY SCHOOL TRUST is already late filing their accounts");
     expect(resp.text).toContain(NOT_ELIGIBLE_PAGE_TITLE);
   });
 
@@ -405,6 +407,7 @@ describe("Company still required confirmation screen tests", () => {
       expect(resp.text).not.toContain("The company THE GIRLS DAY SCHOOL TRUST has filed documents late in the past.");
       expect(resp.text).toContain("We've already been told that THE GIRLS DAY SCHOOL TRUST is still required.");
       expect(resp.text).not.toContain("The company THE GIRLS DAY SCHOOL TRUST has no appointed directors.");
+      expect(resp.text).not.toContain("The company THE GIRLS DAY SCHOOL TRUST is already late filing their accounts");
       expect(resp.text).toContain(NOT_ELIGIBLE_PAGE_TITLE);
   });
 
@@ -440,8 +443,87 @@ describe("Company still required confirmation screen tests", () => {
       expect(resp.text).not.toContain("The company THE GIRLS DAY SCHOOL TRUST has filed documents late in the past.");
       expect(resp.text).not.toContain("We've already been told that THE GIRLS DAY SCHOOL TRUST is still required.");
       expect(resp.text).toContain("The company THE GIRLS DAY SCHOOL TRUST has no appointed directors.");
+      expect(resp.text).not.toContain("The company THE GIRLS DAY SCHOOL TRUST is already late filing their accounts");
       expect(resp.text).toContain(NOT_ELIGIBLE_PAGE_TITLE);
   });
+
+  it("should render the not eligible page (company already in prosecution) when reason code is COMPANY_ALREADY_IN_PROSECUTION (AA overdue)",
+    async () => {
+
+      mockCacheService.mockClear();
+      mockPTFSession.mockClear();
+      mockActiveFeature.mockClear();
+      mockCallProcessorApi.mockRestore();
+      loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
+      const dummyProfile = getDummyCompanyProfile(true, false, true);
+      mockPTFSession.mockImplementationOnce(() => dummyProfile);
+      mockPTFSession.mockImplementationOnce(() => true);
+      setMockFeatureFlags();
+
+      mockCallProcessorApi.prototype.constructor.mockImplementation(() => Promise.resolve((
+        {
+          data: {
+            reason_code: "COMPANY_ALREADY_IN_PROSECUTION",
+          },
+          status: 400,
+        } )));
+
+      const resp = await request(app)
+        .get(URL)
+        .set("Referer", "/")
+        .set("Cookie", [`${COOKIE_NAME}=123`]);
+
+      expect(mockCallProcessorApi).toBeCalled();
+
+      expect(resp.status).toEqual(200);
+      expect(resp.text).not.toContain(
+        "The accounts and confirmation statement for THE GIRLS DAY SCHOOL TRUST have been filed");
+      expect(resp.text).not.toContain("The company THE GIRLS DAY SCHOOL TRUST has filed documents late in the past.");
+      expect(resp.text).not.toContain("We've already been told that THE GIRLS DAY SCHOOL TRUST is still required.");
+      expect(resp.text).not.toContain("The company THE GIRLS DAY SCHOOL TRUST has no appointed directors.");
+      expect(resp.text).toContain("The company THE GIRLS DAY SCHOOL TRUST is already late filing");
+      expect(resp.text).toContain("The penalty will increase over time until the accounts are filed");
+      expect(resp.text).toContain(NOT_ELIGIBLE_PAGE_TITLE);
+  });
+
+  it("should render the not eligible page (company already in prosecution) when reason code is COMPANY_ALREADY_IN_PROSECUTION (CS overdue)",
+    async () => {
+
+      mockCacheService.mockClear();
+      mockPTFSession.mockClear();
+      mockActiveFeature.mockClear();
+      mockCallProcessorApi.mockRestore();
+      loadCompanyAuthenticatedSession(mockCacheService, COMPANY_NUMBER, EMAIL);
+      const dummyProfile = getDummyCompanyProfile(false, true, true);
+      mockPTFSession.mockImplementationOnce(() => dummyProfile);
+      mockPTFSession.mockImplementationOnce(() => true);
+      setMockFeatureFlags();
+
+      mockCallProcessorApi.prototype.constructor.mockImplementation(() => Promise.resolve((
+        {
+          data: {
+            reason_code: "COMPANY_ALREADY_IN_PROSECUTION",
+          },
+          status: 400,
+        } )));
+
+      const resp = await request(app)
+        .get(URL)
+        .set("Referer", "/")
+        .set("Cookie", [`${COOKIE_NAME}=123`]);
+
+      expect(mockCallProcessorApi).toBeCalled();
+
+      expect(resp.status).toEqual(200);
+      expect(resp.text).not.toContain(
+        "The accounts and confirmation statement for THE GIRLS DAY SCHOOL TRUST have been filed");
+      expect(resp.text).not.toContain("The company THE GIRLS DAY SCHOOL TRUST has filed documents late in the past.");
+      expect(resp.text).not.toContain("We've already been told that THE GIRLS DAY SCHOOL TRUST is still required.");
+      expect(resp.text).not.toContain("The company THE GIRLS DAY SCHOOL TRUST has no appointed directors.");
+      expect(resp.text).toContain("The company THE GIRLS DAY SCHOOL TRUST is already late filing");
+      expect(resp.text).not.toContain("The penalty will increase over time until the accounts are filed");
+      expect(resp.text).toContain(NOT_ELIGIBLE_PAGE_TITLE);
+    });
 
   it("should return the error page if email is missing from session", async () => {
     mockLoggerError.mockClear();

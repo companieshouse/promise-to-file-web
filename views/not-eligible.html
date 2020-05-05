@@ -48,13 +48,32 @@ You cannot use this service
     {% if cannotUseReason === 'no open compliance case' %}
       <p>The accounts and confirmation statement for {{companyName}} have been filed and are up to date. This service is for companies with overdue filings.</p>
       <p>You do not need to let us know that the company is still required.</p>
+    {% elseif cannotUseReason === 'company already in prosecution' %}
+      <p>The company {{companyName}} is already late filing their {{overdueFiling}}. The company must now
+        <a href="https://www.gov.uk/running-a-limited-company">file its overdue
+        {{overdueFiling}}</a>.
+      </p>
+      <p>We will send a letter to the directors of the company soon to warn them that the company could be prosecuted if the
+        {{overdueFiling}}
+        {{singleOrPluralText}} not filed.
+      </p>
+      {% if showLFPWarning %}
+        <p>The company will receive an automatic
+          <a href="https://www.gov.uk/annual-accounts/penalties-for-late-filing">late filing penalty</a>
+          as soon as the accounts are filed and accepted because they are already late. The penalty will increase over time until the accounts are filed and applies to all companies, no matter what size or type of business. If the company’s accounts are filed
+          late in consecutive years, the penalty will double for that year’s accounts.</p>
+      {% endif %}
+      <p class="govuk-body">
+        <a href="https://www.research.net/r/ptf-confirmation" class="govuk-link">What did you think of this service?</a>
+        (takes 30 seconds)
+      </p>
     {% else %}
 
       {% if cannotUseReason === 'existing promise to file' %}
         <p>We've already been told that {{companyName}} is still required.</p>
         <p class="govuk-body">The company must now <a href="https://www.gov.uk/file-your-company-annual-accounts">file its accounts</a> and/or <a href="https://www.gov.uk/file-your-confirmation-statement-with-companies-house">confirmation statement</a> depending on what is overdue.<br/>
-        If its accounts are overdue, the company will receive a late filing penalty that increases over time until it files.<br/>
-        If its confirmation statement is overdue, the company will not receive a penalty.</p>
+          If its accounts are overdue, the company will receive a late filing penalty that increases over time until it files.<br/>
+          If its confirmation statement is overdue, the company will not receive a penalty.</p>
       {% elseif cannotUseReason === 'no appointed directors' %}
         <p>The company {{companyName}} has no appointed directors. Companies must have at least one director.</p>
         <p>You can <a href="https://www.gov.uk/government/publications/appoint-a-director-ap01">appoint a director</a> online.</p>
