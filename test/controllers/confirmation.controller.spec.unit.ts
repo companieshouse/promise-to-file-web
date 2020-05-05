@@ -458,7 +458,7 @@ describe("Company still required confirmation screen tests", () => {
       const dummyProfile = getDummyCompanyProfile(true, false, true);
       mockPTFSession.mockImplementationOnce(() => dummyProfile);
       mockPTFSession.mockImplementationOnce(() => true);
-      mockActiveFeature.mockImplementationOnce(() => true);
+      setMockFeatureFlags();
 
       mockCallProcessorApi.prototype.constructor.mockImplementation(() => Promise.resolve((
         {
@@ -497,7 +497,7 @@ describe("Company still required confirmation screen tests", () => {
       const dummyProfile = getDummyCompanyProfile(false, true, true);
       mockPTFSession.mockImplementationOnce(() => dummyProfile);
       mockPTFSession.mockImplementationOnce(() => true);
-      mockActiveFeature.mockImplementationOnce(() => true);
+      setMockFeatureFlags();
 
       mockCallProcessorApi.prototype.constructor.mockImplementation(() => Promise.resolve((
         {

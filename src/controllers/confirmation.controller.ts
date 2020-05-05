@@ -86,6 +86,7 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
           companyName: companyProfile.companyName,
           overdueFiling,
           showLFPWarning: companyProfile.isAccountsOverdue,
+          singleOrPluralText: (overdueFiling === "confirmation statement") ? "is" : "are",
         });
     }
     logger.debug(`New filing deadline : ${filingDueOn}`);
