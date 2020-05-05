@@ -10,6 +10,12 @@
 {% endblock %}
 
 {% block beforeContent %}
+  {{ govukPhaseBanner({
+    tag: {
+      text: "beta"
+    },
+    html: 'This is a new service - Help us improve it by providing <a class="govuk-link" href="https://www.research.net/r/ptf-feedback" target="_blank">feedback <span class="govuk-visually-hidden">(This link opens in a new window)</span></a>'
+  }) }}
   <div class="govuk-breadcrumbs">
     <ol class="govuk-breadcrumbs__list">
       <li class="govuk-breadcrumbs__list-item">
@@ -23,6 +29,7 @@
       </li>
     </ol>
   </div>
+  <div id="templateName" data-id='{{templateName}}' hidden></div>
 {% endblock %}
 
 {% block content %}
@@ -91,4 +98,4 @@
 
       </div>
     </div>
-  {% endblock %}
+{% endblock %}
