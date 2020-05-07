@@ -74,6 +74,7 @@ app.use((err, req, res, next) => {
   res.render("error");
 });
 
+logger.info("Just a test line");
 logger.info("Company Required service started");
 
 export default app;
