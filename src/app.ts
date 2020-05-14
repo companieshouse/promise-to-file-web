@@ -65,7 +65,7 @@ app.use((req, res, next) => {
 });
 
 // error handler
-app.use((err, req, res, next) => {
+app.use(async (err, req, res, next) => {
 
   logger.error("An error has occurred. Re-routing to the error screen - " + err.stack);
 
@@ -75,7 +75,7 @@ app.use((err, req, res, next) => {
 
   // Any old PTF session data will be discarded as a result of this call to create a new PTF session object. The
   // new, empty PTF session will be utilised if the user decides to start a new PTF journey
-  createPromiseToFileSession(req.chSession);
+  await createPromiseToFileSession(req.chSession);
 
   // render the error page
   res.status(err.status || 500);
