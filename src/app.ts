@@ -3,7 +3,6 @@ import * as express from "express";
 import * as createError from "http-errors";
 import * as nunjucks from "nunjucks";
 import * as path from "path";
-import { createPromiseToFileSession } from "../src/services/session.service";
 import companyAuthenticate from "./authentication/company/middleware/index";
 import authenticate from "./authentication/user/middleware/index";
 import { checkServiceAvailability } from "./availability/middleware/service.availability";
@@ -13,6 +12,7 @@ import { ERROR_SUMMARY_TITLE } from "./model/error.messages";
 import * as pageURLs from "./model/page.urls";
 import { PIWIK_SITE_ID, PIWIK_URL } from "./properties";
 import { appRouter } from "./routes/routes";
+import { createPromiseToFileSession } from "./services/session.service";
 import sessionMiddleware from "./session/middleware";
 import ptfSessionLoader from "./session/middleware/ptf.session";
 
