@@ -3,6 +3,7 @@ import * as express from "express";
 import * as createError from "http-errors";
 import * as nunjucks from "nunjucks";
 import * as path from "path";
+import { createPromiseToFileSession } from "../src/services/session.service";
 import companyAuthenticate from "./authentication/company/middleware/index";
 import authenticate from "./authentication/user/middleware/index";
 import { checkServiceAvailability } from "./availability/middleware/service.availability";
@@ -64,13 +65,17 @@ app.use((req, res, next) => {
 });
 
 // error handler
-app.use((err, req, res, next) => {
+app.use(async (err, req, res, next) => {
 
   logger.error("An error has occurred. Re-routing to the error screen - " + err.stack);
 
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : { };
+
+  // Any old PTF session data will be discarded as a result of this call to create a new PTF session object. The
+  // new, empty PTF session will be utilised if the user decides to start a new PTF journey
+  await createPromiseToFileSession(req.chSession);
 
   // render the error page
   res.status(err.status || 500);
