@@ -57,21 +57,17 @@ Confirmation page
                 the company's accounts are filed late in consecutive years, the penalty will double for that year's accounts.
                 The original filing deadline has not been changed or extended.
             </p>
-        {% else %}
-           <p>
-                The original filing deadline has not been changed or extended.
-            </p>
         {% endif %}
 
         <p>
-            If {{ company.companyName }} has not filed by {{ newDeadline }}, we may prosecute the company directors.
+            If {{ company.companyName }} has not filed by {{ newDeadline }}, we may prosecute the directors of the company.
         </p>
         <p>
-            Contact us if you need to give more information or you want to talk to someone about reasonable adjustments.
+            <a href="https://www.gov.uk/government/organisations/companies-house/about/access-and-opening#cdf-addrs">Contact us</a> if you need to give more information or you want to talk to someone about reasonable adjustments.
         </p>
         {{ govukWarningText({
-        text: "Not filing for a company is a criminal offence. The directors of the company risk prosecution and company assets may be seized. ",
-        iconFallbackText: "Warning"
+            html: "Failure to file confirmation statements or accounts is a criminal offence and the directors of the company can be fined in criminal court. Information about the consequences of not filing can be <a href='https://www.gov.uk/annual-accounts/penalties-for-late-filing'>found in our guidance</a>.",
+            iconFallbackText: "Warning"
         }) }}
         <p class="govuk-body">
             <a href="https://www.research.net/r/ptf-confirmation" class="govuk-link">What did you think of this service?</a>
