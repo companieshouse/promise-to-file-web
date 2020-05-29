@@ -48,7 +48,7 @@ Confirmation page
             but it must file its {{ overdueFiling }} to stay on the register.
         </p>
 
-        <!-- This block is displayed if ONLY the confirmation statement is late: -->
+        {# This block is displayed if ONLY the confirmation statement is late: #}
         {% if (company.isAccountsOverdue === false) and (company.isConfirmationStatementOverdue === true) %}
             <p>
                 If {{ company.companyName }} has not filed by {{ newDeadline }}, we may prosecute the directors of the company.
@@ -56,7 +56,7 @@ Confirmation page
             </p>
         {% endif %}
 
-        <!-- This block is displayed if the accounts are late and possibly also the confirmation statement: -->
+        {# This block is displayed if the accounts are late and possibly also the confirmation statement: #}
         {% if company.isAccountsOverdue === true %}
             <p>
                 The company will receive a
