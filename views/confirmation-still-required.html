@@ -48,6 +48,15 @@ Confirmation page
             but it must file its {{ overdueFiling }} to stay on the register.
         </p>
 
+        <!-- This block is displayed if ONLY the confirmation statement is late: -->
+        {% if (company.isAccountsOverdue === false) and (company.isConfirmationStatementOverdue === true) %}
+            <p>
+                If {{ company.companyName }} has not filed by {{ newDeadline }}, we may prosecute the directors of the company.
+                The original filing deadline has not been changed or extended.
+            </p>
+        {% endif %}
+
+        <!-- This block is displayed if the accounts are late and possibly also the confirmation statement: -->
         {% if company.isAccountsOverdue === true %}
             <p>
                 The company will receive a
@@ -57,11 +66,13 @@ Confirmation page
                 the company's accounts are filed late in consecutive years, the penalty will double for that year's accounts.
                 The original filing deadline has not been changed or extended.
             </p>
+
+            <p>
+                If {{ company.companyName }} has not filed by {{ newDeadline }}, we may prosecute the directors of the company.
+            </p>
+
         {% endif %}
 
-        <p>
-            If {{ company.companyName }} has not filed by {{ newDeadline }}, we may prosecute the directors of the company.
-        </p>
         <p>
             <a href="https://www.gov.uk/government/organisations/companies-house/about/access-and-opening#cdf-addrs">Contact us</a> if you need to give more information or you want to talk to someone about reasonable adjustments.
         </p>
