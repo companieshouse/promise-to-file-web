@@ -47,3 +47,5 @@ export const OAUTH2_REDIRECT_URI = getEnvironmentValue("OAUTH2_REDIRECT_URI");
 export const INTERNAL_API_URL = getEnvironmentValue("INTERNAL_API_URL");
 
 export const COMPANY_STILL_REQUIRED_FEATURE_FLAG = getEnvironmentValue("COMPANY_STILL_REQUIRED_FEATURE_FLAG");
+
+export const USE_FINE_GRAIN_SCOPES_MODEL = getEnvironmentValue("USE_FINE_GRAIN_SCOPES_MODEL", "0");
