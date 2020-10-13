@@ -17,4 +17,5 @@ export default async () => {
   process.env.INTERNAL_API_URL = "http://localhost:9333";
   process.env.COMPANY_STILL_REQUIRED_FEATURE_FLAG = "false";
   process.env.SHOW_SERVICE_UNAVAILABLE_PAGE = "off";
+  process.env.USE_FINE_GRAIN_SCOPES_MODEL = "1";
 };
