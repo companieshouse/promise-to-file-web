@@ -29,8 +29,8 @@ const env = nunjucks.configure([
 });
 
 logger.debug("Setting up environment variables");
+env.addGlobal("CHS_URL", process.env.CHS_URL);
 env.addGlobal("assetPath", process.env.CDN_HOST);
-
 env.addGlobal("ERROR_SUMMARY_TITLE", ERROR_SUMMARY_TITLE);
 env.addGlobal("PIWIK_URL", PIWIK_URL);
 env.addGlobal("PIWIK_SITE_ID", PIWIK_SITE_ID);
