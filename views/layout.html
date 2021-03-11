@@ -18,14 +18,14 @@
 
 {% block head %}
   <!--[if !IE 8]><!-->
-  <link href="{{assetPath}}/stylesheets/govuk-frontend/v3.5.0/govuk-frontend-3.5.0.min.css" rel="stylesheet" />
+  <link href="{{assetPath}}/stylesheets/govuk-frontend/v3.11.0/govuk-frontend-3.11.0.min.css" rel="stylesheet" />
   <link href="{{assetPath}}/stylesheets/services/promise-to-file/application.css" rel="stylesheet" />
   <!--<![endif]-->
 
   {# For Internet Explorer 8, you need to compile specific stylesheet #}
   {# see https://github.com/alphagov/govuk-frontend/blob/master/docs/installation/supporting-internet-explorer-8.md #}
   <!--[if IE 8]>
-  <link href="{{assetPath}}/stylesheets/govuk-frontend/v3.5.0/govuk-frontend-ie8-3.5.0.min.css" rel="stylesheet" />
+  <link href="{{assetPath}}/stylesheets/govuk-frontend/v3.11.0/govuk-frontend-ie8-3.11.0.min.css" rel="stylesheet" />
   <link href="{{assetPath}}/stylesheets/services/promise-to-file/application.css" rel="stylesheet" />
   <![endif]-->
 
@@ -41,6 +41,10 @@
 
   {% block download %}
   {% endblock %}
+{% endblock %}
+
+{% block bodyStart %}
+  {% include "includes/cookie-consent-banner.html" %}
 {% endblock %}
 
 {% block header %}
@@ -63,6 +67,8 @@
   {% block backLink %}
   {% endblock %}
 {% endblock %}
+
+{% set mainClasses = mainClasses | default("govuk-main-wrapper--auto-spacing govuk-body") %}
 
 {% block footer %}
   {{ govukFooter({
@@ -91,17 +97,7 @@
 
 {% block bodyEnd %}
   {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}
-  <script src="{{assetPath}}/javascripts/govuk-frontend/v3.5.0/govuk-frontend-3.5.0.min.js"></script>
-  <script src="{{assetPath}}/javascripts/app/piwik-enable.js"></script>
+  <script src="{{assetPath}}/javascripts/govuk-frontend/v3.11.0/govuk-frontend-3.11.0.min.js"></script>
   <script>window.GOVUKFrontend.initAll()</script>
-  <script type="application/javascript">
-    (function() {
-      bindPiwikListener('company-required', '{{PIWIK_URL}}', {{PIWIK_SITE_ID}});
-    }());
-  </script>
-  <noscript>
-    <p>
-      <img src="{{PIWIK_URL}}/piwik.php?idsite={{PIWIK_SITE_ID}}" style="border:0;" alt="" />
-    </p>
-  </noscript>
+  {% include "includes/piwik-scripts.html" %}
 {% endblock %}
