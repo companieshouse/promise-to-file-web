@@ -68,6 +68,8 @@
   {% endblock %}
 {% endblock %}
 
+{% set mainClasses = mainClasses | default("govuk-main-wrapper--auto-spacing govuk-body") %}
+
 {% block footer %}
   {{ govukFooter({
     meta: {
