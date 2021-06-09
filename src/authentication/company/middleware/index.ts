@@ -2,13 +2,12 @@ import { NextFunction, Request, Response } from "express";
 import logger from "../../../logger";
 import {
   COOKIE_NAME, OAUTH2_AUTH_URI, OAUTH2_CLIENT_ID,
-  OAUTH2_REDIRECT_URI, USE_FINE_GRAIN_SCOPES_MODEL,
+  OAUTH2_REDIRECT_URI
 } from "../../../properties";
 import { loadSession, saveSession } from "../../../services/redis.service";
 import { COMPANY_NUMBER, NONCE } from "../../../session/keys";
 import { generateNonce, jweEncodeWithNonce } from "../jwt.encryption";
 
-const LEGACY_COMPANY_SCOPE_PREFIX = "https://api.companieshouse.gov.uk/company/";
 const SCOPE_USER_WRITE_FULL = "https://account.companieshouse.gov.uk/user.write-full";
 const SCOPE_COMPANY_WRITE_FULL_FORMAT = "https://api.companieshouse.gov.uk/company/{COMPANY_NUMBER}/admin.write-full";
 
@@ -82,18 +81,9 @@ async function createAuthUri(originalUri: string, nonce: string, scope?: string)
 }
 
 function createScope(companyNumber: string): string {
-  let scope = "";
-
-  if (USE_FINE_GRAIN_SCOPES_MODEL === "1") {
-    // New fine grain scope model
-    scope = SCOPE_USER_WRITE_FULL;
-    if (companyNumber != null) {
-      scope += " " + SCOPE_COMPANY_WRITE_FULL_FORMAT.replace("{COMPANY_NUMBER}", companyNumber);
-    }
-  } else if (companyNumber != null) {
-    // Legacy company scope
-    scope = LEGACY_COMPANY_SCOPE_PREFIX + companyNumber;
+  let scope = SCOPE_USER_WRITE_FULL;
+  if (companyNumber != null) {
+    scope += " " + SCOPE_COMPANY_WRITE_FULL_FORMAT.replace("{COMPANY_NUMBER}", companyNumber);
   }
-
   return scope;
 }
