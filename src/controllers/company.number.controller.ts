@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { check, validationResult } from "express-validator/check";
+import { check, validationResult, ValidationError } from "express-validator/check";
 import { getCompanyProfile } from "../client/apiclient";
 import logger from "../logger";
 import { PTFCompanyProfile } from "../model/company.profile";
@@ -8,7 +8,6 @@ import { COMPANY_NOT_FOUND, COMPANY_NUMBER_TOO_LONG,
 import { createGovUkErrorData, GovUkErrorData } from "../model/govuk.error.data";
 import { COMPANY_REQUIRED_CHECK_COMPANY } from "../model/page.urls";
 import { Templates } from "../model/template.paths";
-import { ValidationError } from "../model/validation.error";
 import { updatePromiseToFileSessionValue } from "../services/session.service";
 import { COMPANY_PROFILE } from "../session/keys";
 
@@ -57,10 +56,10 @@ const postValidators = [
  */
 const route = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   logger.debug("Attempt to retrieve and show the company details");
-
+  
   const errors = validationResult(req);
-
   // render errors in the view
+
   if (!errors.isEmpty()) {
     const errorText = errors.array({ onlyFirstError: true })
                             .map((err: ValidationError) => err.msg)
