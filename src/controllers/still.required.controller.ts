@@ -1,11 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import { check, validationResult } from "express-validator/check";
+import { check, validationResult, ValidationError } from "express-validator/check";
 import { PTFCompanyProfile } from "../model/company.profile";
 import { COMPANY_REQUIRED_NOT_SELECTED } from "../model/error.messages";
 import { createGovUkErrorData, GovUkErrorData } from "../model/govuk.error.data";
 import { COMPANY_REQUIRED_CONFIRMATION, COMPANY_REQUIRED_WARNING } from "../model/page.urls";
 import { Templates } from "../model/template.paths";
-import { ValidationError } from "../model/validation.error";
 import { getPromiseToFileSessionValue, updatePromiseToFileSessionValue } from "../services/session.service";
 import { COMPANY_PROFILE, IS_STILL_REQUIRED } from "../session/keys";
 import Session from "../session/session";
