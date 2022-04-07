@@ -1,0 +1,17 @@
+{
+    "type": "Service",
+    "name": "promise-to-file-web",
+    "description": "Web frontend for informing CH that a company with an overdue filing is still required and to temporarily stop the company from being closed.",
+    "owned_by": "Titans",
+    "git_repo": "https://github.com/companieshouse/promise-to-file-web",
+    "public": "true",
+    "users": "public",
+    "code_analysis_link": "http://code-analysis.platform.aws.chdev.org:9000/dashboard?id=uk.gov.companieshouse%3Apromise-to-file-web#",    
+    "service_area": "Intelligence and Enforcement",
+    "service_component": "Promise to File",
+    "language": "NodeJS",
+    "integration_outgoing": [      
+      "promise-to-file-api,CALLS_API",
+      "company-profile-api,CALLS_API"
+    ]
+  }
