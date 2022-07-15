@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import logger from "../../../logger";
 import * as pageURLs from "../../../model/page.urls";
+import { getWhitelistedReturnToURL } from "../../../utils/request.utils";
 
 export default (req: Request, res: Response, next: NextFunction) => {
   const referringPageURL = req.header("Referer") as string;
@@ -24,7 +25,7 @@ export default (req: Request, res: Response, next: NextFunction) => {
     }
 
     logger.debug("User not signed in - redirecting to login screen");
-    return res.redirect("/signin?return_to=" + returnToUrl);
+    return res.redirect("/signin?return_to=" + getWhitelistedReturnToURL(returnToUrl));
   }
 
   next();
