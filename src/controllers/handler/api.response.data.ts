@@ -7,16 +7,20 @@ import logger from "../../logger";
 import { Templates } from "../../model/template.paths";
 
 import { eligibilityReasonCode } from "../../model/eligibilityReasonCode";
+import { formatDateForDisplay } from "client/date.formatter";
 
-export class APIResponseData extends AbstractHandler {
+export class APIResponseDataHandler extends AbstractHandler {
   public async handle(req: Request,res: Response,next: NextFunction,ctx: Map<string, any>): Promise<void> {
     const token = req.chSession.accessToken() as string;
+    logger.info(`api response data controller`); 
     let apiResponseData: any;
     let apiResponseStatus: any;
     const companyProfile = ctx["companyProfile"];
     const companyNumber = ctx["companyNumber"];
     const isStillRequired = ctx["isStillRequired"];
+    logger.info(callPromiseToFileAPI);
     try {
+      logger.info(`calling API...`); 
       const axiosResponse: AxiosResponse = await callPromiseToFileAPI(
         companyNumber,
         token,
@@ -25,6 +29,8 @@ export class APIResponseData extends AbstractHandler {
 
       apiResponseData = axiosResponse.data;
       apiResponseStatus = axiosResponse.status;
+
+      companyProfile.filingDueOn = ctx["filingDueOn"];
       logger.debug(
         `Response data returned from the PTF api call : ${JSON.stringify(
           apiResponseData
@@ -34,50 +40,8 @@ export class APIResponseData extends AbstractHandler {
       logger.error("Error processing application " + JSON.stringify(e));
       return next(e);
     }
-    const overdueFiling: string = getOverdueFiling(companyProfile);
-
-    if (isStillRequired) {
-      const filingDueOn = apiResponseData.filing_due_on;
-      logger.info({filingDueOn} + ` :filing due on date`) 
-      if (apiResponseStatus === 400) {
-        const cannotUseReason: string =
-          eligibilityReasonCode[apiResponseData.reason_code];
-        if (!cannotUseReason) {
-          logger.error("No reason_code in api response" + apiResponseData);
-          return next(new Error("No reason_code in api response"));
-        }
-
-        return res.render(Templates.NOT_ELIGIBLE, {
-          cannotUseReason,
-          companyName: companyProfile.companyName,
-          overdueFiling,
-          showLFPWarning: companyProfile.isAccountsOverdue,
-          singleOrPluralText:
-            overdueFiling === "confirmation statement" ? "is" : "are",
-        });
-      }
-      logger.debug(`New filing deadline : ${filingDueOn}`);
-    }
+      ctx["apiResponseData"] = apiResponseData;
+      ctx["apiResponseStatus"] = apiResponseStatus;
     return super.handle(req, res, next, ctx);
   }
 }
-const getOverdueFiling = ({
-  isAccountsOverdue,
-  isConfirmationStatementOverdue,
-}): string => {
-  let overdueFiling: string = "";
-
-  if (isAccountsOverdue && !isConfirmationStatementOverdue) {
-    overdueFiling = "accounts";
-  } else if (!isAccountsOverdue && isConfirmationStatementOverdue) {
-    overdueFiling = "confirmation statement";
-  } else if (isAccountsOverdue && isConfirmationStatementOverdue) {
-    overdueFiling = "accounts and confirmation statement";
-  } else {
-    // TODO Neither the accounts or the confirmation statement are overdue - handle this
-    //      output with appropriate render when story is created.
-    overdueFiling = "nothing overdue";
-  }
-
-  return overdueFiling;
-};

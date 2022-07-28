@@ -7,18 +7,23 @@ import logger from "../../logger";
 import { Templates } from "../../model/template.paths";
 import activeFeature from "../../feature.flag";
 
-
-export class CompanyRequired extends AbstractHandler{
-    public handle(req: Request, res: Response, next: NextFunction, ctx: Map<string,any>) : void {
-        const isStillRequired: boolean = getPromiseToFileSessionValue(req.chSession, IS_STILL_REQUIRED);
-        ctx["isStillRequired"] = isStillRequired;
-    if (isStillRequired && !activeFeature(COMPANY_STILL_REQUIRED_FEATURE_FLAG)) {
-  logger.debug("Company still required feature flag not active. Rendering stub screen");
-  return res.render(Templates.COMPANY_REQUIRED,
-    {
-      company: ctx["companyProfile"],
-      userEmail: ctx["email"],
-    });
-} return super.handle(req, res, next, ctx);
-    }
+export class CompanyRequiredHandler extends AbstractHandler {
+	public handle(req: Request,res: Response,next: NextFunction,ctx: Map<string, any>): void {
+		const isStillRequired: boolean = getPromiseToFileSessionValue(
+			req.chSession,
+			IS_STILL_REQUIRED
+		);
+		ctx["isStillRequired"] = isStillRequired;
+		const isActiveFeature = activeFeature(COMPANY_STILL_REQUIRED_FEATURE_FLAG);
+		if (isStillRequired && !isActiveFeature) {
+			logger.debug(
+				"Company still required feature flag not active. Rendering stub screen"
+			);
+			return res.render(Templates.COMPANY_REQUIRED, {
+				company: ctx["companyProfile"],
+				userEmail: ctx["email"],
+			});
+		}
+		return super.handle(req, res, next, ctx);
+	}
 }
