@@ -6,4 +6,7 @@ class PromiseError extends Error {
         this.data = data;
         this.status = status;
     }
+
 }
+
+export default PromiseError;

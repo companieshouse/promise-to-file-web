@@ -8,6 +8,7 @@ import { INTERNAL_API_URL } from "../properties";
 import { lookupCompanyStatus, lookupCompanyType } from "./api.enumerations";
 import { getBaseAxiosRequestConfig, HTTP_POST, makeAPICall } from "./axios.api.call.handler";
 import { formatDateForDisplay } from "./date.formatter";
+import PromiseError from "../utils/error";
 
 /**
  * Get the company profile from the api. If the company does not exist or there has been an error, an exception
@@ -26,10 +27,13 @@ export const getCompanyProfile = async (companyNumber: string, token: string): P
     await api.companyProfile.getCompanyProfile(companyNumber.toUpperCase());
 
   if (sdkResponse.httpStatusCode >= 400) {
-    throw {
-      status: sdkResponse.httpStatusCode,
-    };
-  }
+    throw new PromiseError(
+       null , 
+      "Cannot find company profile",
+      sdkResponse.httpStatusCode );
+}
+  
+
 
   logger.debug("Data from company profile SDK call " + JSON.stringify(sdkResponse, null, 2));
 
@@ -70,5 +74,5 @@ export const callPromiseToFileAPI = async (companyNumber: string, token: string,
   config.method = HTTP_POST;
   config.url = CURRENT_API_PATH;
   logger.info(`Calling promise to file current api for company ${companyNumber} with the value of ${isStillRequired}`);
-  return await makeAPICall(config);
+  return makeAPICall(config);
 };
