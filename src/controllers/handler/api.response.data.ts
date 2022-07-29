@@ -22,7 +22,7 @@ export class APIResponseDataHandler extends AbstractHandler {
     try {
       logger.info(`calling API...`); 
       const axiosResponse: AxiosResponse = await callPromiseToFileAPI(
-        companyNumber,
+        companyProfile.companyNumber,
         token,
         isStillRequired
       );
