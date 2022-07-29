@@ -9,9 +9,7 @@ import activeFeature from "../../feature.flag";
 
 export class CompanyRequiredHandler extends AbstractHandler {
 	public handle(req: Request,res: Response,next: NextFunction,ctx: Map<string, any>): void {
-		const isStillRequired: boolean = getPromiseToFileSessionValue(
-			req.chSession,
-			IS_STILL_REQUIRED
+		const isStillRequired: boolean = getPromiseToFileSessionValue(req.chSession,IS_STILL_REQUIRED
 		);
 		ctx["isStillRequired"] = isStillRequired;
 		const isActiveFeature = activeFeature(COMPANY_STILL_REQUIRED_FEATURE_FLAG);

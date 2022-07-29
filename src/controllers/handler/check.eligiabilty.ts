@@ -13,72 +13,65 @@ export class CheckEligiablityHandler extends AbstractHandler {
     const isStillRequired = ctx["isStillRequired"];
     const apiResponseData = ctx["apiResponseData"];
     const apiResponseStatus = ctx["apiResponseStatus"];
+    
     const overdueFiling: string = getOverdueFiling(companyProfile);
-    const filingDueOn = ctx["filingDueOn"]
-
     if (isStillRequired) {
-      logger.info(`filing due on date ${JSON.stringify(filingDueOn)}`);
+      const filingDueOn = apiResponseData.filing_due_on;
+
       if (apiResponseStatus === 400) {
-        const cannotUseReason: string =
-          eligibilityReasonCode[apiResponseData.reason_code];
+        const cannotUseReason: string = eligibilityReasonCode[apiResponseData.reason_code];
         if (!cannotUseReason) {
           logger.error("No reason_code in api response" + apiResponseData);
           return next(new Error("No reason_code in api response"));
         }
-        return res.render(Templates.NOT_ELIGIBLE, {
-          cannotUseReason,
-          companyName: companyProfile.companyName,
-          overdueFiling,
-          showLFPWarning: companyProfile.isAccountsOverdue,
-          singleOrPluralText:
-            overdueFiling === "confirmation statement" ? "is" : "are",
-        });
+  
+        return res.render(Templates.NOT_ELIGIBLE,
+          {
+            cannotUseReason,
+            companyName: companyProfile.companyName,
+            overdueFiling,
+            showLFPWarning: companyProfile.isAccountsOverdue,
+            singleOrPluralText: (overdueFiling === "confirmation statement") ? "is" : "are",
+          });
       }
       logger.debug(`New filing deadline : ${filingDueOn}`);
-
+  
       if (!filingDueOn) {
-        return next(
-          new Error("No new filing due date returned by the PTF API")
-        );
+        return next(new Error("No new filing due date returned by the PTF API"));
       }
-      return res.render(Templates.CONFIRMATION_STILL_REQUIRED, {
-        company: companyProfile,
-        newDeadline: formatDateForDisplay(filingDueOn),
-        overdueFiling,
-        userEmail: email,
-      });
+  
+      return res.render(Templates.CONFIRMATION_STILL_REQUIRED,
+        {
+          company: companyProfile,
+          newDeadline: formatDateForDisplay(filingDueOn),
+          overdueFiling,
+          userEmail: email,
+        });
     } else {
-      return res.render(Templates.CONFIRMATION_NOT_REQUIRED, {
-        company: "companyProfile",
-        overdueFiling,
-        showLFPWarning: companyProfile.isAccountsOverdue,
-        userEmail: email,
-      });
+      return res.render(Templates.CONFIRMATION_NOT_REQUIRED,
+        {
+          company: companyProfile,
+          overdueFiling,
+          showLFPWarning: companyProfile.isAccountsOverdue,
+          userEmail: email,
+        });
     }
-  }
-}
-
-const getOverdueFiling = ({
-  isAccountsOverdue,
-  isConfirmationStatementOverdue,
-}): string => {
-  let overdueFiling: string = "";
-  logger.info(`checking overdue filing...`);
-  if (isAccountsOverdue && !isConfirmationStatementOverdue) {
-    overdueFiling = "accounts";
-    logger.info(`accounts overdue filing`);
-  } else if (!isAccountsOverdue && isConfirmationStatementOverdue) {
-    overdueFiling = "confirmation statement";
-    logger.info(`confirmation statement overdue`);
-  } else if (isAccountsOverdue && isConfirmationStatementOverdue) {
-    overdueFiling = "accounts and confirmation statement";
-    logger.info(`confirmation and accounts overdue`);
-  } else {
-    // TODO Neither the accounts or the confirmation statement are overdue - handle this
-    //      output with appropriate render when story is created.
-    overdueFiling = "nothing overdue";
-    logger.info(`nothing overdue`);
-  }
-
-  return overdueFiling;
-};
+  }};
+  
+  const getOverdueFiling = ({isAccountsOverdue, isConfirmationStatementOverdue}): string => {
+    let overdueFiling: string = "";
+  
+    if (isAccountsOverdue && !isConfirmationStatementOverdue) {
+      overdueFiling = "accounts";
+    } else if (!isAccountsOverdue && isConfirmationStatementOverdue) {
+      overdueFiling = "confirmation statement";
+    } else if (isAccountsOverdue && isConfirmationStatementOverdue) {
+      overdueFiling = "accounts and confirmation statement";
+    } else {
+      // TODO Neither the accounts or the confirmation statement are overdue - handle this
+      //      output with appropriate render when story is created.
+      overdueFiling = "nothing overdue";
+    }
+  
+    return overdueFiling;
+  };

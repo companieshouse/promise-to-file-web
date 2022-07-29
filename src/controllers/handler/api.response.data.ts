@@ -30,7 +30,6 @@ export class APIResponseDataHandler extends AbstractHandler {
       apiResponseData = axiosResponse.data;
       apiResponseStatus = axiosResponse.status;
 
-      companyProfile.filingDueOn = ctx["filingDueOn"];
       logger.debug(
         `Response data returned from the PTF api call : ${JSON.stringify(
           apiResponseData
