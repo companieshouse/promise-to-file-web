@@ -4,20 +4,17 @@ import { NextFunction, Request, Response } from "express";
 import { PTFCompanyProfile } from "model/company.profile";
 import AbstractHandler from "../confirmation.handler";
 import { COMPANY_PROFILE } from "../../session/keys";
-import logger from "../../logger";
 
 export class CompanyProfileHandler extends AbstractHandler{
     
     public handle(req: Request, res: Response, next: NextFunction, ctx: Map<string, any>) : void {
-        logger.info("companyProfile controller" );
         
         const companyProfile: PTFCompanyProfile = getPromiseToFileSessionValue(req.chSession, COMPANY_PROFILE);
         ctx["companyProfile"] = companyProfile;
 
         if (!companyProfile) {
-            next(createMissingError("Company profile"));
+            next(createMissingError("Company profile not present"));
         }
-        logger.info("move on from company profile");
         return super.handle(req, res, next, ctx);
     }
 }

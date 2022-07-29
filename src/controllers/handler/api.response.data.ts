@@ -8,14 +8,11 @@ import logger from "../../logger";
 export class APIResponseDataHandler extends AbstractHandler {
   public async handle(req: Request,res: Response,next: NextFunction,ctx: Map<string, any>): Promise<void> {
     const token = req.chSession.accessToken() as string;
-    logger.info(`api response data controller`); 
     let apiResponseData: any;
     let apiResponseStatus: any;
     const companyProfile = ctx["companyProfile"];
     const isStillRequired = ctx["isStillRequired"];
-    logger.info(callPromiseToFileAPI);
     try {
-      logger.info(`calling API...`); 
       const axiosResponse: AxiosResponse = await callPromiseToFileAPI(
         companyProfile.companyNumber,
         token,
@@ -36,6 +33,6 @@ export class APIResponseDataHandler extends AbstractHandler {
     }
       ctx["apiResponseData"] = apiResponseData;
       ctx["apiResponseStatus"] = apiResponseStatus;
-    return super.handle(req, res, next, ctx);
+      return super.handle(req, res, next, ctx);
   }
 }
