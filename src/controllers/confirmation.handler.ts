@@ -6,7 +6,6 @@ import { NextFunction, Request, Response } from "express";
 
     public setNext(handler: AbstractHandler): AbstractHandler {
         this.nextHandler = handler;
-        // Returning a handler from here will let us link handlers in a
     
         return handler;
     }

@@ -65,8 +65,6 @@ const getOverdueFiling = ({
   } else if (isAccountsOverdue && isConfirmationStatementOverdue) {
     overdueFiling = "accounts and confirmation statement";
   } else {
-    // TODO Neither the accounts or the confirmation statement are overdue - handle this
-    //      output with appropriate render when story is created.
     overdueFiling = "nothing overdue";
   }
 
