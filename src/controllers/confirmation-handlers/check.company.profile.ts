@@ -7,13 +7,13 @@ import { COMPANY_PROFILE } from "../../session/keys";
 
 export class CompanyProfileHandler extends AbstractHandler{
     
-    public handle(req: Request, res: Response, next: NextFunction, ctx: Map<string, any>) : void {
+    public handle(req: Request, res: Response, next: NextFunction, ctx:ConfirmationHandlerContext) : void {
         
         const companyProfile: PTFCompanyProfile = getPromiseToFileSessionValue(req.chSession, COMPANY_PROFILE);
-        ctx["companyProfile"] = companyProfile;
+        ctx.companyProfile = companyProfile;
 
         if (!companyProfile) {
-            next(createMissingError("Company profile not present"));
+            return next(createMissingError("Company profile not present"));
         }
         return super.handle(req, res, next, ctx);
     }

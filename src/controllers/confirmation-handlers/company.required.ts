@@ -8,7 +8,7 @@ import { Templates } from "../../model/template.paths";
 import activeFeature from "../../feature.flag";
 
 export class CompanyRequiredHandler extends AbstractHandler {
-	public handle(req: Request,res: Response,next: NextFunction,ctx: Map<string, any>): void {
+	public handle(req: Request,res: Response,next: NextFunction,ctx:ConfirmationHandlerContext): void {
 		const isStillRequired: boolean = getPromiseToFileSessionValue(req.chSession,IS_STILL_REQUIRED
 		);
 		ctx["isStillRequired"] = isStillRequired;
@@ -18,8 +18,8 @@ export class CompanyRequiredHandler extends AbstractHandler {
 				"Company still required feature flag not active. Rendering stub screen"
 			);
 			return res.render(Templates.COMPANY_REQUIRED, {
-				company: ctx["companyProfile"],
-				userEmail: ctx["email"],
+				company: ctx.companyProfile,
+				userEmail: ctx.email,
 			});
 		}
 		return super.handle(req, res, next, ctx);

@@ -5,6 +5,7 @@ import { CompanyRequiredHandler } from "./confirmation-handlers/company.required
 import { APIResponseDataHandler } from "./confirmation-handlers/api.response.data";
 import { CheckEligibilityHandler } from "./confirmation-handlers/check.eligibility";
 
+
 /**
  * GET controller for confirmation screen
  * @param req
@@ -13,7 +14,8 @@ import { CheckEligibilityHandler } from "./confirmation-handlers/check.eligibili
  */
 const route = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   
-  const ctx = new Map<string,any>();
+  const cxt = {} as ConfirmationHandlerContext;
+
   const checkCompanyProfile = new CompanyProfileHandler();
   const userEmail = new UserEmailHandler();
   const companyRequired = new CompanyRequiredHandler();
@@ -26,9 +28,10 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   apiResponse.setNext(checkEligibility)
   
 
-  return checkCompanyProfile.handle(req,res,next, ctx);
+  return checkCompanyProfile.handle(req,res,next, cxt);
 
 }
+
 
   
 
