@@ -8,7 +8,6 @@ import logger from "../../logger";
 
 export class UserEmailHandler extends AbstractHandler{
     public handle(req: Request, res: Response, next: NextFunction, ctx: Map<string, any>) : void {
-        logger.info("user email");
         const signInInfo = req.chSession.getSignedInInfo();
         const userProfile: IUserProfile = signInInfo[USER_PROFILE] as IUserProfile;
         const email = userProfile.email;

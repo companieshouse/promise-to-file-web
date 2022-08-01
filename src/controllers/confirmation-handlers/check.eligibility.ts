@@ -6,13 +6,7 @@ import { Templates } from "../../model/template.paths";
 import { formatDateForDisplay } from "../../client/date.formatter";
 
 export class CheckEligibilityHandler extends AbstractHandler {
-  public async handle(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-    ctx: Map<string, any>
-  ): Promise<void> {
-    logger.info("calling Eligibility handler");
+  public async handle( req: Request,res: Response,next: NextFunction,ctx: Map<string, any>): Promise<void> {
     const companyProfile = ctx["companyProfile"];
     const email = ctx["email"];
     const isStillRequired = ctx["isStillRequired"];

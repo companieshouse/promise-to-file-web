@@ -1,10 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import logger from "../logger";
-import { CompanyProfileHandler } from "./handler/check.company.profile";
-import { UserEmailHandler } from "./handler/user.email";
-import { CompanyRequiredHandler } from "./handler/company.required";
-import { APIResponseDataHandler } from "./handler/api.response.data";
-import { CheckEligibilityHandler } from "./handler/check.eligibility";
+import { CompanyProfileHandler } from "./confirmation-handlers/check.company.profile";
+import { UserEmailHandler } from "./confirmation-handlers/user.email";
+import { CompanyRequiredHandler } from "./confirmation-handlers/company.required";
+import { APIResponseDataHandler } from "./confirmation-handlers/api.response.data";
+import { CheckEligibilityHandler } from "./confirmation-handlers/check.eligibility";
 
 /**
  * GET controller for confirmation screen
@@ -15,7 +14,6 @@ import { CheckEligibilityHandler } from "./handler/check.eligibility";
 const route = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   
   const ctx = new Map<string,any>();
-  logger.info("confirmation controller" )
   const checkCompanyProfile = new CompanyProfileHandler();
   const userEmail = new UserEmailHandler();
   const companyRequired = new CompanyRequiredHandler();
