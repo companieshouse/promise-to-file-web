@@ -1,6 +1,6 @@
-import { AxiosError, AxiosRequestConfig, AxiosResponse, Method } from "axios";
-import axios from "axios";
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, Method } from "axios";
 import logger from "../logger";
+import PromiseError from "../utils/error";
 
 export const HTTP_POST: Method = "post";
 
@@ -35,10 +35,9 @@ export const makeAPICall = async (config: AxiosRequestConfig): Promise<AxiosResp
         logger.error(`API ERROR ${JSON.stringify(err, null, 2)}`);
         const axiosError = err as AxiosError;
         const {response, message} = axiosError;
-        throw {
-            data: response ? response.data.errors : [],
+        throw new PromiseError(
+            response ? response.data.errors : [], 
             message,
-            status: response ? response.status : -1,
-        };
-    }
-};
+            response ? response.status : -1
+          );
+}};
