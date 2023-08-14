@@ -1,7 +1,7 @@
 import { AxiosRequestConfig, AxiosResponse } from "axios";
-import { createApiClient } from "ch-sdk-node";
-import { CompanyProfile } from "ch-sdk-node/dist/services/company-profile";
-import Resource from "ch-sdk-node/dist/services/resource";
+import { createApiClient } from "@companieshouse/api-sdk-node";
+import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile";
+import Resource from "@companieshouse/api-sdk-node/dist/services/resource";
 import logger from "../logger";
 import { PTFCompanyProfile } from "../model/company.profile";
 import { INTERNAL_API_URL } from "../properties";
@@ -32,12 +32,12 @@ export const getCompanyProfile = async (companyNumber: string, token: string): P
       "Cannot find company profile",
       sdkResponse.httpStatusCode );
 }
+
+
   
+logger.debug("Data from company profile SDK call " + JSON.stringify(sdkResponse, null, 2));
 
-
-  logger.debug("Data from company profile SDK call " + JSON.stringify(sdkResponse, null, 2));
-
-  const companyProfile = sdkResponse.resource as CompanyProfile;
+const companyProfile = sdkResponse.resource as CompanyProfile;
 
   return {
     accountingPeriodEndOn: companyProfile.accounts.nextAccounts.periodEndOn,
