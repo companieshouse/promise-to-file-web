@@ -52,10 +52,10 @@ const companyProfile = sdkResponse.resource as CompanyProfile;
     companyNumber: companyProfile.companyNumber,
     companyStatus: lookupCompanyStatus(companyProfile.companyStatus),
     companyType: lookupCompanyType(companyProfile.type),
-    confirmationStatementDue: formatDateForDisplay(companyProfile.confirmationStatement.nextDue),
+    confirmationStatementDue: formatDateForDisplay(companyProfile.confirmationStatement!.nextDue),
     incorporationDate: formatDateForDisplay(companyProfile.dateOfCreation),
     isAccountsOverdue: companyProfile.accounts.overdue,
-    isConfirmationStatementOverdue: companyProfile.confirmationStatement.overdue,
+    isConfirmationStatementOverdue: companyProfile.confirmationStatement!.overdue,
     jurisdiction: companyProfile.jurisdiction,
   };
 };
