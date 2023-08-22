@@ -15,6 +15,7 @@ import { appRouter } from "./routes/routes";
 import { createPromiseToFileSession } from "./services/session.service";
 import sessionMiddleware from "./session/middleware";
 import ptfSessionLoader from "./session/middleware/ptf.session";
+import healthcheckController from "./controllers/healthcheck.controller";
 
 const app = express();
 
@@ -46,6 +47,7 @@ app.use(cookieParser());
 app.use(sessionMiddleware);
 app.use(ptfSessionLoader);
 
+app.use(`${pageURLs.HEALTHCHECK}`, healthcheckController);
 app.use(`${pageURLs.COMPANY_REQUIRED}/*`, authenticate);
 app.use(`${pageURLs.COMPANY_REQUIRED}${pageURLs.COMPANY_AUTH_PROTECTED_ROUTE}*`, companyAuthenticate);
 
