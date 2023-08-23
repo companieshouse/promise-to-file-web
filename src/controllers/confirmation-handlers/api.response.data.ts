@@ -1,12 +1,12 @@
 
-import AbstractHandler from "../confirmation.handler";
-import { NextFunction, Request, Response } from "express";
 import { AxiosResponse } from "axios";
+import { NextFunction, Request, Response } from "express";
 import { callPromiseToFileAPI } from "../../client/apiclient";
 import logger from "../../logger";
+import AbstractHandler from "../confirmation.handler";
 
 export class APIResponseDataHandler extends AbstractHandler {
-  public async handle(req: Request,res: Response,next: NextFunction,ctx:ConfirmationHandlerContext): Promise<void> {
+  public async handle(req: Request, res: Response, next: NextFunction, ctx: ConfirmationHandlerContext): Promise<void> {
     const token = req.chSession.accessToken() as string;
     let apiResponseData: any;
     let apiResponseStatus: any;
@@ -16,7 +16,7 @@ export class APIResponseDataHandler extends AbstractHandler {
       const axiosResponse: AxiosResponse = await callPromiseToFileAPI(
         companyProfile.companyNumber,
         token,
-        isStillRequired
+        isStillRequired,
       );
 
       apiResponseData = axiosResponse.data;
@@ -24,15 +24,15 @@ export class APIResponseDataHandler extends AbstractHandler {
 
       logger.debug(
         `Response data returned from the PTF api call : ${JSON.stringify(
-          apiResponseData
-        )}`
+          apiResponseData,
+        )}`,
       );
     } catch (e) {
       logger.error("Error processing application " + JSON.stringify(e));
       return next(e);
     }
-      ctx.apiResponseData = apiResponseData;
-      ctx.apiResponseStatus = apiResponseStatus;
-      return super.handle(req, res, next, ctx);
+    ctx.apiResponseData = apiResponseData;
+    ctx.apiResponseStatus = apiResponseStatus;
+    return super.handle(req, res, next, ctx);
   }
 }

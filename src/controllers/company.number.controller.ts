@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { check, validationResult, ValidationError } from "express-validator/check";
+import { check, ValidationError, validationResult } from "express-validator/check";
 import { getCompanyProfile } from "../client/apiclient";
 import logger from "../logger";
 import { PTFCompanyProfile } from "../model/company.profile";
@@ -56,7 +56,7 @@ const postValidators = [
  */
 const route = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   logger.debug("Attempt to retrieve and show the company details");
-  
+
   const errors = validationResult(req);
   // render errors in the view
 

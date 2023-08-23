@@ -6,6 +6,7 @@ import * as path from "path";
 import companyAuthenticate from "./authentication/company/middleware/index";
 import authenticate from "./authentication/user/middleware/index";
 import { checkServiceAvailability } from "./availability/middleware/service.availability";
+import healthcheckController from "./controllers/healthcheck.controller";
 import httpLogger from "./http.logger";
 import logger from "./logger";
 import { ERROR_SUMMARY_TITLE } from "./model/error.messages";
@@ -15,7 +16,6 @@ import { appRouter } from "./routes/routes";
 import { createPromiseToFileSession } from "./services/session.service";
 import sessionMiddleware from "./session/middleware";
 import ptfSessionLoader from "./session/middleware/ptf.session";
-import healthcheckController from "./controllers/healthcheck.controller";
 
 const app = express();
 
@@ -44,10 +44,15 @@ app.use(express.urlencoded({ extended: false }));
 // check if we should show the service unavailable page
 app.use(checkServiceAvailability);
 app.use(cookieParser());
+
+// Healthcheck does not require session or authenticate.
+// Hence requires to be placed higher than sessionMiddleware and authenticate
+// in the order of  ".use" reflect in order of precedence of execution
+app.use(`${pageURLs.HEALTHCHECK}`, healthcheckController);
+
 app.use(sessionMiddleware);
 app.use(ptfSessionLoader);
 
-app.use(`${pageURLs.HEALTHCHECK}`, healthcheckController);
 app.use(`${pageURLs.COMPANY_REQUIRED}/*`, authenticate);
 app.use(`${pageURLs.COMPANY_REQUIRED}${pageURLs.COMPANY_AUTH_PROTECTED_ROUTE}*`, companyAuthenticate);
 
