@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { check, ValidationError, validationResult } from "express-validator/check";
+import { check, ValidationError, validationResult } from "express-validator";
 import { getCompanyProfile } from "../client/apiclient";
 import logger from "../logger";
 import { PTFCompanyProfile } from "../model/company.profile";
