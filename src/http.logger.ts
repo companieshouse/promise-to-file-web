@@ -6,9 +6,9 @@ import { HTTP_LOG_FORMAT } from "./properties";
 // maintains consistency within the logs.
 
 const httpLogger = morganLogger(HTTP_LOG_FORMAT, {
-  stream: {
-    write(str) { logger.debug(str); },
-  },
+    stream: {
+        write (str) { logger.debug(str); }
+    }
 });
 
 export default httpLogger;

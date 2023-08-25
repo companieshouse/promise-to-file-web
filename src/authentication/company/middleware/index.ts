@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import logger from "../../../logger";
 import {
-  COOKIE_NAME, OAUTH2_AUTH_URI, OAUTH2_CLIENT_ID,
-  OAUTH2_REDIRECT_URI,
+    COOKIE_NAME, OAUTH2_AUTH_URI, OAUTH2_CLIENT_ID,
+    OAUTH2_REDIRECT_URI
 } from "../../../properties";
 import { loadSession, saveSession } from "../../../services/redis.service";
 import { COMPANY_NUMBER, NONCE } from "../../../session/keys";
@@ -12,78 +12,78 @@ const SCOPE_USER_WRITE_FULL = "https://account.companieshouse.gov.uk/user.write-
 const SCOPE_COMPANY_WRITE_FULL_FORMAT = "https://api.companieshouse.gov.uk/company/{COMPANY_NUMBER}/admin.write-full";
 
 export default async (req: Request, res: Response, next: NextFunction) => {
-  // Get CompanyNumber from URI
-  const companyNumber = getCompanyNumberFromPath(req.originalUrl);
-  if (companyNumber === "") {
-    return next(new Error("No Company Number in URL"));
-  }
-
-  const cookieId = req.cookies[COOKIE_NAME];
-  if (cookieId) {
-    req.chSession = await loadSession(cookieId);
-    const signInInfo = req.chSession.getSignedInInfo();
-    if (isAuthorisedForCompany(signInInfo, companyNumber)) {
-      logger.info("User is authenticated for %s", companyNumber);
-      return next();
-    } else {
-      logger.info("User is not authenticated for %s, redirecting", companyNumber);
-      return res.redirect(await getAuthRedirectUri(req, companyNumber));
+    // Get CompanyNumber from URI
+    const companyNumber = getCompanyNumberFromPath(req.originalUrl);
+    if (companyNumber === "") {
+        return next(new Error("No Company Number in URL"));
     }
-  } else {
-    return next(new Error("No session present for company auth filter"));
-  }
+
+    const cookieId = req.cookies[COOKIE_NAME];
+    if (cookieId) {
+        req.chSession = await loadSession(cookieId);
+        const signInInfo = req.chSession.getSignedInInfo();
+        if (isAuthorisedForCompany(signInInfo, companyNumber)) {
+            logger.info("User is authenticated for %s", companyNumber);
+            return next();
+        } else {
+            logger.info("User is not authenticated for %s, redirecting", companyNumber);
+            return res.redirect(await getAuthRedirectUri(req, companyNumber));
+        }
+    } else {
+        return next(new Error("No session present for company auth filter"));
+    }
 };
 
-function getCompanyNumberFromPath(path: string): string {
-  const regexPattern = "/company/([0-9a-zA-Z]{8})/";
+function getCompanyNumberFromPath (path: string): string {
+    const regexPattern = "/company/([0-9a-zA-Z]{8})/";
 
-  const found = path.match(regexPattern);
-  if (found) {
-    return found[1];
-  } else {
-    return "";
-  }
+    const found = path.match(regexPattern);
+    if (found) {
+        return found[1];
+    } else {
+        return "";
+    }
 }
 
-function isAuthorisedForCompany(signInInfo: string, companyNumber: string): boolean {
-  return signInInfo[COMPANY_NUMBER] === companyNumber;
+function isAuthorisedForCompany (signInInfo: string, companyNumber: string): boolean {
+    return signInInfo[COMPANY_NUMBER] === companyNumber;
 }
 
-async function getAuthRedirectUri(req: Request, companyNumber?: string): Promise<string> {
-  const originalUrl = req.originalUrl;
+async function getAuthRedirectUri (req: Request, companyNumber?: string): Promise<string> {
+    const originalUrl = req.originalUrl;
 
-  let scope = "";
+    let scope = "";
 
-  if (companyNumber != null) {
-    scope = createScope(companyNumber);
-  }
+    if (companyNumber != null) {
+        scope = createScope(companyNumber);
+    }
 
-  const session = req.chSession;
-  const nonce = generateNonce();
-  session.data[NONCE] = nonce;
-  await saveSession(session);
+    const session = req.chSession;
+    const nonce = generateNonce();
+    session.data[NONCE] = nonce;
+    await saveSession(session);
 
-  return await createAuthUri(originalUrl, nonce, scope);
+    return await createAuthUri(originalUrl, nonce, scope);
 }
 
-async function createAuthUri(originalUri: string, nonce: string, scope?: string): Promise<string> {
-  let authUri = OAUTH2_AUTH_URI.concat("?",
-    "client_id=", OAUTH2_CLIENT_ID,
-    "&redirect_uri=", OAUTH2_REDIRECT_URI,
-    "&response_type=code");
+async function createAuthUri (originalUri: string, nonce: string, scope?: string): Promise<string> {
+    let authUri = OAUTH2_AUTH_URI.concat("?",
+        "client_id=", OAUTH2_CLIENT_ID,
+        "&redirect_uri=", OAUTH2_REDIRECT_URI,
+        "&response_type=code");
 
-  if (scope != null) {
-    authUri = authUri.concat("&scope=", scope);
-  }
+    if (scope != null) {
+        authUri = authUri.concat("&scope=", scope);
+    }
 
-  authUri = authUri.concat("&state=", await jweEncodeWithNonce(originalUri, nonce, "content"));
-  return authUri;
+    authUri = authUri.concat("&state=", await jweEncodeWithNonce(originalUri, nonce, "content"));
+    return authUri;
 }
 
-function createScope(companyNumber: string): string {
-  let scope = SCOPE_USER_WRITE_FULL;
-  if (companyNumber != null) {
-    scope += " " + SCOPE_COMPANY_WRITE_FULL_FORMAT.replace("{COMPANY_NUMBER}", companyNumber);
-  }
-  return scope;
+function createScope (companyNumber: string): string {
+    let scope = SCOPE_USER_WRITE_FULL;
+    if (companyNumber != null) {
+        scope += " " + SCOPE_COMPANY_WRITE_FULL_FORMAT.replace("{COMPANY_NUMBER}", companyNumber);
+    }
+    return scope;
 }
