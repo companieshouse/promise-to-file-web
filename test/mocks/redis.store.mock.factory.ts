@@ -5,7 +5,7 @@
  * Paths may be different depending on location
  */
 export default () => {
-  return {
-    default: {},
-  };
+    return {
+        default: {}
+    };
 };
