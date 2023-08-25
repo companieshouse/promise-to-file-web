@@ -61,3 +61,8 @@ dist: lint test-unit clean package
 .PHONY: update_submodules
 update_submodules:
 	test -f ./api-enumerations/constants.yml || git submodule update --init -- api-enumerations
+
+.PHONY: security-check
+security-check:
+	npm audit
+

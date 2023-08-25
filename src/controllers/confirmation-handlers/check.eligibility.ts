@@ -1,13 +1,13 @@
-import AbstractHandler from "../confirmation.handler";
 import { NextFunction, Request, Response } from "express";
-import { eligibilityReasonCode } from "../../model/eligibilityReasonCode";
-import logger from "../../logger";
-import { Templates } from "../../model/template.paths";
 import { formatDateForDisplay } from "../../client/date.formatter";
+import logger from "../../logger";
+import { eligibilityReasonCode } from "../../model/eligibilityReasonCode";
+import { Templates } from "../../model/template.paths";
+import AbstractHandler from "../confirmation.handler";
 
 export class CheckEligibilityHandler extends AbstractHandler {
-  public async handle(req: Request,res: Response,next: NextFunction,ctx: ConfirmationHandlerContext): Promise<void> {
-    const companyProfile = ctx["companyProfile"];
+  public async handle(req: Request, res: Response, next: NextFunction, ctx: ConfirmationHandlerContext): Promise<void> {
+    const companyProfile = ctx.companyProfile;
     const email = ctx.email;
     const isStillRequired = ctx.isStillRequired;
     const apiResponseData = ctx.apiResponseData;
@@ -41,7 +41,7 @@ export class CheckEligibilityHandler extends AbstractHandler {
       }
       if (!filingDueOn) {
         return next(
-          new Error("No new filing due date returned by the PTF API")
+          new Error("No new filing due date returned by the PTF API"),
         );
       }
       return res.render(Templates.CONFIRMATION_STILL_REQUIRED, {

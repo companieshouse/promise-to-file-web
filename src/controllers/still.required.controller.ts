@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { check, validationResult, ValidationError } from "express-validator/check";
+import { check, ValidationError, validationResult } from "express-validator";
 import { PTFCompanyProfile } from "../model/company.profile";
 import { COMPANY_REQUIRED_NOT_SELECTED } from "../model/error.messages";
 import { createGovUkErrorData, GovUkErrorData } from "../model/govuk.error.data";
