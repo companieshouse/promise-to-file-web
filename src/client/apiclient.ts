@@ -1,7 +1,7 @@
+import { createApiClient } from "@companieshouse/api-sdk-node";
+import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile";
+import Resource from "@companieshouse/api-sdk-node/dist/services/resource";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
-import { createApiClient } from "ch-sdk-node";
-import { CompanyProfile } from "ch-sdk-node/dist/services/company-profile";
-import Resource from "ch-sdk-node/dist/services/resource";
 import logger from "../logger";
 import { PTFCompanyProfile } from "../model/company.profile";
 import { INTERNAL_API_URL } from "../properties";
@@ -52,10 +52,10 @@ export const getCompanyProfile = async (companyNumber: string, token: string): P
     companyNumber: companyProfile.companyNumber,
     companyStatus: lookupCompanyStatus(companyProfile.companyStatus),
     companyType: lookupCompanyType(companyProfile.type),
-    confirmationStatementDue: formatDateForDisplay(companyProfile.confirmationStatement.nextDue),
+    confirmationStatementDue: formatDateForDisplay(companyProfile.confirmationStatement!.nextDue),
     incorporationDate: formatDateForDisplay(companyProfile.dateOfCreation),
     isAccountsOverdue: companyProfile.accounts.overdue,
-    isConfirmationStatementOverdue: companyProfile.confirmationStatement.overdue,
+    isConfirmationStatementOverdue: companyProfile.confirmationStatement!.overdue,
     jurisdiction: companyProfile.jurisdiction,
   };
 };
