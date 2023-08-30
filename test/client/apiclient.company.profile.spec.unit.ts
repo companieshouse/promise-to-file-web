@@ -1,11 +1,11 @@
-import { CompanyProfile } from "ch-sdk-node/dist/services/company-profile";
-import CompanyProfileService from "ch-sdk-node/dist/services/company-profile/service";
-import Resource from "ch-sdk-node/dist/services/resource";
+import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile";
+import CompanyProfileService from "@companieshouse/api-sdk-node/dist/services/company-profile/service";
+import Resource from "@companieshouse/api-sdk-node/dist/services/resource";
 import { getCompanyProfile } from "../../src/client/apiclient";
 import { PTFCompanyProfile } from "../../src/model/company.profile";
 import * as mockUtils from "../mock.utils";
 
-jest.mock("ch-sdk-node/dist/services/company-profile/service");
+jest.mock("@companieshouse/api-sdk-node/dist/services/company-profile/service");
 
 // Dates used when testing the setting of the accounts and confirmation statement 'overdue' flag
 const DATE_TODAY: string = "2020-01-31";

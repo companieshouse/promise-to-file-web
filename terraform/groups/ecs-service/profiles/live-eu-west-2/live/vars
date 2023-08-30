@@ -1,0 +1,31 @@
+aws_bucket = "live-eu-west-2.terraform-state.ch.gov.uk"
+remote_state_bucket = "ch-live-terraform-state-london"
+environment = "live"
+deploy_to = "live"
+state_prefix = "env:/live"
+aws_profile = "live-eu-west-2"
+kms_alias = "alias/live-eu-west-2/environment-services-kms"
+
+# service configs
+# Commented params moved to vault service secrets
+# oauth2_auth_uri
+# oauth2_redirect_uri
+# cache_server
+
+# cookie_secret
+# oauth2_client_secret
+# oauth2_request_key
+# oauth2_token_uri
+# oauth2_client_id
+
+account_web_url = "https://account.cidev.aws.chdev.org"
+
+api_url="https://api.live.aws.chdev.org"
+cdn_host = "d3uvya5a8a1ncx.cloudfront.net"
+chs_url = "https://live.aws.chdev.org"
+company_still_required_feature_flag=true
+cookie_domain = "live.aws.chdev.org"
+log_level=debug
+piwik_site_id = "7"
+piwik_url = "https://matomo.platform.aws.chdev.org"
+show_service_offline_page=false

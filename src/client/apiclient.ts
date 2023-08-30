@@ -1,14 +1,14 @@
+import { createApiClient } from "@companieshouse/api-sdk-node";
+import { CompanyProfile } from "@companieshouse/api-sdk-node/dist/services/company-profile";
+import Resource from "@companieshouse/api-sdk-node/dist/services/resource";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
-import { createApiClient } from "ch-sdk-node";
-import { CompanyProfile } from "ch-sdk-node/dist/services/company-profile";
-import Resource from "ch-sdk-node/dist/services/resource";
 import logger from "../logger";
 import { PTFCompanyProfile } from "../model/company.profile";
 import { INTERNAL_API_URL } from "../properties";
+import PromiseError from "../utils/error";
 import { lookupCompanyStatus, lookupCompanyType } from "./api.enumerations";
 import { getBaseAxiosRequestConfig, HTTP_POST, makeAPICall } from "./axios.api.call.handler";
 import { formatDateForDisplay } from "./date.formatter";
-import PromiseError from "../utils/error";
 
 /**
  * Get the company profile from the api. If the company does not exist or there has been an error, an exception
@@ -28,12 +28,10 @@ export const getCompanyProfile = async (companyNumber: string, token: string): P
 
   if (sdkResponse.httpStatusCode >= 400) {
     throw new PromiseError(
-       null , 
+       null ,
       "Cannot find company profile",
       sdkResponse.httpStatusCode );
 }
-  
-
 
   logger.debug("Data from company profile SDK call " + JSON.stringify(sdkResponse, null, 2));
 
@@ -52,10 +50,10 @@ export const getCompanyProfile = async (companyNumber: string, token: string): P
     companyNumber: companyProfile.companyNumber,
     companyStatus: lookupCompanyStatus(companyProfile.companyStatus),
     companyType: lookupCompanyType(companyProfile.type),
-    confirmationStatementDue: formatDateForDisplay(companyProfile.confirmationStatement.nextDue),
+    confirmationStatementDue: formatDateForDisplay(companyProfile.confirmationStatement!.nextDue),
     incorporationDate: formatDateForDisplay(companyProfile.dateOfCreation),
     isAccountsOverdue: companyProfile.accounts.overdue,
-    isConfirmationStatementOverdue: companyProfile.confirmationStatement.overdue,
+    isConfirmationStatementOverdue: companyProfile.confirmationStatement!.overdue,
     jurisdiction: companyProfile.jurisdiction,
   };
 };

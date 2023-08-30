@@ -1,10 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import { CompanyProfileHandler } from "./confirmation-handlers/check.company.profile";
-import { UserEmailHandler } from "./confirmation-handlers/user.email";
-import { CompanyRequiredHandler } from "./confirmation-handlers/company.required";
 import { APIResponseDataHandler } from "./confirmation-handlers/api.response.data";
+import { CompanyProfileHandler } from "./confirmation-handlers/check.company.profile";
 import { CheckEligibilityHandler } from "./confirmation-handlers/check.eligibility";
-
+import { CompanyRequiredHandler } from "./confirmation-handlers/company.required";
+import { UserEmailHandler } from "./confirmation-handlers/user.email";
 
 /**
  * GET controller for confirmation screen
@@ -13,7 +12,7 @@ import { CheckEligibilityHandler } from "./confirmation-handlers/check.eligibili
  * @param next
  */
 const route = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  
+
   const cxt = {} as ConfirmationHandlerContext;
 
   const checkCompanyProfile = new CompanyProfileHandler();
@@ -21,19 +20,14 @@ const route = async (req: Request, res: Response, next: NextFunction): Promise<v
   const companyRequired = new CompanyRequiredHandler();
   const apiResponse = new APIResponseDataHandler();
   const checkEligibility = new CheckEligibilityHandler();
-  
+
   checkCompanyProfile.setNext(userEmail);
   userEmail.setNext(companyRequired);
   companyRequired.setNext(apiResponse);
-  apiResponse.setNext(checkEligibility)
-  
+  apiResponse.setNext(checkEligibility);
 
-  return checkCompanyProfile.handle(req,res,next, cxt);
+  return checkCompanyProfile.handle(req, res, next, cxt);
 
-}
-
-
-  
-
+};
 
 export default [route];
