@@ -7,38 +7,38 @@ locals {
   docker_repo               = "promise-to-file-web"
   lb_listener_rule_priority = 13
   lb_listener_paths         = ["^/company-required/*"]
-  healthcheck_path          = "/company-required" #healthcheck path for promise to file web
-  healthcheck_matcher       = "200-302"           # no explicit healthcheck in this service yet, change this when added!
+  healthcheck_path          = "/company-required/healthcheck" #healthcheck path for promise to file web
+  healthcheck_matcher       = "200"           # no explicit healthcheck in this service yet, change this when added!
 
   service_secrets = jsondecode(data.vault_generic_secret.service_secrets.data_json)
 
   parameter_store_secrets = {
-    "vpc_name"              = local.service_secrets["vpc_name"]
-    "chs_api_key"           = local.service_secrets["chs_api_key"]
-    "internal_api_url"      = local.service_secrets["internal_api_url"]
-    "cdn_host"              = local.service_secrets["cdn_host"]
-    "oauth2_auth_uri"       = local.service_secrets["oauth2_auth_uri"]
-    "oauth2_redirect_uri"   = local.service_secrets["oauth2_redirect_uri"]
-    "cache_server"          = local.service_secrets["cache_server"]
-    "cookie_secret"         = local.service_secrets["cookie_secret"]
-    "oauth2_client_secret"  = local.service_secrets["oauth2_client_secret"]
-    "oauth2_request_key"    = local.service_secrets["oauth2_request_key"]
-    "oauth2_token_uri"      = local.service_secrets["oauth2_token_uri"]
-    "oauth2_client_id"      = local.service_secrets["oauth2_client_id"]
+    "vpc_name"             = local.service_secrets["vpc_name"]
+    "chs_api_key"          = local.service_secrets["chs_api_key"]
+    "internal_api_url"     = local.service_secrets["internal_api_url"]
+    "cdn_host"             = local.service_secrets["cdn_host"]
+    "oauth2_auth_uri"      = local.service_secrets["oauth2_auth_uri"]
+    "oauth2_redirect_uri"  = local.service_secrets["oauth2_redirect_uri"]
+    "cache_server"         = local.service_secrets["cache_server"]
+    "cookie_secret"        = local.service_secrets["cookie_secret"]
+    "oauth2_client_secret" = local.service_secrets["oauth2_client_secret"]
+    "oauth2_request_key"   = local.service_secrets["oauth2_request_key"]
+    "oauth2_token_uri"     = local.service_secrets["oauth2_token_uri"]
+    "oauth2_client_id"     = local.service_secrets["oauth2_client_id"]
   }
 
-  vpc_name              = local.service_secrets["vpc_name"]
-  chs_api_key           = local.service_secrets["chs_api_key"]
-  internal_api_url      = local.service_secrets["internal_api_url"]
-  cdn_host              = local.service_secrets["cdn_host"]
-  oauth2_auth_uri       = local.service_secrets["oauth2_auth_uri"]
-  oauth2_redirect_uri   = local.service_secrets["oauth2_redirect_uri"]
-  cache_server          = local.service_secrets["cache_server"]
-  cookie_secret         = local.service_secrets["cookie_secret"]
-  oauth2_client_secret  = local.service_secrets["oauth2_client_secret"]
-  oauth2_request_key    = local.service_secrets["oauth2_request_key"]
-  oauth2_token_uri      = local.service_secrets["oauth2_token_uri"]
-  oauth2_client_id      = local.service_secrets["oauth2_client_id"]
+  vpc_name             = local.service_secrets["vpc_name"]
+  chs_api_key          = local.service_secrets["chs_api_key"]
+  internal_api_url     = local.service_secrets["internal_api_url"]
+  cdn_host             = local.service_secrets["cdn_host"]
+  oauth2_auth_uri      = local.service_secrets["oauth2_auth_uri"]
+  oauth2_redirect_uri  = local.service_secrets["oauth2_redirect_uri"]
+  cache_server         = local.service_secrets["cache_server"]
+  cookie_secret        = local.service_secrets["cookie_secret"]
+  oauth2_client_secret = local.service_secrets["oauth2_client_secret"]
+  oauth2_request_key   = local.service_secrets["oauth2_request_key"]
+  oauth2_token_uri     = local.service_secrets["oauth2_token_uri"]
+  oauth2_client_id     = local.service_secrets["oauth2_client_id"]
 
   # create a map of secret name => secret arn to pass into ecs service module
   # using the trimprefix function to remove the prefixed path from the secret name
