@@ -25,7 +25,6 @@ cdn_host = "d3uvya5a8a1ncx.cloudfront.net"
 chs_url = "https://live.aws.chdev.org"
 company_still_required_feature_flag=true
 cookie_domain = "live.aws.chdev.org"
-internal_api_url="http://api.chs-dev.internal"
 log_level=debug
 piwik_site_id = "7"
 piwik_url = "https://matomo.platform.aws.chdev.org"
