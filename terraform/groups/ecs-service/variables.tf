@@ -102,7 +102,7 @@ variable "cookie_name" {
 }
 
 variable "cookie_secret" {
-  type    = string
+  type = string
 }
 
 variable "cookie_secure_flag" {
@@ -116,7 +116,7 @@ variable "default_session_expiration" {
 }
 
 variable "internal_api_url" {
-  type    = string
+  type = string
 }
 
 variable "human_log" {
@@ -134,27 +134,27 @@ variable "max_file_size_bytes" {
   type    = string
   default = "4194304"
 }
-    
+
 variable "oauth2_auth_uri" {
   type = string
 }
-      
+
 variable "oauth2_token_uri" {
   type = string
 }
-      
+
 variable "oauth2_client_id" {
   type = string
 }
-      
+
 variable "oauth2_client_secret" {
   type = string
 }
-      
+
 variable "oauth2_redirect_uri" {
   type = string
 }
-      
+
 variable "oauth2_request_key" {
   type = string
 }
@@ -172,6 +172,6 @@ variable "show_service_offline_page" {
 }
 
 variable "promise_to_file_web_version" {
-   type  = string
-   description = "The version of the promise to file web container to run."
+  type        = string
+  description = "The version of the promise to file web container to run."
 }
