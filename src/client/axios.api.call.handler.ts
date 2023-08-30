@@ -36,8 +36,8 @@ export const makeAPICall = async (config: AxiosRequestConfig): Promise<AxiosResp
         const axiosError = err as AxiosError;
         const {response, message} = axiosError;
         throw new PromiseError(
-            response ? response.data.errors : [], 
+            response ? response.data.errors : [],
             message,
-            response ? response.status : -1
+            response ? response.status : -1,
           );
 }};

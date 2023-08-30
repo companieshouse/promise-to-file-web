@@ -3,5 +3,4 @@ export const createMissingError = (item: string): Error => {
     return new Error(errMsg);
 };
 
-
-export default createMissingError
+export default createMissingError;
