@@ -38,20 +38,20 @@ describe("axios call handler", () => {
         expect(response.status).toEqual(200);
     });
 
-  it("should validate status using validateStatus function", async () => {
-    const token: string = "abc123";
-    const config: AxiosRequestConfig = getBaseAxiosRequestConfig(token);
-    const validateStatus = config.validateStatus!;
-    
-    expect(validateStatus(100)).toBeFalsy();
-    expect(validateStatus(200)).toBeTruthy();
-    expect(validateStatus(201)).toBeTruthy();
-    expect(validateStatus(300)).toBeFalsy();
-    expect(validateStatus(301)).toBeFalsy();
-    expect(validateStatus(400)).toBeTruthy();
-    expect(validateStatus(401)).toBeFalsy();
-    expect(validateStatus(404)).toBeFalsy();
-  });
+    it("should validate status using validateStatus function", async () => {
+        const token: string = "abc123";
+        const config: AxiosRequestConfig = getBaseAxiosRequestConfig(token);
+        const validateStatus = config.validateStatus!;
+
+        expect(validateStatus(100)).toBeFalsy();
+        expect(validateStatus(200)).toBeTruthy();
+        expect(validateStatus(201)).toBeTruthy();
+        expect(validateStatus(300)).toBeFalsy();
+        expect(validateStatus(301)).toBeFalsy();
+        expect(validateStatus(400)).toBeTruthy();
+        expect(validateStatus(401)).toBeFalsy();
+        expect(validateStatus(404)).toBeFalsy();
+    });
 
     it("should handle axios errors", async () => {
         const config: AxiosRequestConfig = {};
