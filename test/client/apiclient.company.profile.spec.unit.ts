@@ -39,12 +39,12 @@ describe("apiclient company profile unit tests", () => {
 
     it("returns an PTFCompanyProfile object with accounts and confirmation statement overdue", async () => {
         const overdueCompanyProfileResponse = dummySDKResponse;
-        overdueCompanyProfileResponse.resource.accounts.overdue = true;
-        overdueCompanyProfileResponse.resource.confirmationStatement.overdue = true;
-        mockGetCompanyProfile.mockResolvedValueOnce(overdueCompanyProfileResponse);
-        const company = await getCompanyProfile("00006400", mockUtils.ACCESS_TOKEN);
-        expect(company.isAccountsOverdue).toEqual(true);
-        expect(company.isConfirmationStatementOverdue).toEqual(true);
+    overdueCompanyProfileResponse.resource!.accounts.overdue = true;
+    overdueCompanyProfileResponse.resource!.confirmationStatement!.overdue = true;
+    mockGetCompanyProfile.mockResolvedValueOnce(overdueCompanyProfileResponse);
+    const company = await getCompanyProfile("00006400", mockUtils.ACCESS_TOKEN);
+    expect(company.isAccountsOverdue).toEqual(true);
+    expect(company.isConfirmationStatementOverdue).toEqual(true);
     });
 
     it("returns a 400 status code when company is not found", async () => {
@@ -75,7 +75,8 @@ const dummySDKResponse: Resource<CompanyProfile> = {
         companyStatusDetail: "company status detail",
         confirmationStatement: {
             nextDue: "2020-04-30",
-            overdue: false
+            overdue: false,
+            nextMadeUpTo: "2020-04-30"
         },
         dateOfCreation: "1872-06-26",
         hasBeenLiquidated: false,
@@ -94,7 +95,8 @@ const dummySDKResponse: Resource<CompanyProfile> = {
             region: "region"
         },
         sicCodes: ["123"],
-        type: "limited"
+        type: "limited",
+        links: {}
     }
 };
 
