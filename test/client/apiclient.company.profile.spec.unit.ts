@@ -38,8 +38,8 @@ describe("apiclient company profile unit tests", () => {
 
   it("returns an PTFCompanyProfile object with accounts and confirmation statement overdue", async () => {
     const overdueCompanyProfileResponse = dummySDKResponse;
-    overdueCompanyProfileResponse.resource.accounts.overdue = true;
-    overdueCompanyProfileResponse.resource.confirmationStatement.overdue = true;
+    overdueCompanyProfileResponse.resource!.accounts.overdue = true;
+    overdueCompanyProfileResponse.resource!.confirmationStatement!.overdue = true;
     mockGetCompanyProfile.mockResolvedValueOnce(overdueCompanyProfileResponse);
     const company = await getCompanyProfile("00006400", mockUtils.ACCESS_TOKEN);
     expect(company.isAccountsOverdue).toEqual(true);
@@ -75,6 +75,7 @@ const dummySDKResponse: Resource<CompanyProfile> = {
     confirmationStatement: {
       nextDue: "2020-04-30",
       overdue: false,
+      nextMadeUpTo: "2020-04-30",
     },
     dateOfCreation: "1872-06-26",
     hasBeenLiquidated: false,
@@ -94,6 +95,7 @@ const dummySDKResponse: Resource<CompanyProfile> = {
     },
     sicCodes: ["123"],
     type: "limited",
+    links: {}
   },
 };
 
