@@ -105,8 +105,6 @@ variable "default_session_expiration" {
   default = "3600"
 }
 
-
-
 variable "human_log" {
   type    = string
   default = "1"
