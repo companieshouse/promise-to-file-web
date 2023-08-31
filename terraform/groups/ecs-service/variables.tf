@@ -72,11 +72,6 @@ variable "api_url" {
   type = string
 }
 
-
-variable "cdn_host" {
-  type = string
-}
-
 variable "chs_url" {
   type = string
 }

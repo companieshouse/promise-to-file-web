@@ -8,7 +8,7 @@ locals {
   lb_listener_rule_priority = 12
   lb_listener_paths         = ["/company-required", "/company-required/*"]
   healthcheck_path          = "/company-required/healthcheck" #healthcheck path for promise to file web
-  healthcheck_matcher       = "200"           # no explicit healthcheck in this service yet, change this when added!
+  healthcheck_matcher       = "200"                           # no explicit healthcheck in this service yet, change this when added!
 
   service_secrets = jsondecode(data.vault_generic_secret.service_secrets.data_json)
 
