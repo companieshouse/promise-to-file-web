@@ -71,9 +71,7 @@ variable "required_memory" {
 variable "api_url" {
   type = string
 }
-variable "cache_server" {
-  type = string
-}
+
 
 variable "cdn_host" {
   type = string
@@ -97,10 +95,6 @@ variable "cookie_name" {
   default = "__SID"
 }
 
-variable "cookie_secret" {
-  type = string
-}
-
 variable "cookie_secure_flag" {
   type    = string
   default = "0"
@@ -111,9 +105,7 @@ variable "default_session_expiration" {
   default = "3600"
 }
 
-variable "internal_api_url" {
-  type = string
-}
+
 
 variable "human_log" {
   type    = string
@@ -130,31 +122,6 @@ variable "max_file_size_bytes" {
   type    = string
   default = "4194304"
 }
-
-variable "oauth2_auth_uri" {
-  type = string
-}
-
-variable "oauth2_token_uri" {
-  type = string
-}
-
-variable "oauth2_client_id" {
-  type = string
-}
-
-variable "oauth2_client_secret" {
-  type = string
-}
-
-variable "oauth2_redirect_uri" {
-  type = string
-}
-
-variable "oauth2_request_key" {
-  type = string
-}
-
 variable "piwik_site_id" {
   type = string
 }
