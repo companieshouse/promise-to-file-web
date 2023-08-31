@@ -34,7 +34,6 @@ kms_alias = "alias/staging-eu-west-2/environment-services-kms"
 
 
 api_url = "https://api.staging.aws.chdev.org"
-cdn_host = "d3uvya5a8a1ncx.cloudfront.net"
 chs_url = "https://staging.aws.chdev.org"
 company_still_required_feature_flag = "true"
 cookie_domain = "staging.aws.chdev.org"

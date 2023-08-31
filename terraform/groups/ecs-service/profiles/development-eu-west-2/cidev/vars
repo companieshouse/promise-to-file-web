@@ -18,9 +18,7 @@ kms_alias = "alias/development-eu-west-2/environment-services-kms"
 # oauth2_token_uri
 # oauth2_client_id
 
-account_web_url = "https://account.cidev.aws.chdev.org"
 api_url = "https://api.cidev.aws.chdev.org"
-cdn_host = "d3uvya5a8a1ncx.cloudfront.net"
 chs_url = "https://cidev.aws.chdev.org"
 company_still_required_feature_flag = "true"
 cookie_domain = "cidev.aws.chdev.org"
