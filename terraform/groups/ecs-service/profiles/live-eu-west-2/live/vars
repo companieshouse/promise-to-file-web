@@ -20,12 +20,12 @@ kms_alias = "alias/live-eu-west-2/environment-services-kms"
 
 account_web_url = "https://account.cidev.aws.chdev.org"
 
-api_url="https://api.live.aws.chdev.org"
+api_url = "https://api.live.aws.chdev.org"
 cdn_host = "d3uvya5a8a1ncx.cloudfront.net"
 chs_url = "https://live.aws.chdev.org"
-company_still_required_feature_flag=true
+company_still_required_feature_flag = "true"
 cookie_domain = "live.aws.chdev.org"
-log_level=debug
+log_level = "debug"
 piwik_site_id = "7"
 piwik_url = "https://matomo.platform.aws.chdev.org"
-show_service_offline_page=false
+show_service_offline_page = "false"

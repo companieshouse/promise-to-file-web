@@ -92,10 +92,6 @@ variable "cookie_domain" {
   type = string
 }
 
-variable "cookie_expiration_in_seconds" {
-  type = string
-}
-
 variable "cookie_name" {
   type    = string
   default = "__SID"
