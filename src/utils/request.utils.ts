@@ -7,7 +7,7 @@ export const CHECK_COMPANY_WL = "/company-required/check-company";
 const REDIRECTS_WHITELIST: string[] = [
     COMPANY_REQUIRED_WL,
     COMPANY_NUMBER_WL,
-    CHECK_COMPANY_WL,
+    CHECK_COMPANY_WL
 ];
 
 export const getWhitelistedReturnToURL = (returnToUrl: string) => {

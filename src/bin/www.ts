@@ -13,7 +13,7 @@ import logger from "../logger";
  * Get port from environment and store in Express.
  */
 
-const port = normalizePort(yargs.argv.PORT  || yargs.argv._[0]);
+const port = normalizePort(yargs.argv.PORT || yargs.argv._[0]);
 app.set("port", port);
 
 /**
@@ -33,46 +33,46 @@ server.on("error", onError);
  * Normalize a port into a number, string, or false.
  */
 
-function normalizePort(val) {
-  const portNumber = parseInt(val, 10);
+function normalizePort (val) {
+    const portNumber = parseInt(val, 10);
 
-  if (isNaN(portNumber)) {
+    if (isNaN(portNumber)) {
     // named pipe
-    return val;
-  }
+        return val;
+    }
 
-  if (portNumber >= 0) {
+    if (portNumber >= 0) {
     // port number
-    return portNumber;
-  }
+        return portNumber;
+    }
 
-  return false;
+    return false;
 }
 
 /**
  * Event listener for HTTP server "error" event.
  */
 
-function onError(error) {
-  if (error.syscall !== "listen") {
-    throw error;
-  }
+function onError (error) {
+    if (error.syscall !== "listen") {
+        throw error;
+    }
 
-  const bind = typeof port === "string"
-    ? "Pipe " + port
-    : "Port " + port;
+    const bind = typeof port === "string"
+        ? "Pipe " + port
+        : "Port " + port;
 
-  // handle specific listen errors with friendly messages
-  switch (error.code) {
+    // handle specific listen errors with friendly messages
+    switch (error.code) {
     case "EACCES":
-      logger.error(bind + " requires elevated privileges");
-      process.exit(1);
-      break;
+        logger.error(bind + " requires elevated privileges");
+        process.exit(1);
+        break;
     case "EADDRINUSE":
-      logger.error(bind + " is already in use");
-      process.exit(1);
-      break;
+        logger.error(bind + " is already in use");
+        process.exit(1);
+        break;
     default:
-      throw error;
-  }
+        throw error;
+    }
 }

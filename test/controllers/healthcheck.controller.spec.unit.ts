@@ -2,6 +2,7 @@ import * as request from "supertest";
 import app from "../../src/app";
 import { HEALTHCHECK } from "../../src/model/page.urls";
 import { loadSession } from "../../src/services/redis.service";
+import { expect, jest } from "@jest/globals";
 
 jest.mock("../../src/session/store/redis.store", () => import("../mocks/redis.store.mock.factory"));
 jest.mock("../../src/services/redis.service");

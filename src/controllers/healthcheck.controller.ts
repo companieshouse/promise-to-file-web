@@ -7,6 +7,6 @@ import { Request, Response } from "express";
  */
 export const route = (req: Request, res: Response) => {
     return res.sendStatus(200);
-  };
+};
 
 export default route;

@@ -1,101 +1,103 @@
+import { expect, jest } from "@jest/globals";
+
 const callCurrentMockRequest: jest.Mock = jest.fn(() => dummyAxiosResponse);
 jest.mock("axios", () => {
-  return {
-    default: {
-      request: callCurrentMockRequest,
-    },
-  };
+    return {
+        default: {
+            request: callCurrentMockRequest
+        }
+    };
 });
 
-import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { getBaseAxiosRequestConfig, makeAPICall } from "../../src/client/axios.api.call.handler";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios"; // eslint-disable-line import/first
+import { getBaseAxiosRequestConfig, makeAPICall } from "../../src/client/axios.api.call.handler"; // eslint-disable-line import/first
 
 const dummyAxiosResponse: AxiosResponse<any> = {
-  config: {},
-  data: {},
-  headers: "header",
-  status: 100,
-  statusText: "Error",
+    config: {},
+    data: {},
+    headers: "header",
+    status: 100,
+    statusText: "Error"
 };
 
 describe("axios call handler", () => {
-  beforeEach(() => {
-    callCurrentMockRequest.mockClear();
-  });
+    beforeEach(() => {
+        callCurrentMockRequest.mockClear();
+    });
 
-  it("should return config with the token argument value in header", async () => {
-    const token: string = "abc123";
-    const config: AxiosRequestConfig = getBaseAxiosRequestConfig(token);
-    expect(config.headers).toEqual({ Accept: "application/json", Authorization: "Bearer abc123" });
-  });
+    it("should return config with the token argument value in header", async () => {
+        const token: string = "abc123";
+        const config: AxiosRequestConfig = getBaseAxiosRequestConfig(token);
+        expect(config.headers).toEqual({ Accept: "application/json", Authorization: "Bearer abc123" });
+    });
 
-  it("should handle successful axios call", async () => {
-    const config: AxiosRequestConfig = {};
-    dummyAxiosResponse.status = 200;
-    const response: AxiosResponse = await makeAPICall(config);
-    expect(response.status).toEqual(200);
-  });
+    it("should handle successful axios call", async () => {
+        const config: AxiosRequestConfig = {};
+        dummyAxiosResponse.status = 200;
+        const response: AxiosResponse = await makeAPICall(config);
+        expect(response.status).toEqual(200);
+    });
 
-  it("should validate status using validateStatus function", async () => {
-    const token: string = "abc123";
-    const config: AxiosRequestConfig = getBaseAxiosRequestConfig(token);
-    const validateStatus = config.validateStatus!;
-    
-    expect(validateStatus(100)).toBeFalsy();
-    expect(validateStatus(200)).toBeTruthy();
-    expect(validateStatus(201)).toBeTruthy();
-    expect(validateStatus(300)).toBeFalsy();
-    expect(validateStatus(301)).toBeFalsy();
-    expect(validateStatus(400)).toBeTruthy();
-    expect(validateStatus(401)).toBeFalsy();
-    expect(validateStatus(404)).toBeFalsy();
-  });
+    it("should validate status using validateStatus function", async () => {
+        const token: string = "abc123";
+        const config: AxiosRequestConfig = getBaseAxiosRequestConfig(token);
+        const validateStatus = config.validateStatus!;
 
-  it("should handle axios errors", async () => {
-    const config: AxiosRequestConfig = {};
+        expect(validateStatus(100)).toBeFalsy();
+        expect(validateStatus(200)).toBeTruthy();
+        expect(validateStatus(201)).toBeTruthy();
+        expect(validateStatus(300)).toBeFalsy();
+        expect(validateStatus(301)).toBeFalsy();
+        expect(validateStatus(400)).toBeTruthy();
+        expect(validateStatus(401)).toBeFalsy();
+        expect(validateStatus(404)).toBeFalsy();
+    });
 
-    const errorMessage = "There is an error";
-    const dataError = "Test error";
-    const statusCode = 500;
+    it("should handle axios errors", async () => {
+        const config: AxiosRequestConfig = {};
 
-    const axiosError = {
-      message: errorMessage,
-      response: {
-        data: {
-          errors: [dataError],
-        },
-        status: statusCode,
-      },
-    } as AxiosError;
+        const errorMessage = "There is an error";
+        const dataError = "Test error";
+        const statusCode = 500;
 
-    callCurrentMockRequest.mockRejectedValueOnce(axiosError);
+        const axiosError = {
+            message: errorMessage,
+            response: {
+                data: {
+                    errors: [dataError]
+                },
+                status: statusCode
+            }
+        } as AxiosError;
 
-    const expectedError = {
-      data: [dataError],
-      message: errorMessage,
-      status: statusCode,
-    };
+        callCurrentMockRequest.mockRejectedValueOnce(axiosError);
 
-    await expect(makeAPICall(config)).rejects.toMatchObject(expectedError);
-  });
+        const expectedError = {
+            data: [dataError],
+            message: errorMessage,
+            status: statusCode
+        };
 
-  it("should handle axios errors with no response object", async () => {
-    const config: AxiosRequestConfig = {};
+        await expect(makeAPICall(config)).rejects.toMatchObject(expectedError);
+    });
 
-    const errorMessage = "There is an error";
+    it("should handle axios errors with no response object", async () => {
+        const config: AxiosRequestConfig = {};
 
-    const axiosError = {
-      message: errorMessage,
-    } as AxiosError;
+        const errorMessage = "There is an error";
 
-    callCurrentMockRequest.mockRejectedValueOnce(axiosError);
+        const axiosError = {
+            message: errorMessage
+        } as AxiosError;
 
-    const expectedError = {
-      data: [],
-      message: errorMessage,
-      status: -1,
-    };
+        callCurrentMockRequest.mockRejectedValueOnce(axiosError);
 
-    await expect(makeAPICall(config)).rejects.toMatchObject(expectedError);
-  });
+        const expectedError = {
+            data: [],
+            message: errorMessage,
+            status: -1
+        };
+
+        await expect(makeAPICall(config)).rejects.toMatchObject(expectedError);
+    });
 });

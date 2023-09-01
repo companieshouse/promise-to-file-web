@@ -6,3 +6,5 @@ interface ConfirmationHandlerContext {
     apiResponseStatus?: any;
 
  }
+
+export default ConfirmationHandlerContext;

@@ -10,7 +10,7 @@ import { COMPANY_PROFILE, IS_STILL_REQUIRED } from "../session/keys";
 import Session from "../session/session";
 
 const validators = [
-  check("stillRequired").not().isEmpty().withMessage(COMPANY_REQUIRED_NOT_SELECTED),
+    check("stillRequired").not().isEmpty().withMessage(COMPANY_REQUIRED_NOT_SELECTED)
 ];
 
 /**
@@ -21,15 +21,15 @@ const validators = [
  */
 export const getRoute = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 
-  const companyProfile: PTFCompanyProfile = getPromiseToFileSessionValue(req.chSession, COMPANY_PROFILE);
-  const companyName: string = companyProfile.companyName;
-  const backLinkUrl: string = COMPANY_REQUIRED_WARNING.replace(":companyNumber", companyProfile.companyNumber);
+    const companyProfile: PTFCompanyProfile = getPromiseToFileSessionValue(req.chSession, COMPANY_PROFILE);
+    const companyName: string = companyProfile.companyName;
+    const backLinkUrl: string = COMPANY_REQUIRED_WARNING.replace(":companyNumber", companyProfile.companyNumber);
 
-  return res.render(Templates.STILL_REQUIRED, {
-    backLinkUrl,
-    companyName,
-    templateName: Templates.STILL_REQUIRED,
-  });
+    return res.render(Templates.STILL_REQUIRED, {
+        backLinkUrl,
+        companyName,
+        templateName: Templates.STILL_REQUIRED
+    });
 };
 
 /**
@@ -40,40 +40,40 @@ export const getRoute = async (req: Request, res: Response, next: NextFunction):
  */
 const postRoute = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 
-  const errors = validationResult(req);
-  const companyProfile: PTFCompanyProfile = getPromiseToFileSessionValue(req.chSession, COMPANY_PROFILE);
+    const errors = validationResult(req);
+    const companyProfile: PTFCompanyProfile = getPromiseToFileSessionValue(req.chSession, COMPANY_PROFILE);
 
-  // render errors in the view
-  if (!errors.isEmpty()) {
-    const errorText = errors.array()
-      .map((err: ValidationError) => err.msg)
-      .pop() as string;
+    // render errors in the view
+    if (!errors.isEmpty()) {
+        const errorText = errors.array()
+            .map((err: ValidationError) => err.msg)
+            .pop() as string;
 
-    return renderPageWithError(res, errorText, companyProfile.companyName);
-  } else {
-    await addDecisionToSession(req.body.stillRequired, req.chSession);
-    const url = COMPANY_REQUIRED_CONFIRMATION.replace(":companyNumber", companyProfile.companyNumber);
-    return res.redirect(url);
-  }
+        return renderPageWithError(res, errorText, companyProfile.companyName);
+    } else {
+        await addDecisionToSession(req.body.stillRequired, req.chSession);
+        const url = COMPANY_REQUIRED_CONFIRMATION.replace(":companyNumber", companyProfile.companyNumber);
+        return res.redirect(url);
+    }
 };
 
 const addDecisionToSession = async (decision: string, session: Session): Promise<void> => {
-  const decisionFlag: boolean = decision.toUpperCase() === "YES";
-  await updatePromiseToFileSessionValue(session,  IS_STILL_REQUIRED, decisionFlag);
+    const decisionFlag: boolean = decision.toUpperCase() === "YES";
+    await updatePromiseToFileSessionValue(session, IS_STILL_REQUIRED, decisionFlag);
 };
 
 const renderPageWithError = (res: Response, errorMessage: string, companyName: string): void => {
-  const stillRequiredErrorData: GovUkErrorData = createGovUkErrorData(
-    errorMessage,
-    "#still-required",
-    true,
-    "");
-  return res.render(Templates.STILL_REQUIRED, {
-    companyName,
-    errorList: [stillRequiredErrorData],
-    stillRequiredError: stillRequiredErrorData,
-    templateName: Templates.STILL_REQUIRED,
-  });
+    const stillRequiredErrorData: GovUkErrorData = createGovUkErrorData(
+        errorMessage,
+        "#still-required",
+        true,
+        "");
+    return res.render(Templates.STILL_REQUIRED, {
+        companyName,
+        errorList: [stillRequiredErrorData],
+        stillRequiredError: stillRequiredErrorData,
+        templateName: Templates.STILL_REQUIRED
+    });
 };
 
 export default [...validators, postRoute];
