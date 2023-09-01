@@ -6,7 +6,7 @@ locals {
   container_port            = "3000" # default node port required here until prod docker container is built allowing port change via env var
   docker_repo               = "promise-to-file-web"
   lb_listener_rule_priority = 12
-  lb_listener_paths         = ["/company-required", "/company-required/*"]
+  lb_listener_paths         = ["/company-required*", "/company-required/*"]
   healthcheck_path          = "/company-required/healthcheck" #healthcheck path for promise to file web
   healthcheck_matcher       = "200"                           # no explicit healthcheck in this service yet, change this when added!
 
