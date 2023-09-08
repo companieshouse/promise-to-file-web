@@ -13,8 +13,8 @@ import * as keys from "../keys";
  * @param next
  */
 export default async (req: Request, res: Response, next: NextFunction) => {
-  if (!req.chSession.data[keys.PTF_SESSION]) {
-    await sessionService.createPromiseToFileSession(req.chSession);
-  }
-  next();
+    if (!req.chSession.data[keys.PTF_SESSION]) {
+        await sessionService.createPromiseToFileSession(req.chSession);
+    }
+    next();
 };

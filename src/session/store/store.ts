@@ -26,4 +26,5 @@ export default interface IStore {
    * Check to see if data exists in the store.
    */
   exists(key: string): Promise<boolean>;
-}
+}; // eslint-disable-line semi
+// eslint keep adding extra semicolons without the disable

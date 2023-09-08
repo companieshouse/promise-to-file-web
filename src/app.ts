@@ -6,6 +6,7 @@ import * as path from "path";
 import companyAuthenticate from "./authentication/company/middleware/index";
 import authenticate from "./authentication/user/middleware/index";
 import { checkServiceAvailability } from "./availability/middleware/service.availability";
+import healthcheckController from "./controllers/healthcheck.controller";
 import httpLogger from "./http.logger";
 import logger from "./logger";
 import { ERROR_SUMMARY_TITLE } from "./model/error.messages";
@@ -20,12 +21,12 @@ const app = express();
 
 // view engine setup
 const env = nunjucks.configure([
-  "views",
-  "node_modules/govuk-frontend/",
-  "node_modules/govuk-frontend/components/",
+    "views",
+    "node_modules/govuk-frontend/",
+    "node_modules/govuk-frontend/components/"
 ], {
-  autoescape: true,
-  express: app,
+    autoescape: true,
+    express: app
 });
 
 logger.debug("Setting up environment variables");
@@ -43,6 +44,12 @@ app.use(express.urlencoded({ extended: false }));
 // check if we should show the service unavailable page
 app.use(checkServiceAvailability);
 app.use(cookieParser());
+
+// Healthcheck does not require session or authenticate.
+// Hence requires to be placed higher than sessionMiddleware and authenticate
+// in the order of  ".use" reflect in order of precedence of execution
+app.use(`${pageURLs.HEALTHCHECK}`, healthcheckController);
+
 app.use(sessionMiddleware);
 app.use(ptfSessionLoader);
 
@@ -61,25 +68,25 @@ app.use(pageURLs.COMPANY_REQUIRED, appRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
-  next(createError(404));
+    next(createError(404));
 });
 
 // error handler
 app.use(async (err, req, res, next) => {
 
-  logger.error("An error has occurred. Re-routing to the error screen - " + err.stack);
+    logger.error("An error has occurred. Re-routing to the error screen - " + err.stack);
 
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : { };
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get("env") === "development" ? err : { };
 
-  // Any old PTF session data will be discarded as a result of this call to create a new PTF session object. The
-  // new, empty PTF session will be utilised if the user decides to start a new PTF journey
-  await createPromiseToFileSession(req.chSession);
+    // Any old PTF session data will be discarded as a result of this call to create a new PTF session object. The
+    // new, empty PTF session will be utilised if the user decides to start a new PTF journey
+    await createPromiseToFileSession(req.chSession);
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render("error");
+    // render the error page
+    res.status(err.status || 500);
+    res.render("error");
 });
 
 logger.info("Company Required service started");

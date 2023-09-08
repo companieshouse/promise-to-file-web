@@ -10,6 +10,7 @@ export const COMPANY_REQUIRED: string = SEPARATOR + "company-required";
 export const COMPANY_NUMBER: string = SEPARATOR + Templates.COMPANY_NUMBER;
 export const CHECK_COMPANY: string = SEPARATOR + Templates.CHECK_COMPANY;
 export const COMPANY_AUTH_PROTECTED_ROUTE: string = SEPARATOR + "company/:companyNumber/";
+export const HEALTHCHECK: string = COMPANY_REQUIRED + SEPARATOR + "healthcheck";
 
 /**
  * Company Auth protected routes

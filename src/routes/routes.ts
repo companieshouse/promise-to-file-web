@@ -15,7 +15,7 @@ const router: Router = Router();
  * @param template the template name
  */
 const renderTemplate = (template: string) => (req: Request, res: Response, next: NextFunction) => {
-  return res.render(template, { templateName: template });
+    return res.render(template, { templateName: template });
 };
 
 router.get(pageURLs.ROOT, renderTemplate(Templates.INDEX));

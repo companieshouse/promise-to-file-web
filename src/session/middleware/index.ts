@@ -16,14 +16,14 @@ declare global {
 }
 
 export default async (req: Request, res: Response, next: NextFunction) => {
-  const cookieId = req.cookies[COOKIE_NAME];
+    const cookieId = req.cookies[COOKIE_NAME];
 
-  if (cookieId) {
-    logger.info("cookie found, loading session from redis: " + cookieId);
-    req.chSession = await redisService.loadSession(cookieId);
-  } else {
-    logger.info("No cookie found, using blank session");
-    req.chSession = await redisService.loadSession("");
-  }
-  next();
+    if (cookieId) {
+        logger.info("cookie found, loading session from redis: " + cookieId);
+        req.chSession = await redisService.loadSession(cookieId);
+    } else {
+        logger.info("No cookie found, using blank session");
+        req.chSession = await redisService.loadSession("");
+    }
+    next();
 };

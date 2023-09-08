@@ -8,8 +8,8 @@ import { saveSession } from "./redis.service";
  * @param chSession
  */
 const createPromiseToFileSession = async (chSession: Session): Promise<void> => {
-  chSession.appendData(keys.PTF_SESSION, {});
-  await saveSession(chSession);
+    chSession.appendData(keys.PTF_SESSION, {});
+    await saveSession(chSession);
 };
 
 /**
@@ -19,8 +19,8 @@ const createPromiseToFileSession = async (chSession: Session): Promise<void> => 
  * @param value
  */
 const updatePromiseToFileSessionValue = async (chSession: Session, key: string, value: any): Promise<void> => {
-  chSession.data[keys.PTF_SESSION][key] = value;
-  await saveSession(chSession);
+    chSession.data[keys.PTF_SESSION][key] = value;
+    await saveSession(chSession);
 };
 
 /**
@@ -29,7 +29,7 @@ const updatePromiseToFileSessionValue = async (chSession: Session, key: string, 
  * @param key
  */
 const getPromiseToFileSessionValue = (chSession: Session, key: string): any => {
-  return chSession.data[keys.PTF_SESSION][key];
+    return chSession.data[keys.PTF_SESSION][key];
 };
 
 export { createPromiseToFileSession, getPromiseToFileSessionValue, updatePromiseToFileSessionValue };

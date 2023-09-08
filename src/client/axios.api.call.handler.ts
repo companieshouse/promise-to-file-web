@@ -12,12 +12,12 @@ export const getBaseAxiosRequestConfig = (token: string): AxiosRequestConfig => 
     return {
         headers: {
             Accept: "application/json",
-            Authorization: "Bearer " + token,
+            Authorization: "Bearer " + token
         },
         proxy: false,
         validateStatus: (status) => {
-          return ((status >= 200 && status < 300) || status === 400);
-        },
+            return ((status >= 200 && status < 300) || status === 400);
+        }
     };
 };
 
@@ -34,10 +34,11 @@ export const makeAPICall = async (config: AxiosRequestConfig): Promise<AxiosResp
     } catch (err) {
         logger.error(`API ERROR ${JSON.stringify(err, null, 2)}`);
         const axiosError = err as AxiosError;
-        const {response, message} = axiosError;
+        const { response, message } = axiosError;
         throw new PromiseError(
-            response ? response.data.errors : [], 
+            response ? response.data.errors : [],
             message,
             response ? response.status : -1
-          );
-}};
+        );
+    }
+};
