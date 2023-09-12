@@ -135,3 +135,7 @@ variable "promise_to_file_web_version" {
   type        = string
   description = "The version of the promise to file web container to run."
 }
+
+variable "node_env" {
+  type = string
+}
