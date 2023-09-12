@@ -10,6 +10,7 @@ locals {
   healthcheck_path          = "/company-required/healthcheck" #healthcheck path for promise to file web
   healthcheck_matcher       = "200"                           # no explicit healthcheck in this service yet, change this when added!
 
+  kms_alias       = "alias/${var.aws_profile}/environment-services-kms"
   service_secrets = jsondecode(data.vault_generic_secret.service_secrets.data_json)
 
   parameter_store_secrets = {
