@@ -15,28 +15,6 @@ variable "aws_profile" {
   type        = string
   description = "The AWS profile to use for deployment."
 }
-variable "kms_alias" {
-  type = string
-}
-# ------------------------------------------------------------------------------
-# Terraform
-# ------------------------------------------------------------------------------
-variable "aws_bucket" {
-  type        = string
-  description = "The bucket used to store the current terraform state files"
-}
-variable "remote_state_bucket" {
-  type        = string
-  description = "Alternative bucket used to store the remote state files from ch-service-terraform"
-}
-variable "state_prefix" {
-  type        = string
-  description = "The bucket prefix used with the remote_state_bucket files."
-}
-variable "deploy_to" {
-  type        = string
-  description = "Bucket namespace used with remote_state_bucket and state_prefix."
-}
 
 # ------------------------------------------------------------------------------
 # Docker Container
@@ -134,4 +112,8 @@ variable "show_service_offline_page" {
 variable "promise_to_file_web_version" {
   type        = string
   description = "The version of the promise to file web container to run."
+}
+
+variable "node_env" {
+  type = string
 }

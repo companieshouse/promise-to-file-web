@@ -1,37 +1,5 @@
-aws_bucket = "staging-eu-west-2.terraform-state.ch.gov.uk"
-remote_state_bucket = "ch-staging-terraform-state-london"
 environment = "staging"
-deploy_to = "staging"
-state_prefix = "env:/staging"
 aws_profile = "staging-eu-west-2"
-kms_alias = "alias/staging-eu-west-2/environment-services-kms"
-
-# service configs
-# Commented params moved to vault service secrets
-# oauth2_auth_uri
-# oauth2_redirect_uri
-# account_url
-# cache_server
-
-# cookie_secret
-# file_transfer_api_key
-# oauth2_client_secret
-# oauth2_request_key
-# oauth2_token_uri
-# oauth2_client_id
-
-# service configs
-# Commented params moved to vault service secrets
-# oauth2_auth_uri
-# oauth2_redirect_uri
-# cache_server
-
-# cookie_secret
-# oauth2_client_secret
-# oauth2_request_key
-# oauth2_token_uri
-# oauth2_client_id
-
 
 api_url = "https://api.staging.aws.chdev.org"
 cdn_host = "d3uvya5a8a1ncx.cloudfront.net"
@@ -41,4 +9,6 @@ cookie_domain = "staging.aws.chdev.org"
 log_level = "debug"
 piwik_site_id = "7"
 piwik_url = "https://matomo.platform.aws.chdev.org"
+log_level = "debug"
+node_env = "docker"
 show_service_offline_page = "false"
