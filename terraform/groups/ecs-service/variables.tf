@@ -88,7 +88,6 @@ variable "human_log" {
 }
 
 variable "log_level" {
-  default     = "info"
   type        = string
   description = "The log level for services to use: trace, debug, info or error"
 }
