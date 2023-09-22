@@ -23,7 +23,7 @@ The only local development mode available, using development orchestrator servic
 2. Run `./bin/chs-dev modules enable promise-to-file`
 3. Run `./bin/chs-dev development enable promise-to-file-web` (this will allow you to make changes in real time).
 4. Run docker using `tilt up` in the docker-chs-development directory.
-5. Use spacebar in the command line to open tilt window - wait for promise-to-file-web to become green.(If you have credential errors then  you may not be logged into `eu-west-1`.)
+5. Use spacebar in the command line to open tilt window - wait for promise-to-file-web to become green.(If you have credential errors then  you may not be logged into `eu-west-2`.)
 6. Open your browser and go to page <http://chs.local/company-required/>
 
 Environment variables used to configure this service in docker are located in the file `services/modules/promise-to-file/promise-to-file-web.docker-compose.yaml`
@@ -42,9 +42,9 @@ Environment variables used to configure this service in docker are located in th
 
 ### To build the Docker container
 
-Ensure that you are logged into the AWS eu-west1 region:
+Ensure that you are logged into the AWS eu-west-2 region:
 
-`aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 169942020521.dkr.ecr.eu-west-1.amazonaws.com`
+`aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin 416670754337.dkr.ecr.eu-west-2.amazonaws.com`
 
 and then run:
 
