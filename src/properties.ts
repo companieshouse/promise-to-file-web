@@ -24,6 +24,8 @@ export const DEFAULT_SESSION_EXPIRATION = getEnvironmentValue("DEFAULT_SESSION_E
 
 export const INTEGER_PARSE_BASE = 10;
 
+export const NODE_PORT = parseInt(getEnvironmentValue("NODE_PORT", 3000));
+
 export const PIWIK_URL = getEnvironmentValue("PIWIK_URL");
 
 export const PIWIK_SITE_ID = getEnvironmentValue("PIWIK_SITE_ID");

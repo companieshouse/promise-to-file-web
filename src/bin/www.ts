@@ -5,16 +5,15 @@
  */
 
 import * as http from "http";
-import * as yargs from "yargs";
 import app from "../app";
 import logger from "../logger";
+import { NODE_PORT } from "../properties";
 
 /**
  * Get port from environment and store in Express.
  */
 
-const port = normalizePort(yargs.argv.PORT || yargs.argv._[0]);
-app.set("port", port);
+app.set("port", NODE_PORT);
 
 /**
  * Create HTTP server.
@@ -26,28 +25,8 @@ const server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
+server.listen(NODE_PORT);
 server.on("error", onError);
-
-/**
- * Normalize a port into a number, string, or false.
- */
-
-function normalizePort (val) {
-    const portNumber = parseInt(val, 10);
-
-    if (isNaN(portNumber)) {
-    // named pipe
-        return val;
-    }
-
-    if (portNumber >= 0) {
-    // port number
-        return portNumber;
-    }
-
-    return false;
-}
 
 /**
  * Event listener for HTTP server "error" event.
@@ -58,9 +37,9 @@ function onError (error) {
         throw error;
     }
 
-    const bind = typeof port === "string"
-        ? "Pipe " + port
-        : "Port " + port;
+    const bind = typeof NODE_PORT === "string"
+        ? "Pipe " + NODE_PORT
+        : "Port " + NODE_PORT;
 
     // handle specific listen errors with friendly messages
     switch (error.code) {
