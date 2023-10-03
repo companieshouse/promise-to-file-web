@@ -12,7 +12,7 @@ import logger from "../logger";
 /**
  * Get port from environment and store in Express.
  */
-
+// @ts-ignore
 const port = normalizePort(yargs.argv.PORT || yargs.argv._[0]);
 app.set("port", port);
 
