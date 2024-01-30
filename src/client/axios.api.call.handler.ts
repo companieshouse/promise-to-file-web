@@ -28,6 +28,10 @@ export const getBaseAxiosRequestConfig = (token: string): AxiosRequestConfig => 
  * Throws error if unable to make call
  * @param config: AxiosRequestConfig
  */
+interface ApiResponse {
+    errors?: any[];
+}
+
 export const makeAPICall = async (config: AxiosRequestConfig): Promise<AxiosResponse> => {
     try {
         return await axios.request<any>(config);
@@ -35,10 +39,11 @@ export const makeAPICall = async (config: AxiosRequestConfig): Promise<AxiosResp
         logger.error(`API ERROR ${JSON.stringify(err, null, 2)}`);
         const axiosError = err as AxiosError;
         const { response, message } = axiosError;
-        throw new PromiseError(
-            response ? response.data.errors : [],
-            message,
-            response ? response.status : -1
-        );
+
+        const responseData: ApiResponse = response?.data || {};
+
+        const errors = responseData.errors ?? [];
+
+        throw new PromiseError(errors, message, response ? response.status : -1);
     }
 };
