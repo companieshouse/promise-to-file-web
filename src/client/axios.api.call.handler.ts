@@ -29,7 +29,7 @@ export const getBaseAxiosRequestConfig = (token: string): AxiosRequestConfig => 
  * @param config: AxiosRequestConfig
  */
 interface ApiResponse {
-    errors?: any[]; 
+    errors?: any[];
 }
 
 export const makeAPICall = async (config: AxiosRequestConfig): Promise<AxiosResponse> => {
@@ -47,5 +47,3 @@ export const makeAPICall = async (config: AxiosRequestConfig): Promise<AxiosResp
         throw new PromiseError(errors, message, response ? response.status : -1);
     }
 };
-
-
