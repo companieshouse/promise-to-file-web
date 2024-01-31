@@ -1,6 +1,0 @@
-app_name: promise-to-file-web
-group: web
-
-weight: 1000
-routes:
-  1: ^/company-required/*
