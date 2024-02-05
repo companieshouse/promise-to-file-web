@@ -11,7 +11,7 @@ locals {
   lb_listener_paths           = ["/company-required*", "/company-required/*"]
   healthcheck_path            = "/company-required/healthcheck" #healthcheck path for promise to file web
   healthcheck_matcher         = "200"                           # no explicit healthcheck in this service yet, change this when added!
-  vpc_name                    = data.aws_ssm_parameter.secret[format("/%s/%s", local.name_prefix, "vpc-name")].value
+  vpc_name                    = local.service_secrets["vpc_name"]
   s3_config_bucket            = data.vault_generic_secret.shared_s3.data["config_bucket_name"]
   app_environment_filename    = "promise-to-file-web.env"
   use_set_environment_files   = var.use_set_environment_files
