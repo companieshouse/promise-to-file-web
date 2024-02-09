@@ -1,13 +1,10 @@
 environment = "staging"
 aws_profile = "staging-eu-west-2"
 
-api_url = "https://private-api-staging.company-information.service.gov.uk"
-cdn_host = "https://d6nh3dxv55e16.cloudfront.net"
-chs_url = "https://staging.company-information.service.gov.uk"
-company_still_required_feature_flag = "true"
-cookie_domain = "company-information.service.gov.uk"
-piwik_site_id = "7"
-piwik_url = "https://matomo.platform.aws.chdev.org"
-log_level = "debug"
-node_env = "docker"
-show_service_offline_page = "false"
+# service configs
+use_set_environment_files = true
+
+# scaling configs
+desired_task_count = 2 # use multi instance in staging
+service_scaledown_schedule = "55 19 * * ? *"
+service_scaleup_schedule   = "5 6 * * ? *"
