@@ -20,6 +20,8 @@ export const CACHE_SERVER = getEnvironmentValue("CACHE_SERVER");
 
 export const COOKIE_NAME = getEnvironmentValue("COOKIE_NAME");
 
+export const COOKIE_DOMAIN = getEnvironmentValue("COOKIE_DOMAIN");
+
 export const DEFAULT_SESSION_EXPIRATION = getEnvironmentValue("DEFAULT_SESSION_EXPIRATION");
 
 export const INTEGER_PARSE_BASE = 10;
