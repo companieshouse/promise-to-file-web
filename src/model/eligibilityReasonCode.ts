@@ -5,4 +5,5 @@ export enum eligibilityReasonCode {
   EXISTING_PTF = "existing promise to file",
   NO_DIRECTORS = "no appointed directors",
   COMPANY_ALREADY_IN_PROSECUTION = "company already in prosecution",
+  COMPANY_NOT_FOUND = "company not found",
 }
