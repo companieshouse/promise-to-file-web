@@ -10,6 +10,11 @@ import { expect, jest } from "@jest/globals";
 jest.mock("../../src/session/store/redis.store", () => import("../mocks/redis.store.mock.factory"));
 jest.mock("../../src/services/redis.service");
 jest.mock("../../src/services/session.service");
+jest.mock("@companieshouse/web-security-node");
+jest.mock("../../src/csrf.middleware", () => ({
+  createCsrfProtectionMiddleware: jest.fn(() => (req, res, next) => next()),
+  csrfErrorHandler: jest.fn(() => (err, req, res, next) => next(err)),
+}));
 
 const COMPANY_REQUIRED_NOT_SELECTED = "You must tell us if the company is still required";
 
