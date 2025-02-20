@@ -7,6 +7,7 @@ import { expect, jest } from "@jest/globals";
 jest.mock("../../src/session/store/redis.store", () => import("../mocks/redis.store.mock.factory"));
 jest.mock("../../src/services/redis.service");
 const mockCacheService = loadSession as jest.Mock;
+jest.mock("ioredis", () => require("ioredis-mock"));
 
 describe("Health check controller tests", () => {
 

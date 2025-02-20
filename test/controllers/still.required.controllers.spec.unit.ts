@@ -15,6 +15,7 @@ jest.mock("../../src/csrf.middleware", () => ({
   createCsrfProtectionMiddleware: jest.fn(() => (req, res, next) => next()),
   csrfErrorHandler: jest.fn(() => (err, req, res, next) => next(err)),
 }));
+jest.mock("ioredis", () => require("ioredis-mock"));
 
 const COMPANY_REQUIRED_NOT_SELECTED = "You must tell us if the company is still required";
 

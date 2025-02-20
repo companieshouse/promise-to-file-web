@@ -20,6 +20,7 @@ jest.mock("../../src/csrf.middleware", () => ({
   createCsrfProtectionMiddleware: jest.fn(() => (req, res, next) => next()),
   csrfErrorHandler: jest.fn(() => (err, req, res, next) => next(err)),
 }));
+jest.mock("ioredis", () => require("ioredis-mock"));
 
 const COMPANY_NUMBER = "00006400";
 const NO_COMPANY_NUMBER_SUPPLIED = "No company number supplied";
