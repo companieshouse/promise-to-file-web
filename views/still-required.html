@@ -34,6 +34,7 @@
       {% endset %}
 
       <form method="post">
+        {% include "csrf-token.njk" %}
         {% if stillRequiredErr.flag %}
           {% set stillRequiredErrorMessage = {
             text: stillRequiredErr.text

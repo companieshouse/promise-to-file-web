@@ -17,6 +17,7 @@ jest.mock("../../src/client/apiclient");
 jest.mock("../../src/services/session.service");
 jest.mock("../../src/feature.flag");
 jest.mock("../../src/logger");
+jest.mock("ioredis", () => require("ioredis-mock"));
 
 const COMPANY_NUMBER: string = "00006400";
 const COMPANY_NAME: string = "THE GIRLS DAY SCHOOL TRUST";

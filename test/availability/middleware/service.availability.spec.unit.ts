@@ -9,6 +9,7 @@ jest.mock("../../../src/session/store/redis.store", () => import("../../mocks/re
 jest.mock("../../../src/services/redis.service");
 jest.mock("../../../src/services/session.service");
 const mockCacheService = loadSession as jest.Mock;
+jest.mock("ioredis", () => require("ioredis-mock"));
 
 beforeEach(() => {
     loadMockSession(mockCacheService);

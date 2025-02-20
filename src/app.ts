@@ -11,11 +11,18 @@ import httpLogger from "./http.logger";
 import logger from "./logger";
 import { ERROR_SUMMARY_TITLE } from "./model/error.messages";
 import * as pageURLs from "./model/page.urls";
-import { PIWIK_SITE_ID, PIWIK_URL } from "./properties";
+import { PIWIK_SITE_ID, PIWIK_URL, CACHE_SERVER, COOKIE_NAME, COOKIE_SECRET, COOKIE_DOMAIN, DEFAULT_SESSION_EXPIRATION } from "./properties";
 import { appRouter } from "./routes/routes";
 import { createPromiseToFileSession } from "./services/session.service";
 import sessionMiddleware from "./session/middleware";
+import { createCsrfProtectionMiddleware, csrfErrorHandler } from "./csrf.middleware";
 import ptfSessionLoader from "./session/middleware/ptf.session";
+import Redis from 'ioredis';
+import { SessionStore, SessionMiddleware } from '@companieshouse/node-session-handler';
+
+const redis = new Redis(CACHE_SERVER);
+const sessionStore = new SessionStore(redis);
+const csrfProtectionMiddleware = createCsrfProtectionMiddleware(sessionStore);
 
 const app = express();
 
@@ -23,7 +30,8 @@ const app = express();
 const env = nunjucks.configure([
     "views",
     "node_modules/govuk-frontend/",
-    "node_modules/govuk-frontend/components/"
+    "node_modules/govuk-frontend/components/",
+    "node_modules/@companieshouse/"
 ], {
     autoescape: true,
     express: app
@@ -51,6 +59,14 @@ app.use(cookieParser());
 app.use(`${pageURLs.HEALTHCHECK}`, healthcheckController);
 
 app.use(sessionMiddleware);
+const cookieConfig = {
+  cookieName: COOKIE_NAME,
+  cookieSecret: COOKIE_SECRET,
+  cookieDomain: COOKIE_DOMAIN,
+  cookieTimeToLiveInSeconds: parseInt(DEFAULT_SESSION_EXPIRATION, 10)
+};
+app.use(SessionMiddleware(cookieConfig, sessionStore));
+app.use(csrfProtectionMiddleware);
 app.use(ptfSessionLoader);
 
 app.use(`${pageURLs.COMPANY_REQUIRED}/*`, authenticate);
@@ -88,6 +104,8 @@ app.use(async (err, req, res, next) => {
     res.status(err.status || 500);
     res.render("error");
 });
+
+app.use(csrfErrorHandler);
 
 logger.info("Company Required service started");
 

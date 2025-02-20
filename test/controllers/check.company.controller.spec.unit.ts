@@ -12,6 +12,7 @@ import { expect, jest } from "@jest/globals";
 jest.mock("../../src/session/store/redis.store", () => import("../mocks/redis.store.mock.factory"));
 jest.mock("../../src/services/redis.service");
 jest.mock("../../src/services/session.service");
+jest.mock("ioredis", () => require("ioredis-mock"));
 
 describe("check company tests", () => {
 

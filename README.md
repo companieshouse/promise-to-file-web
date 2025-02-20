@@ -52,21 +52,26 @@ and then run:
 
 ### Endpoints
 
-Method | Path | Description
---- | --- | ---
-GET | `/company-required/` | Returns the landing page for promise to file
+Method | Path                                                   | Description
+------ | ------------------------------------------------------ | -----------
+GET    | `/company-required`                                    | Returns the landing page for promise to file
+GET    | `/company-required/company-number`                     | Returns form to enter company number
+POST   | `/company-required/company-number`                     | Submit company number and redirect to check company details
+GET    | `/company-required/check-company`                      | Show company details
+GET    | `/company-required/company/00006400/warning`           | Warning screen ( redirects to authorise company first time )
+GET    | `/company-required/company/00006400/still-required`    | Show form with still required choice
+POST   | `/company-required/company/00006400/still-required`    | Submit answer to still required question
+GET    | `/company-required/company/00006400/confirmation`      | Show confirmation screen
 
 ### Config variables
 
-
-Key             | Example Value   | Description
-----------------|---------------- |------------------------------------
-CDN_HOST | //$CDN_HOST | Path to CH styling for frontend
-LOG_LEVEL | debug |
-HTTP_LOG_FORMAT | dev | 
-COMPANY_STILL_REQUIRED_FEATURE_FLAG | true | Temporary feature flag
-SHOW_SERVICE_UNAVAILABLE_PAGE | off | Used to inform user when site is undergoing a fix
-
+Key                                 | Example Value    | Description
+----------------------------------- | ---------------- | ------------------------------------
+CDN_HOST                            | //$CDN_HOST      | Path to CH styling for frontend
+LOG_LEVEL                           | debug            |
+HTTP_LOG_FORMAT                     | dev              |
+COMPANY_STILL_REQUIRED_FEATURE_FLAG | true             | Temporary feature flag
+SHOW_SERVICE_UNAVAILABLE_PAGE       | off              | Used to inform user when site is undergoing a fix
 
 ### Further Information
 For further information on running building and testing ch node js apps see the [Node Web Starter](https://github.com/companieshouse/node-web-starter/blob/master/README.md) page.

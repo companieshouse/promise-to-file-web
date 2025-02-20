@@ -33,6 +33,7 @@ Attention
             <p class="govuk-body-l">If you tell us a company is still required and don't file, we may prosecute the company directors.</p>
 
             <form method="get" action="/company-required/company/{{companyNumber}}/still-required">
+            {% include "csrf-token.njk" %}
             {{ govukButton({
               text: "Continue",
               classes: "govuk-link govuk-!-margin-top-5 govuk-link--interrupt",
