@@ -122,7 +122,7 @@
       })  }}
 
     <form method="get" action="/company-required/company/{{company.companyNumber}}/warning">
-      {% include "csrf-token.njk" %}
+      {# no csrf token required for 'get' #}
       {{ govukButton({
         text: "Continue",
         attributes: {
